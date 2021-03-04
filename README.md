@@ -159,56 +159,56 @@ Here are the command global flags that can be used for every command:
 
 ### Checking the health of the API and its dependencies
 
-#### Usage
-
-```
-certifaction health
-```
-
-#### Description
-Return the API and its dependencies health.  The result is formatted as a JSON
-array of dependency objects.  Returns an error if the API or any of its
-dependencies is not healthy.
+>#### Usage
+>
+>```
+>certifaction health
+>```
+>
+>#### Description
+>Return the API and its dependencies health.  The result is formatted as a JSON
+>array of dependency objects.  Returns an error if the API or any of its
+>dependencies is not healthy.
 
 
 ### Checking the API liveliness
 
-#### Usage
-
-```
-certifaction ping
-```
-
-#### Description:
-
-Return success if the API is responsive, returns an error if not.
+>#### Usage
+>
+>```
+>certifaction ping
+>```
+>
+>#### Description:
+>
+>Return success if the API is responsive, returns an error if not.
 
 ### Prepare a document for signing
 
-#### Usage
+>#### Usage
+>
+>```
+>certifaction prepare [prepare flags] [-o output] [input]
+>```
+>
+>#### Description
+>
+>Prepare a document for signing.  A salt and a document claim encryption key pair is added to the document, and optionally a branded footer.  If enabled, a Digital Twin QR code with a document encryption key will be added to the document.  If the input file is already a digital original then the command will return the input file unchanged.  Currently only processes PDF files.  An error is returned if the input is not a PDF file.  If the input parameter is omitted, then the command will take its input from stdin.  If the output parameter is omitted, then the output will be returned to stdout.
+>
+>#### Flags
+>
+>```
+>--digital-twin     adds a Digital Twin footer, encrypt the document and store it.
+>                   Use the footer template given by the -footer parameter.
+>                   If not -footer parameter is provided, then use the default footer.
+>--language         overrides the default language.
+>```
 
-```
-certifaction prepare [prepare flags] [-o output] [input]
-```
+### Sign a document 
+>#### Usage
+>```certifaction sign [sign flags] [prepare flags] [-o output] [input/url]``` |
 
-#### Description
 
-Prepare a document for signing.  A salt and a document claim encryption key pair is added to the document, and optionally a branded footer.  If enabled, a Digital Twin QR code with a document encryption key will be added to the document.  If the input file is already a digital original then the command will return the input file unchanged.  Currently only processes PDF files.  An error is returned if the input is not a PDF file.  If the input parameter is omitted, then the command will take its input from stdin.  If the output parameter is omitted, then the output will be returned to stdout.
-
-#### Flags
-
-```
---digital-twin     adds a Digital Twin footer, encrypt the document and store it.
-                   Use the footer template given by the -footer parameter.
-                   If not -footer parameter is provided, then use the default footer.
---language         overrides the default language.
-```
-
-Sign a document
-
-Usage:
-
-certifaction sign [sign flags] [prepare flags] [-o output] [input/url]
 Description:
 
 Digitally sign the document given as input or digitally sign the document with the hash given with the --hash flag.  The document must  be prepared.  If the document is not prepared then it will be prepared first before signing unless the --signonly flag is used.  If the --signonly flag is used and the document was not prepared, then an error is returned.  If the document is prepared during signing, then the command will honor the prepare command flags. If the input parameter and the --hash flag are omitted, then the command will take its input from stdin.  The command will output the prepared file.  If the output parameter is omitted, then the output will be returned to stdout.
