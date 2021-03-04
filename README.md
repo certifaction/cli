@@ -217,7 +217,7 @@ Here are the command global flags that can be used for every command:
 >```
 >
 >#### Description
-Digitally sign the document given as input or digitally sign the document with
+>Digitally sign the document given as input or digitally sign the document with
 the hash given with the --hash flag.  The document must  be prepared.  If the
 document is not prepared then it will be prepared first before signing unless
 the --signonly flag is used.  If the --signonly flag is used and the document
