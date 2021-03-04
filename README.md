@@ -118,13 +118,13 @@ The authentication is done by passing an authentication token or an API key:
 
 ## Interactive CLI
 
-Usage:
+General usage:
 
 ```
 certifaction [certifaction flags] <command> [arguments]
 ```
 
-The commands are:
+The available commands are:
 
 ```
 help         getting help about a command
@@ -154,7 +154,6 @@ Here are the command global flags that can be used for every command:
 --apikey        An API key created in the account settings
 --verbose       Increase logs verbosity. Can be repeated multiple times
                 to increase it even more.
-
 ```
 
 ### Checking the health of the API and its dependencies
@@ -206,132 +205,150 @@ Here are the command global flags that can be used for every command:
 
 ### Sign a document 
 >#### Usage
->```certifaction sign [sign flags] [prepare flags] [-o output] [input/url]``` |
-
-
-Description:
-
-Digitally sign the document given as input or digitally sign the document with the hash given with the --hash flag.  The document must  be prepared.  If the document is not prepared then it will be prepared first before signing unless the --signonly flag is used.  If the --signonly flag is used and the document was not prepared, then an error is returned.  If the document is prepared during signing, then the command will honor the prepare command flags. If the input parameter and the --hash flag are omitted, then the command will take its input from stdin.  The command will output the prepared file.  If the output parameter is omitted, then the output will be returned to stdout.
-Here are the sign flags:
-
---scope      optional signature scope override to choose between
-  register, sign and certify.
---signonly      do not prepare the document if it is not already
-             prepared and return an error instead.
---hash string the hash of the document document to sign
-
-
-
-
-Verify a document
-
-Usage:
-
-certifaction verify [-o output] [input]
-Description:
-
-Verify the file given as input.  Return the verification result as JSON.  If the input parameter is omitted, then the command will take its input from stdin.  If the output parameter is omitted, then the output will be returned to stdout. Return success if the document is authentic and signed from verified users, otherwise returns an error.
-
-Revoke a document
-
-Usage:
-
-certifaction revoke [revoke flags] [input]
-Description:
-
-Revoke the document given as input.  The document must be a digital original document.  After revocation, any additional claims will be ignored during verification. Return an error if the document cannot be revoked.   If the input parameter and the -hash flag are omitted, then the command will take its input from stdin.
-Here are the revoke flags:
-
---hash string the hash of the document to revoke
-
-Request a document signature
-
-Usage:
-
-certifaction request [request flags] [input]
-Description:
-
-Return a signature request URL from a Digital Twin document.  The URL can be shared with other people to sign a document.   The document must be a Digital Twin and it  will return an error otherwise. If the input parameter is omitted, then the command will take its input from stdin.  Returns to stdout the URL to be handed to the signer.
-Here are the request flags:
-
---name    string   full name of signer
---email   string   email address of signer [required]
---hash    string   the hash of a Digital twin document
+>```
+>certifaction sign [sign flags] [prepare flags] [-o output] [input/url]
+>```
+>
+>#### Description
+Digitally sign the document given as input or digitally sign the document with
+the hash given with the --hash flag.  The document must  be prepared.  If the
+document is not prepared then it will be prepared first before signing unless
+the --signonly flag is used.  If the --signonly flag is used and the document
+was not prepared, then an error is returned.  If the document is prepared during
+signing, then the command will honor the prepare command flags. If the input
+parameter and the --hash flag are omitted, then the command will take its input
+from stdin.  The command will output the prepared file.  If the output parameter
+is omitted, then the output will be returned to stdout.  Here are the sign
+>#### Flags
+>```
+>--scope      optional signature scope override to choose between
+>             register, sign and certify.
+>--signonly   do not prepare the document if it is not already
+>             prepared and return an error instead.
+>--hash       string the hash of the document document to sign
+>```
 
 
 
-Get the authenticated user information
+### Verify a document
+>#### Usage
+>```
+>certifaction verify [-o output] [input]
+>```
+>#### Description
+>
+>Verify the file given as input.  Return the verification result as JSON.  If
+the input parameter is omitted, then the command will take its input from
+stdin.  If the output parameter is omitted, then the output will be returned to
+stdout. Return success if the document is authentic and signed from verified
+users, otherwise returns an error.
+>
+### Revoke a document
+>
+>#### Usage
+>```
+>certifaction revoke [revoke flags] [input]
+>```
+>#### Description
+>
+>Revoke the document given as input.  The document must be a digital original document.  After revocation, any additional claims will be ignored during verification. Return an error if the document cannot be revoked.   If the input parameter and the -hash flag are omitted, then the command will take its input from stdin.
+>Here are the revoke flags:
+>
+>--hash string the hash of the document to revoke
 
-Usage:
+### Request a document signature
+>Usage:
+>
+>certifaction request [request flags] [input]
+>Description:
+>
+>Return a signature request URL from a Digital Twin document.  The URL can be shared with other people to sign a document.   The document must be a Digital Twin and it  will return an error otherwise. If the input parameter is omitted, then the command will take its input from stdin.  Returns to stdout the URL to be handed to the signer.
+>Here are the request flags:
+>
+>--name    string   full name of signer
+>--email   string   email address of signer [required]
+>--hash    string   the hash of a Digital twin document
+>
 
-certifaction user [user flags]
-Description:
+### Get the authenticated user information
+>Usage:
+>
+>certifaction user [user flags]
+>Description:
+>
+>Return the user information as JSON.  Return an error if the user is not authenticated.
+>Here are the user flags:
+>
+>None for the moment
+>
 
-Return the user information as JSON.  Return an error if the user is not authenticated.
-Here are the user flags:
+### Start the HTTP server
+>Usage:
+>
+>certifaction server [server flags]
+>Description:
+>
+>Starts Certifaction HTTP server.
+>Here are the sign flags:
+>
+>--port number    server port number
+>
 
-None for the moment
-
-
-Start the HTTP server
-
-Usage:
-
-certifaction server [server flags]
-Description:
-
-Starts Certifaction HTTP server.
-Here are the sign flags:
-
---port number    server port number
-
-
-HTTP Server Mode
+## HTTP Server Mode
 This is the mode when the CLI is started using the certifaction server command.  The CLI will start an HTTP server at the configured port and listen to the following endpoints:
 
+```
 GET /docs        return the API documentation
-GET /health    return the health of the Certifaction API
+GET /health      return the health of the Certifaction API
 GET /ping        ping the Certifaction API
 POST /prepare    prepare a document for signing
-POST /sign        sign a document
-POST /verify    verify a document
-POST /revoke    revoke a document
+POST /sign       sign a document
+POST /verify     verify a document
+POST /revoke     revoke a document
 POST /request    request a document signature
 GET /user        return the authenticated user information
+```
 
 The endpoints directly mirror the CLI commands.
 
-Authentication
+### Authentication
 When indicated, the requests must be authenticated using the Authorization header as following:
 
 Authorization: Bearer <AccessToken>
 
 If the request is not authenticated, the client will be redirected to a login page.
-TLS connection
+
+### TLS connection
 The server does not terminate TLS connections. If TLS is required, a proxy must be placed before the server.
 
-Common response code
+### Common response code
 
-400 Bad Request            Client error
+```
+400 Bad Request             Client error
 401 Unauthorized            The request is not authenticated
-403 Forbidden            The request is authenticated but the
-client is not authorized
-500 Internal Server Error    An unexpected server error occurred
-503 Service Unavailable    Temporary service unavailability
+403 Forbidden               The request is authenticated but the
+                            client is not authorized
+500 Internal Server Error   An unexpected server error occurred
+503 Service Unavailable     Temporary service unavailability
+```
 
-
-
-Get the API documentation
-GET /docs
-Description
-Return the API documentation that was generated from a swagger file.  The source swagger file URL can be found in the page
-Authenticated
-No
-Query parameters
-None
-Response
-
-200 OK    Returns the test/html documentation file
+### Get the API documentation
+>#### Usage
+>```
+>GET /docs
+>```
+>#### Description
+>```
+>Return the API documentation that was generated from a swagger file.  The source swagger file URL can be found in the page
+>Authenticated
+>No
+>Query parameters
+>None
+>Response
+>
+>200 OK    Returns the test/html documentation file
+>
+>```
 
 
 
