@@ -159,18 +159,16 @@ Here are the command global flags that can be used for every command:
 
 ### Checking the health of the API and its dependencies
 
-|---------------------------------------------------------|
+Usage:  |
+
+`certifaction health` |
+----------------------------------------- |
+Description: |
 |
-|Usage:
-|
-| certifaction health
-|---------------------------------------------------------|
-|Description:
-|
-|Return the API and its dependencies health.  The result is formatted as a JSON
-|array of dependency objects.  Returns an error if the API or any of its
-|dependencies is not healthy.
-|-----------------------------------------------------------------------|
+Return the API and its dependencies health.  The result is formatted as a JSON |
+array of dependency objects.  Returns an error if the API or any of its | 
+dependencies is not healthy. | 
+-----------------------------------------------------------------------|
 
 
 Checking the API liveliness
