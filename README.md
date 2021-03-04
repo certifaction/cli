@@ -159,41 +159,50 @@ Here are the command global flags that can be used for every command:
 
 ### Checking the health of the API and its dependencies
 
-Usage:  |
+#### Usage
 
-`certifaction health` |
------------------------------------------ |
-Description: |
-|
-Return the API and its dependencies health.  The result is formatted as a JSON |
-array of dependency objects.  Returns an error if the API or any of its | 
-dependencies is not healthy. | 
------------------------------------------------------------------------|
+```
+certifaction health
+```
+
+#### Description
+Return the API and its dependencies health.  The result is formatted as a JSON
+array of dependency objects.  Returns an error if the API or any of its
+dependencies is not healthy.
 
 
-Checking the API liveliness
+### Checking the API liveliness
 
-Usage:
+#### Usage
 
+```
 certifaction ping
-Description:
+```
+
+#### Description:
 
 Return success if the API is responsive, returns an error if not.
 
-Prepare a document for signing
+### Prepare a document for signing
 
-Usage:
+#### Usage
 
+```
 certifaction prepare [prepare flags] [-o output] [input]
-Description:
+```
+
+#### Description
 
 Prepare a document for signing.  A salt and a document claim encryption key pair is added to the document, and optionally a branded footer.  If enabled, a Digital Twin QR code with a document encryption key will be added to the document.  If the input file is already a digital original then the command will return the input file unchanged.  Currently only processes PDF files.  An error is returned if the input is not a PDF file.  If the input parameter is omitted, then the command will take its input from stdin.  If the output parameter is omitted, then the output will be returned to stdout.
-Here are the prepare flags:
 
---digital-twin     adds a Digital Twin footer, encrypt the
-document and store it. Use the footer template given by the -footer parameter.  If not -footer parameter is provided, then use the default footer.
---language        overrides the default language.
+#### Flags
 
+```
+--digital-twin     adds a Digital Twin footer, encrypt the document and store it.
+                   Use the footer template given by the -footer parameter.
+                   If not -footer parameter is provided, then use the default footer.
+--language         overrides the default language.
+```
 
 Sign a document
 
