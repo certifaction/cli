@@ -245,10 +245,10 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >#### Description
 >
 >Verify the file given as input.  Return the verification result as JSON.  If
-the input parameter is omitted, then the command will take its input from
-stdin.  If the output parameter is omitted, then the output will be returned to
-stdout. Return success if the document is authentic and signed from verified
-users, otherwise returns an error.
+>the input parameter is omitted, then the command will take its input from
+>stdin.  If the output parameter is omitted, then the output will be returned to
+>stdout. Return success if the document is authentic and signed from verified
+>users, otherwise returns an error.
 >
 ### Revoke a document
 >
