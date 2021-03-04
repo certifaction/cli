@@ -358,33 +358,33 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 ### Checking the health of the API and its dependencies
 >#### Usage
 >```
-GET /health
+>GET /health
 >```
 >#### Description
-Returns the health of Certifaction services dependency.
+>Returns the health of Certifaction services dependency.
 >#### Authenticated
-No
+>No
 >#### Query parameters
-None
+>None
 >### Response
 >```
-200 OK    an application/json array containing service status objects
+>200 OK    an application/json array containing service status objects
 >```
 
 ### Checking the API liveliness
 >#### Usage
 >```
-GET /ping
+>GET /ping
 >```
 >#### Description
-Return success if the API is running
+>Return success if the API is running
 >#### Authenticated
-No
+>No
 >#### Query parameters
-None
+>None
 >#### Response
 >```
-200 OK    No content
+>200 OK    No content
 >```
 
 
@@ -394,22 +394,22 @@ None
 POST /prepare
 >```
 >#### Description
-Take the input file and prepare it for signing.  A salt and a document claim encryption key pair is added to the document, and optionally a branded footer.  If enabled, a Digital Twin QR code with a document encryption key will be added to the document.  The resulting document is called a digital original.  If the input file is already a digital original then the command will return the input file unchanged.  Currently only processes PDF files.  An error is returned if the input is not a PDF file.
+>Take the input file and prepare it for signing.  A salt and a document claim encryption key pair is added to the document, and optionally a branded footer.  If enabled, a Digital Twin QR code with a document encryption key will be added to the document.  The resulting document is called a digital original.  If the input file is already a digital original then the command will return the input file unchanged.  Currently only processes PDF files.  An error is returned if the input is not a PDF file.
 >#### Authenticated
-Yes
+>Yes
 >#### Header
 >```
-Accept-Language: used to select the right footer language
+>Accept-Language: used to select the right footer language
 >```
 >#### Query parameters
 >```
-digital_twin=true: activates the Digital Twin feature
+>digital_twin=true: activates the Digital Twin feature
 >```
 >#### Body
 >An application/pdf body containing the document to prepare
 >#### Response
 >```
-200 OK    the prepared application/pdf file
+>200 OK    the prepared application/pdf file
 >```
 
 
