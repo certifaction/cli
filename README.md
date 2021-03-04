@@ -236,7 +236,6 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >```
 
 
-
 ### Verify a document
 >#### Usage
 >```
@@ -259,47 +258,47 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >#### Description
 >
 >Revoke the document given as input.  The document must be a digital original document.  After revocation, any additional claims will be ignored during verification. Return an error if the document cannot be revoked.   If the input parameter and the -hash flag are omitted, then the command will take its input from stdin.
->Here are the revoke flags:
->
->--hash string the hash of the document to revoke
+>#### Flags
+>```
+>--hash     string the hash of the document to revoke
+>```
 
 ### Request a document signature
->Usage:
->
+>#### Usage
+>```
 >certifaction request [request flags] [input]
->Description:
+>```
+>#### Description
 >
 >Return a signature request URL from a Digital Twin document.  The URL can be shared with other people to sign a document.   The document must be a Digital Twin and it  will return an error otherwise. If the input parameter is omitted, then the command will take its input from stdin.  Returns to stdout the URL to be handed to the signer.
->Here are the request flags:
->
+>#### Flags
+>```
 >--name    string   full name of signer
 >--email   string   email address of signer [required]
 >--hash    string   the hash of a Digital twin document
->
+>```
 
 ### Get the authenticated user information
->Usage:
->
+>#### Usage
+>```
 >certifaction user [user flags]
->Description:
+>```
+>#### Description
 >
 >Return the user information as JSON.  Return an error if the user is not authenticated.
->Here are the user flags:
->
->None for the moment
->
 
 ### Start the HTTP server
->Usage:
->
+>#### Usage
+>```
 >certifaction server [server flags]
->Description:
+>```
+>#### Description
 >
 >Starts Certifaction HTTP server.
->Here are the sign flags:
->
+>#### Flags
+>```
 >--port number    server port number
->
+>```
 
 ## HTTP Server Mode
 This is the mode when the CLI is started using the certifaction server command.  The CLI will start an HTTP server at the configured port and listen to the following endpoints:
@@ -345,64 +344,73 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >GET /docs
 >```
 >#### Description
->```
 >Return the API documentation that was generated from a swagger file.  The source swagger file URL can be found in the page
->Authenticated
+>
+>#### Authenticated
 >No
->Query parameters
+>#### Query parameters
 >None
->Response
->
+>#### Response
+>```
 >200 OK    Returns the test/html documentation file
->
+>```
+
+### Checking the health of the API and its dependencies
+>#### Usage
+>```
+GET /health
+>```
+>#### Description
+Returns the health of Certifaction services dependency.
+>#### Authenticated
+No
+>#### Query parameters
+None
+>### Response
+>```
+200 OK    an application/json array containing service status objects
+>```
+
+### Checking the API liveliness
+>#### Usage
+>```
+GET /ping
+>```
+>#### Description
+Return success if the API is running
+>#### Authenticated
+No
+>#### Query parameters
+None
+>#### Response
+>```
+200 OK    No content
 >```
 
 
-
-Checking the health of the API and its dependencies
-GET /health
-Description
-Returns the health of Certifaction services dependency.
-Authenticated
-No
-Query parameters
-None
-Response
-
-200 OK    an application/json array containing service status objects
-
-
-
-Checking the API liveliness
-GET /ping
-Description
-Return success if the API is running
-Authenticated
-No
-Query parameters
-None
-Response
-
-200 OK    No content
-
-
-
-Prepare a document for signing
+### Prepare a document for signing
+>#### Usage
+>```
 POST /prepare
-Description
+>```
+>#### Description
 Take the input file and prepare it for signing.  A salt and a document claim encryption key pair is added to the document, and optionally a branded footer.  If enabled, a Digital Twin QR code with a document encryption key will be added to the document.  The resulting document is called a digital original.  If the input file is already a digital original then the command will return the input file unchanged.  Currently only processes PDF files.  An error is returned if the input is not a PDF file.
-Authenticated
+>#### Authenticated
 Yes
-Header
+>#### Header
+>```
 Accept-Language: used to select the right footer language
-Query parameters
+>```
+>#### Query parameters
+>```
 digital_twin=true: activates the Digital Twin feature
-Body
-
-An application/pdf body containing the document to prepare
-Response
-
+>```
+>#### Body
+>An application/pdf body containing the document to prepare
+>#### Response
+>```
 200 OK    the prepared application/pdf file
+>```
 
 
 
