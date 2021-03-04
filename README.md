@@ -1,4 +1,9 @@
-# Certifaction CLI Documentation
+# Certifaction CLI
+
+This is the Certifaction CLI repository with the documentation and the
+executables for different platform.
+
+This repository is also used to report any bugs and propose new features.
 
 ## Introduction
 Certifaction is the electronic signature technology for the Internet. With our
@@ -123,15 +128,15 @@ The commands are:
 
 ```
 help         getting help about a command
-health    return the health of the Certifaction API
+health       return the health of the Certifaction API
 ping         ping the Certifaction API
-prepare     prepare a document for signing
-sign        sign a document
-verify     verify a document
-revoke    revoke a document
-request    request a document signature
-user        return the authenticated user information
-server    starts the HTTP server
+prepare      prepare a document for signing
+sign         sign a document
+verify       verify a document
+revoke       revoke a document
+request      request a document signature
+user         return the authenticated user information
+server       starts the HTTP server
 
 ```
 
@@ -152,14 +157,20 @@ Here are the command global flags that can be used for every command:
 
 ```
 
-Checking the health of the API and its dependencies
+### Checking the health of the API and its dependencies
 
-Usage:
-
-certifaction health
-Description:
-
-Return the API and its dependencies health.  The result is formatted as a JSON array of dependency objects.  Returns an error if the API or any of its dependencies is not healthy.
+|---------------------------------------------------------|
+|
+|Usage:
+|
+| certifaction health
+|---------------------------------------------------------|
+|Description:
+|
+|Return the API and its dependencies health.  The result is formatted as a JSON
+|array of dependency objects.  Returns an error if the API or any of its
+|dependencies is not healthy.
+|-----------------------------------------------------------------------|
 
 
 Checking the API liveliness
