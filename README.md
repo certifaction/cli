@@ -304,9 +304,9 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 This is the mode when the CLI is started using the `certifaction server` command
 as following:
 
->```
->certifaction server [server flags]
->```
+```
+certifaction server [server flags]
+```
 
 The CLI will start an HTTP server at the configured port and listen to the following endpoints:
 
@@ -477,7 +477,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >```
 >#### Body
 >```
-An application/pdf body containing the document to verify
+>An application/pdf body containing the document to verify
 >```
 >##### Example
 >
@@ -537,11 +537,11 @@ An application/pdf body containing the document to verify
 >None
 >#### Response
 >```
-200 OK    no content
+>200 OK    no content
 >```
 >#### Body
 >```
-An application/pdf body containing the document to revoke
+>An application/pdf body containing the document to revoke
 >```
 
 ### Request a document signature
@@ -574,7 +574,7 @@ An application/pdf body containing the document to revoke
 >}
 >```
 
-Get the authenticated user information
+### Get the authenticated user information
 >#### Usage
 >```
 >GET /user
