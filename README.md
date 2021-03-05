@@ -55,7 +55,7 @@ API and will handle document signing, verification and revocation without
 leaking the document content outside the controlled IT infrastructure of the
 client.
 
-[DIAGRAM]
+![Principles diagram](./assets/principles-diagram.svg)
 
 
 The two main functions of the CLI are document signature and verification.
@@ -75,7 +75,7 @@ signature is timestamped in Ethereum.
 5. The signature is stored encrypted in a
 public database.
 
-[DIAGRAM]
+![Document signagure diagram](./assets/document-signature-diagram.svg)
 
 
 ### Document verification
@@ -91,7 +91,7 @@ signature timestamp in the blockchain and return the encrypted signatures.
 5. Certifaction API returns the encrypted signature to the CLI since it cannot decrypt them without the private signature decryption key contained only in the document.
 6. The signatures are decrypted and a verification result is returned.
 
-[DIAGRAM]
+![Document verificatin diagram](./assets/document-verification-diagram.svg)
 
 ## Usage options
 
@@ -110,7 +110,7 @@ available to their platform to run the Certifaction commands.  The documents can
 either be saved and loaded on the file system, or they can be passed to the
 command using the standard input and output.
 
-[DIAGRAM]
+![Standalone application diagram](./assets/standalone-application-diagram.svg)
 
 
 ### Running the HTTP server on a node
@@ -120,7 +120,7 @@ HTTP to sign and verify documents with the guarantee that documents do not leave
 the client IT system.  This is the best option for centralized document
 signature where documents are signed during an automated document workflow.
 
-[DIAGRAM]
+![HTTP server mode diagram](./assets/http-server-mode-diagram.svg)
 
 ## Authentication
 
