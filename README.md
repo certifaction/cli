@@ -532,7 +532,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >##### Example
 >
 >Verification result:
->```
+>```json
 >{
 >  "on_blockchain": true,
 >  "issuer_img": "https://example.com/images/verified_by_acme.png",
@@ -616,7 +616,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >#### Body
 >An application/pdf body containing the document for which a signature is requested
 >##### Example
->```
+>```json
 >{
 >    “request_url”:”<the URL to be handed to the signer>”
 >}
@@ -642,7 +642,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >#### Body
 >An application/pdf body containing the document for which a signature is requested
 >##### Example
->```
+>```json
 >{
 >  "id": 506,
 >  "uuid": "GzOysSHa8EB",
