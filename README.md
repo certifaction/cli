@@ -1,25 +1,28 @@
 # Certifaction CLI
 
-This is the Certifaction CLI repository with the documentation and the
+This is the [Certifaction](https://certifaction.com) CLI repository with the documentation and the
 executables for different platform.
 
-This repository is also used to report any bugs and propose new features.
+Direclty jump to the [Installation](#installation) section to install the CLI
+for your platform.
 
-- [Certifaction CLI](#certifaction-cli)
-  * [Introduction](#introduction)
-  * [Requirements](#requirements)
-  * [Principles](#principles)
-    + [Document signature](#document-signature)
-    + [Document verification](#document-verification)
-  * [Usage options](#usage-options)
-    + [Standalone application integration](#standalone-application-integration)
-    + [Running the HTTP server on a node](#running-the-http-server-on-a-node)
-  * [Authentication](#authentication)
-  * [Interactive CLI](#interactive-cli)
-  * [HTTP Server Mode](#http-server-mode)
+Please create an [Issue](https://github.com/certifaction/cli/issues) to report any bug and propose new features.
+
+* [Introduction](#introduction)
+* [Requirements](#requirements)
+* [Principles](#principles)
+  + [Document signature](#document-signature)
+  + [Document verification](#document-verification)
+* [Usage options](#usage-options)
+  + [Standalone application integration](#standalone-application-integration)
+  + [Running the HTTP server on a node](#running-the-http-server-on-a-node)
+* [Authentication](#authentication)
+* [Installation](#installation)
+* [Interactive CLI](#interactive-cli)
+* [HTTP Server Mode](#http-server-mode)
 
 ## Introduction
-Certifaction is the electronic signature technology for the Internet. With our
+[Certifaction](https://certifaction.com) is the electronic signature technology for the Internet. With our
 blockchain solution, we empower people and companies to sign and verify
 documents in total privacy at any time, at any scale.  By integrating with our
 straightforward API and tools, any business can provide the right level of
@@ -130,6 +133,16 @@ The authentication is done by passing an authentication token or an API key:
 * Access tokens can be issued by you or by an external OIDC provider.  Either case, Certifaction will have to register the identity provider.
 * API keys are managed from Certifaction web application.  They can only be used for server side API integration.
 * For HIN Sign authentication, please follow the instructions in https://download.hin.ch/documentation/oAuth2_Dokumentation_de.pdf
+
+## Installation
+The CLI is delivered as an executable compatible with most of the usual
+platform and can be found in the [Release](https://github.com/certifaction/cli/releases) 
+section of this repository.
+
+Simply download the file for your platform and install it.
+
+Please create an [Issue](https://github.com/certifaction/cli/issues) if you do
+not find an executable with your platform.
 
 ## Interactive CLI
 + [General usage](#general-usage)
