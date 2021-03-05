@@ -10,7 +10,9 @@ Certifaction is the electronic signature technology for the Internet. With our
 blockchain solution, we empower people and companies to sign and verify
 documents in total privacy at any time, at any scale.  By integrating with our
 straightforward API and tools, any business can provide the right level of
-security and compliance to their processes and products.  This document
+security and compliance to their processes and products.
+
+This document
 describes the Certifaction command line interface (CLI) , which provides a
 command line interface and an HTTP server that can be used by third party
 applications to sign and verify documents while preserving the documents’
@@ -145,12 +147,12 @@ Use `certifaction help <command>` for more information about a command.
 Here are the command global flags that can be used for every command:
 
 ```
---env name      optional environment name.  Defaults to prod.
+--env name      Optional environment name.  Defaults to prod.
                 Will automatically setup the API URL and
                 Ethereum contract addresses for a Given
                 Certifaction environment.
---api URL       overrides the default Certifaction API URL
---token         the authentication token
+--api URL       Overrides the default Certifaction API URL
+--token         The authentication token
 --apikey        An API key created in the account settings
 --verbose       Increase logs verbosity. Can be repeated multiple times
                 to increase it even more.
@@ -191,7 +193,6 @@ Here are the command global flags that can be used for every command:
 >```
 >
 >#### Description
->```
 >Prepare a document for signing.  A salt and a document claim encryption key
 >pair is added to the document, and optionally a branded footer.  If enabled, a
 >Digital Twin QR code with a document encryption key will be added to the
@@ -200,14 +201,13 @@ Here are the command global flags that can be used for every command:
 >error is returned if the input is not a PDF file.  If the input parameter is
 >omitted, then the command will take its input from stdin.  If the output
 >parameter is omitted, then the output will be returned to stdout.
->```
 >#### Flags
 >
 >```
->--digital-twin     adds a Digital Twin footer, encrypt the document and store it.
+>--digital-twin     Adds a Digital Twin footer, encrypt the document and store it.
 >                   Use the footer template given by the -footer parameter.
 >                   If not -footer parameter is provided, then use the default footer.
->--language         overrides the default language.
+>--language         Overrides the default language.
 >```
 
 ### Sign a document 
@@ -228,11 +228,11 @@ from stdin.  The command will output the prepared file.  If the output parameter
 is omitted, then the output will be returned to stdout.  Here are the sign
 >#### Flags
 >```
->--scope      optional signature scope override to choose between
+>--scope      Optional signature scope override to choose between
 >             register, sign and certify.
->--signonly   do not prepare the document if it is not already
+>--signonly   Do not prepare the document if it is not already
 >             prepared and return an error instead.
->--hash       string the hash of the document document to sign
+>--hash       String the hash of the document document to sign
 >```
 
 
@@ -260,7 +260,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >Revoke the document given as input.  The document must be a digital original document.  After revocation, any additional claims will be ignored during verification. Return an error if the document cannot be revoked.   If the input parameter and the -hash flag are omitted, then the command will take its input from stdin.
 >#### Flags
 >```
->--hash     string the hash of the document to revoke
+>--hash     string     The hash of the document to revoke
 >```
 
 ### Request a document signature
@@ -273,9 +273,9 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >Return a signature request URL from a Digital Twin document.  The URL can be shared with other people to sign a document.   The document must be a Digital Twin and it  will return an error otherwise. If the input parameter is omitted, then the command will take its input from stdin.  Returns to stdout the URL to be handed to the signer.
 >#### Flags
 >```
->--name    string   full name of signer
->--email   string   email address of signer [required]
->--hash    string   the hash of a Digital twin document
+>--name    string   Full name of signer
+>--email   string   Email address of signer [required]
+>--hash    string   The hash of a Digital twin document
 >```
 
 ### Get the authenticated user information
@@ -301,18 +301,25 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >```
 
 ## HTTP Server Mode
-This is the mode when the CLI is started using the certifaction server command.  The CLI will start an HTTP server at the configured port and listen to the following endpoints:
+This is the mode when the CLI is started using the `certifaction server` command
+as following:
+
+>```
+>certifaction server [server flags]
+>```
+
+The CLI will start an HTTP server at the configured port and listen to the following endpoints:
 
 ```
-GET /docs        return the API documentation
-GET /health      return the health of the Certifaction API
-GET /ping        ping the Certifaction API
-POST /prepare    prepare a document for signing
-POST /sign       sign a document
-POST /verify     verify a document
-POST /revoke     revoke a document
-POST /request    request a document signature
-GET /user        return the authenticated user information
+GET /docs        Return the API documentation
+GET /health      Return the health of the Certifaction API
+GET /ping        Ping the Certifaction API
+POST /prepare    Prepare a document for signing
+POST /sign       Sign a document
+POST /verify     Verify a document
+POST /revoke     Revoke a document
+POST /request    Request a document signature
+GET /user        Return the authenticated user information
 ```
 
 The endpoints directly mirror the CLI commands.
@@ -320,7 +327,9 @@ The endpoints directly mirror the CLI commands.
 ### Authentication
 When indicated, the requests must be authenticated using the Authorization header as following:
 
+```
 Authorization: Bearer <AccessToken>
+```
 
 If the request is not authenticated, the client will be redirected to a login page.
 
@@ -352,7 +361,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >None
 >#### Response
 >```
->200 OK    Returns the test/html documentation file
+>200 OK    Returns the text/html documentation file
 >```
 
 ### Checking the health of the API and its dependencies
@@ -405,12 +414,12 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >```
 >digital_twin=true: activates the Digital Twin feature
 >```
->#### Body
->An application/pdf body containing the document to prepare
 >#### Response
 >```
 >200 OK    the prepared application/pdf file
 >```
+>#### Body
+>An application/pdf body containing the document to prepare
 
 
 ### Sign a document
@@ -440,13 +449,13 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >
 >In addition, the query will accept the prepare query parameters.
 >```
->#### Body
->```
-An application/pdf body containing the document to sign
->```
 >#### Response
 >```
-200 OK    the signed application/pdf file
+>200 OK    the signed application/pdf file
+>```
+>#### Body
+>```
+>An application/pdf body containing the document to sign
 >```
 
 ### Verify a document
@@ -462,15 +471,15 @@ An application/pdf body containing the document to sign
 >None
 >#### Query parameters
 > None
->#### Body
->```
-An application/pdf body containing the document to verify
->```
 >#### Response
 >```
 >200 OK    the application/json verification result
 >```
->#### Example
+>#### Body
+>```
+An application/pdf body containing the document to verify
+>```
+>##### Example
 >
 >Verification result:
 >```
@@ -499,7 +508,7 @@ An application/pdf body containing the document to verify
 >}
 >```
 >
->Explanation of essential fields:
+>##### Explanation of essential fields:
 >Field | Description
 >----- | -----------
 >on_blockchain | Indicates whether the file has been registered on the blockchain
@@ -526,13 +535,13 @@ An application/pdf body containing the document to verify
 >None
 >#### Query parameters
 >None
->#### Body
->```
-An application/pdf body containing the document to revoke
->```
 >#### Response
 >```
 200 OK    no content
+>```
+>#### Body
+>```
+An application/pdf body containing the document to revoke
 >```
 
 ### Request a document signature
@@ -551,15 +560,15 @@ An application/pdf body containing the document to revoke
 >name=<string>    full name of signer
 >email=<string>   email address of signer
 >```
+>#### Response
+>```
+>200 OK    an application/json containing the resulting request URL
+>
 >#### Body
 >```
 >An application/pdf body containing the document for which a signature is requested
+>##### Example
 >```
->#### Response
->```
->
->200 OK    an application/json containing the resulting request URL
->
 >{
 >    “request_url”:”<the URL to be handed to the signer>”
 >}
@@ -578,14 +587,14 @@ Get the authenticated user information
 >None
 >#### Query parameters
 >None
->#### Body
->
->An application/pdf body containing the document for which a signature is requested
->Response
->
+>#### Response
 >```
 >200 OK    an application/json user object
->
+>```
+>#### Body
+>An application/pdf body containing the document for which a signature is requested
+>##### Example
+>```
 >{
 >  "id": 506,
 >  "uuid": "GzOysSHa8EB",
@@ -601,7 +610,7 @@ Get the authenticated user information
 >}
 >```
 >
->Explanation of essential fields:
+>##### Explanation of essential fields:
 >Field | Description
 >----- | -----------
 >email| Email address of the user
