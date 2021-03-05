@@ -5,6 +5,19 @@ executables for different platform.
 
 This repository is also used to report any bugs and propose new features.
 
+- [Certifaction CLI](#certifaction-cli)
+  * [Introduction](#introduction)
+  * [Requirements](#requirements)
+  * [Principles](#principles)
+    + [Document signature](#document-signature)
+    + [Document verification](#document-verification)
+  * [Usage options](#usage-options)
+    + [Standalone application integration](#standalone-application-integration)
+    + [Running the HTTP server on a node](#running-the-http-server-on-a-node)
+  * [Authentication](#authentication)
+  * [Interactive CLI](#interactive-cli)
+  * [HTTP Server Mode](#http-server-mode)
+
 ## Introduction
 Certifaction is the electronic signature technology for the Internet. With our
 blockchain solution, we empower people and companies to sign and verify
@@ -119,8 +132,18 @@ The authentication is done by passing an authentication token or an API key:
 * For HIN Sign authentication, please follow the instructions in https://download.hin.ch/documentation/oAuth2_Dokumentation_de.pdf
 
 ## Interactive CLI
-
-General usage:
++ [General usage](#general-usage)
++ [Checking the health of the API and its dependencies](#checking-the-health-of-the-api-and-its-dependencies)
++ [Checking the API liveliness](#checking-the-api-liveliness)
++ [Prepare a document for signing](#prepare-a-document-for-signing)
++ [Sign a document](#sign-a-document)
++ [Verify a document](#verify-a-document)
++ [Revoke a document](#revoke-a-document)
++ [Request a document signature](#request-a-document-signature)
++ [Get the authenticated user information](#get-the-authenticated-user-information)
++ [Start the HTTP server](#start-the-http-server)
+      
+### General usage
 
 ```
 certifaction [certifaction flags] <command> [arguments]
@@ -301,6 +324,24 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >```
 
 ## HTTP Server Mode
+
++ [General usage](#general-usage)
++ [Authentication](#authentication-1)
++ [TLS connection](#tls-connection)
++ [Common response code](#common-response-code)
++ [Get the API documentation](#get-the-api-documentation)
++ [Checking the health of the API and its dependencies](#checking-the-health-of-the-api-and-its-dependencies-1)
++ [Response](#response-1)
++ [Checking the API liveliness](#checking-the-api-liveliness-1)
++ [Prepare a document for signing](#prepare-a-document-for-signing-1)
++ [Sign a document](#sign-a-document-1)
++ [Verify a document](#verify-a-document-1)
++ [Revoke a document](#revoke-a-document-1)
++ [Request a document signature](#request-a-document-signature-1)
++ [Get the authenticated user information](#get-the-authenticated-user-information-1)
+
+
+### General usage
 This is the mode when the CLI is started using the `certifaction server` command
 as following:
 
@@ -454,9 +495,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >200 OK    the signed application/pdf file
 >```
 >#### Body
->```
 >An application/pdf body containing the document to sign
->```
 
 ### Verify a document
 >#### Usage
@@ -476,9 +515,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >200 OK    the application/json verification result
 >```
 >#### Body
->```
 >An application/pdf body containing the document to verify
->```
 >##### Example
 >
 >Verification result:
@@ -540,9 +577,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >200 OK    no content
 >```
 >#### Body
->```
 >An application/pdf body containing the document to revoke
->```
 
 ### Request a document signature
 >#### Usage
@@ -563,9 +598,9 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >#### Response
 >```
 >200 OK    an application/json containing the resulting request URL
+>```
 >
 >#### Body
->```
 >An application/pdf body containing the document for which a signature is requested
 >##### Example
 >```
