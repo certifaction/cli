@@ -652,9 +652,6 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >  "eth_address": "0x124bf6e60b4ec8dc7bc314aaca4ab09dc4da1ecd",
 >  "quota": 2,
 >  "subscription_type": "credits",
->  "features": {
->    ...
->  }
 >}
 >```
 >
