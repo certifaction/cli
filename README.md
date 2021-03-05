@@ -618,7 +618,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >##### Example
 >```json
 >{
->    “request_url”:”<the URL to be handed to the signer>”
+>    "request_url":"<the URL to be handed to the signer>"
 >}
 >```
 
