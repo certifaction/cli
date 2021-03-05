@@ -391,7 +391,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 ### Prepare a document for signing
 >#### Usage
 >```
-POST /prepare
+>POST /prepare
 >```
 >#### Description
 >Take the input file and prepare it for signing.  A salt and a document claim encryption key pair is added to the document, and optionally a branded footer.  If enabled, a Digital Twin QR code with a document encryption key will be added to the document.  The resulting document is called a digital original.  If the input file is already a digital original then the command will return the input file unchanged.  Currently only processes PDF files.  An error is returned if the input is not a PDF file.
@@ -413,164 +413,200 @@ POST /prepare
 >```
 
 
-
-Sign a document
-POST /sign
-Description
-Digitally sign the document given as input.  The document must be a digital original, i.e. it must have been prepared with the prepare command.  If the document is not a digital original, then it will be prepared first before signing unless the signonly flag is used.  If the signonly flag is used and the document was not prepared, then an error is returned.  If the document is prepared during signing, then the command will honor the prepare query parameters.
-Authenticated
-Yes
-Header
-Accept-Language: used to select the right footer language
-Query parameters
-scope=<string>: overrides the default user signing scope.  The possible values are register, sign and certify
-
-signonly=true: do not prepare the document if it is not prepared and return an error instead.
-
-filename=<string>: the name of the file
-
-In addition, the query will accept the prepare query parameters.
-Body
-
+### Sign a document
+>#### Usage
+>```
+>POST /sign
+>```
+>#### Description
+>Digitally sign the document given as input.  The document must be a digital
+>original, i.e. it must have been prepared with the prepare command.  If the
+>document is not a digital original, then it will be prepared first before
+>signing unless the signonly flag is used.  If the signonly flag is used and the
+>document was not prepared, then an error is returned.  If the document is
+>prepared during signing, then the command will honor the prepare query
+>parameters.
+>#### Authenticated
+>Yes
+>#### Header
+>```
+>Accept-Language: used to select the right footer language
+>```
+>#### Query parameters
+>```
+>scope=<string>: overrides the default user signing scope.  The possible values are register, sign and certify
+>signonly=true: do not prepare the document if it is not prepared and return an error instead.
+>filename=<string>: the name of the file
+>
+>In addition, the query will accept the prepare query parameters.
+>```
+>#### Body
+>```
 An application/pdf body containing the document to sign
-Response
-
+>```
+>#### Response
+>```
 200 OK    the signed application/pdf file
+>```
 
-
-
-Verify a document
-POST /verify
-Description
-Verify the file given as input.  Return the verification result as JSON.
-Authenticated
-No
-Header
-None
-Query parameters
-None
-Body
-
+### Verify a document
+>#### Usage
+>```
+>POST /verify
+>```
+>#### Description
+>Verify the file given as input.  Return the verification result as JSON.
+>#### Authenticated
+>No
+>#### Header
+>None
+>#### Query parameters
+> None
+>#### Body
+>```
 An application/pdf body containing the document to verify
-Response
+>```
+>#### Response
+>```
+>200 OK    the application/json verification result
+>```
+>#### Example
+>
+>Verification result:
+>```
+>{
+>  "on_blockchain": true,
+>  "issuer_img": "https://example.com/images/verified_by_acme.png",
+>  "issuer_verified": true,
+>  "issuer_title": "",
+>  "file": {
+>    "hash": "0x61c2ec21338308bb9283917041db4a70dee2c9d3258228d8c6039d5b431a1653",
+>    "status": "registered",
+>    "claim_key": "044aa7b14f1538954c83062083da2db3e41d4d7cb75f7069baeffbbf45f1adcad091c0113fb440ed848d01c667022c73806b8f26622b4562daabdb6dfc87d4b543",
+>    "txHash": "0x64f4b4f5a0baa42f529efe1e2d8f0d2b41481b9b236698f20a92680bf60e386f",
+>    "registered_at": "2021-01-14T09:53:59Z"
+>  },
+>  "revoked": false,
+>  "encrypted": true,
+>  "claims": [
+>    {
+>      "@context": "https://schema.certifaction.io/encryptedclaim/v1",
+>      "@id": "cert:hash:0x61c2ec21338308bb9283917041db4a70dee2c9d3258228d8c6039d5b431a1653",
+>      "algorithm": "ECIES",
+>      "claim": "BHnbTfqOfN93h+lT0fbFdpFareoWq293lopv000HLk9K8EZ5aXUYXXmpx6y9hV7RTgHXQfkgzj/Km3tjOOxrzWpUxQ1JLPHqaTqE0DMzhEV97/UXk1ooF/nlV/fwyhg+zRnoqJWmcUMpB/Rdamu0Ur4pfNVB8VKbr5WFQlDNWrXjFQfWFqH66JebSThX0HcGqcAldxc8yGo5r0rHBcnFQxbZPu/SzxFcsc7fg9IfQaYp1FOyBBYfAJlhbLCtn0ahdb2IKynjltqqLSWpyx8rWq+1CsN4SHfQYE1+XfOhitU+wlsNbj5vhO4Q2t4l8jZyThrEWcc7cVindVmc6cdziAI/nTbDuQ+aj0GN5Gwb0jiR3MP9CNeUKU9vg+Twx4I1W/inOlpYYAuJ8MDz1Kcr58g4FpSIBL4v43rk6ZDfX9I/bMclc3O+HFotmAWoTGWcxfqCKdTSR2PoOw9pmyNd3oPbNQSOXuWGDrbLE2mZB7hR76VIWHe18Pgd6gATsaFqIcnyVGY1OIrcbpMn1cDfMNoeWTd7rg/mjbPztYW5VT/U7oar4jTAiqaZQZpNC7HFypz2DwV6cnDxNnaoVYJMZzia0UmNaW5+WYKVykAueh376OH52FQjt1MAF4jl3bn8l7V0RPHN6Ma4M82/xMb+k+ELucJI8MAVZvqOeobZbATVSadZFbtEw3vykHsPNCuF50SA9FiFELVFSp7CQwpn2k9HR6EM90D6pdtL/QL+q5HFE1iMzUopQyg3Klebpxz9zpOfrIThSTLBwwcr6HiLkbu9A+NpAIwpxqkhKUiOjWeGYeP9nKDQ1Ez6ltqm9dKhpcFci/C+1403b687FEFuk1yrf3znaPzDwjU6gKBmbAFqJRpurnyow+h9+t/F0eFqHBFZSuJrsqf467WTvEewlvuB+yc6cf/DSPnf7mX7u56AJ+amMLkTyn6plC0nD3bTzXYSAWkV1UhSb9Yb7Q/Wj0B6s7YtEgs/3pdEssLGx2nABZa0W4uxQDpejYozX8PBeedZ/S5zW5nfItnFgqVNZOBm5+r9QO2DVGhKJXATDsqORuAbLg/AZlmQv/gSSo6Or0pa7g0kRmy0eS7LDf17KFK27Jec5vv0FAc69/DPtt/CG8b9kcdMVwnjMRnhkcwJhuU1ehubDxqBKvq6iPYLZiOZYvdjE6Fqo4Kxn66mmhNdoHVbmhFYF1FpPE74I9xV2vn6xIvPw70C60yaWe8r+bxDUKdBzIWX1SFWYzUaGMiKlxBuTKSkiqXT3frNzuHqd7A48luk2gNQEOk2o73lnjXkNgEELjPo+CynS94g+g/EoRey+aqnVPfDQaRyfcmBsUwJOKeOf6O0VBaeV9/PxDf7Cg=="
+>    }
+>  ]
+>}
+>```
+>
+>Explanation of essential fields:
+>Field | Description
+>----- | -----------
+>on_blockchain | Indicates whether the file has been registered on the blockchain
+>issuer_img| Optionally has a path to an image or logo of the issuer
+>issuer_verified| Defines whether the issuer identity has been verified
+>file.hash| Hash of the file
+>file.status| Temporary status of the file in our database ('registered', 'revoked', 'registering', 'revoking'). Might temporarily differ from status on blockchain until the file has definitely been confirmed on the blockchain. For verification use on_blockchain and revoked fields instead.
+>file.txHash| Transaction hash of the registration on the blockchain. Can be checked for example on https://etherscan.io.
+>file.registered_at| Time when file has been registered.
+>revoked| Indicates whether the file has been revoked on the blockchain. If a file has been revoked it will have on_blockchain: true
+>encrypted| Indicates where the data under claims is encrypted for privacy reasons
+>claims| Claims about the file. Claims have already been verified before returning the result but can optionally be verified by the consumer.
 
-200 OK    the application/json verification result
-
-The verification result. Example:
-{
-  "on_blockchain": true,
-  "issuer_img": "https://example.com/images/verified_by_acme.png",
-  "issuer_verified": true,
-  "issuer_title": "",
-  "file": {
-    "hash": "0x61c2ec21338308bb9283917041db4a70dee2c9d3258228d8c6039d5b431a1653",
-    "status": "registered",
-    "claim_key": "044aa7b14f1538954c83062083da2db3e41d4d7cb75f7069baeffbbf45f1adcad091c0113fb440ed848d01c667022c73806b8f26622b4562daabdb6dfc87d4b543",
-    "txHash": "0x64f4b4f5a0baa42f529efe1e2d8f0d2b41481b9b236698f20a92680bf60e386f",
-    "registered_at": "2021-01-14T09:53:59Z"
-  },
-  "revoked": false,
-  "encrypted": true,
-  "claims": [
-    {
-      "@context": "https://schema.certifaction.io/encryptedclaim/v1",
-      "@id": "cert:hash:0x61c2ec21338308bb9283917041db4a70dee2c9d3258228d8c6039d5b431a1653",
-      "algorithm": "ECIES",
-      "claim": "BHnbTfqOfN93h+lT0fbFdpFareoWq293lopv000HLk9K8EZ5aXUYXXmpx6y9hV7RTgHXQfkgzj/Km3tjOOxrzWpUxQ1JLPHqaTqE0DMzhEV97/UXk1ooF/nlV/fwyhg+zRnoqJWmcUMpB/Rdamu0Ur4pfNVB8VKbr5WFQlDNWrXjFQfWFqH66JebSThX0HcGqcAldxc8yGo5r0rHBcnFQxbZPu/SzxFcsc7fg9IfQaYp1FOyBBYfAJlhbLCtn0ahdb2IKynjltqqLSWpyx8rWq+1CsN4SHfQYE1+XfOhitU+wlsNbj5vhO4Q2t4l8jZyThrEWcc7cVindVmc6cdziAI/nTbDuQ+aj0GN5Gwb0jiR3MP9CNeUKU9vg+Twx4I1W/inOlpYYAuJ8MDz1Kcr58g4FpSIBL4v43rk6ZDfX9I/bMclc3O+HFotmAWoTGWcxfqCKdTSR2PoOw9pmyNd3oPbNQSOXuWGDrbLE2mZB7hR76VIWHe18Pgd6gATsaFqIcnyVGY1OIrcbpMn1cDfMNoeWTd7rg/mjbPztYW5VT/U7oar4jTAiqaZQZpNC7HFypz2DwV6cnDxNnaoVYJMZzia0UmNaW5+WYKVykAueh376OH52FQjt1MAF4jl3bn8l7V0RPHN6Ma4M82/xMb+k+ELucJI8MAVZvqOeobZbATVSadZFbtEw3vykHsPNCuF50SA9FiFELVFSp7CQwpn2k9HR6EM90D6pdtL/QL+q5HFE1iMzUopQyg3Klebpxz9zpOfrIThSTLBwwcr6HiLkbu9A+NpAIwpxqkhKUiOjWeGYeP9nKDQ1Ez6ltqm9dKhpcFci/C+1403b687FEFuk1yrf3znaPzDwjU6gKBmbAFqJRpurnyow+h9+t/F0eFqHBFZSuJrsqf467WTvEewlvuB+yc6cf/DSPnf7mX7u56AJ+amMLkTyn6plC0nD3bTzXYSAWkV1UhSb9Yb7Q/Wj0B6s7YtEgs/3pdEssLGx2nABZa0W4uxQDpejYozX8PBeedZ/S5zW5nfItnFgqVNZOBm5+r9QO2DVGhKJXATDsqORuAbLg/AZlmQv/gSSo6Or0pa7g0kRmy0eS7LDf17KFK27Jec5vv0FAc69/DPtt/CG8b9kcdMVwnjMRnhkcwJhuU1ehubDxqBKvq6iPYLZiOZYvdjE6Fqo4Kxn66mmhNdoHVbmhFYF1FpPE74I9xV2vn6xIvPw70C60yaWe8r+bxDUKdBzIWX1SFWYzUaGMiKlxBuTKSkiqXT3frNzuHqd7A48luk2gNQEOk2o73lnjXkNgEELjPo+CynS94g+g/EoRey+aqnVPfDQaRyfcmBsUwJOKeOf6O0VBaeV9/PxDf7Cg=="
-    }
-  ]
-}
-
-Explanation of essential fields:
-on_blockchain: Indicates whether the file has been registered on the blockchain
-issuer_img: Optionally has a path to an image or logo of the issuer
-issuer_verified: Defines whether the issuer identity has been verified
-file.hash: Hash of the file
-file.status: Temporary status of the file in our database ('registered', 'revoked', 'registering', 'revoking'). Might temporarily differ from status on blockchain until the file has definitely been confirmed on the blockchain. For verification use on_blockchain and revoked fields instead.
-file.txHash: Transaction hash of the registration on the blockchain. Can be checked for example on https://etherscan.io.
-file.registered_at: Time when file has been registered.
-revoked: Indicates whether the file has been revoked on the blockchain. If a file has been revoked it will have on_blockchain: true
-encrypted: Indicates where the data under claims is encrypted for privacy reasons
-claims: Claims about the file. Claims have already been verified before returning the result but can optionally be verified by the consumer.
-
-
-Revoke a document
-POST /revoke
-Description
-Revoke the document given as input.  The document must be a digital original document.  After revoking, any additional claims will be ignored during verification. Return an error if the document cannot be revoked.
-Authenticated
-Yes
-Header
-None
-Query parameters
-None
-Body
-
+### Revoke a document
+>#### Usage
+>```
+>POST /revoke
+>```
+>#### Description
+>Revoke the document given as input.  The document must be a digital original document.  After revoking, any additional claims will be ignored during verification. Return an error if the document cannot be revoked.
+>#### Authenticated
+>Yes
+>#### Header
+>None
+>#### Query parameters
+>None
+>#### Body
+>```
 An application/pdf body containing the document to revoke
-Response
-
+>```
+>#### Response
+>```
 200 OK    no content
+>```
 
-
-
-Request a document signature
-POST /request
-Description
-Return a signature request URL from a Digital Twin document.  The URL can be shared with other people to sign a document.   The document must be a digital original document and will return an error otherwise.
-Authenticated
-Yes
-Header
-None
-Query parameters
-name=<string>    full name of signer
-email=<string>   email address of signer
-Body
-
-An application/pdf body containing the document for which a signature is requested
-Response
-
-200 OK    an application/json containing the resulting request URL
-
-{
-    “request_url”:”<the URL to be handed to the signer>”
-}
-
+### Request a document signature
+>#### Usage
+>```
+>POST /request
+>```
+>#### Description
+>Return a signature request URL from a Digital Twin document.  The URL can be shared with other people to sign a document.   The document must be a digital original document and will return an error otherwise.
+>#### Authenticated
+>Yes
+>#### Header
+>None
+>#### Query parameters
+>```
+>name=<string>    full name of signer
+>email=<string>   email address of signer
+>```
+>#### Body
+>```
+>An application/pdf body containing the document for which a signature is requested
+>```
+>#### Response
+>```
+>
+>200 OK    an application/json containing the resulting request URL
+>
+>{
+>    “request_url”:”<the URL to be handed to the signer>”
+>}
+>```
 
 Get the authenticated user information
-GET /user
-Description
-Return the user information as JSON.
-Authenticated
-Yes
-Header
-None
-Query parameters
-None
-Body
-
-An application/pdf body containing the document for which a signature is requested
-Response
-
-200 OK    an application/json user object
-
-{
-  "id": 506,
-  "uuid": "GzOysSHa8EB",
-  "external_id": "5fe0a47220148a00686f055a",
-  "email": "hans.muster@certifaction.com",
-  "name": "Hans Muster",
-  "eth_address": "0x124bf6e60b4ec8dc7bc314aaca4ab09dc4da1ecd",
-  "quota": 2,
-  "subscription_type": "credits",
-  "features": {
-    ...
-  }
-}
-
-Explanation of essential fields:
-email: Email address of the user
-quota: The amount of credits the user has left to register or revoke files if the subscription type is credits.
-subscription_type: The subscription type of the user. Can be credits or flat_rate
+>#### Usage
+>```
+>GET /user
+>```
+>#### Description
+>Return the user information as JSON.
+>#### Authenticated
+>Yes
+>#### Header
+>None
+>#### Query parameters
+>None
+>#### Body
+>
+>An application/pdf body containing the document for which a signature is requested
+>Response
+>
+>```
+>200 OK    an application/json user object
+>
+>{
+>  "id": 506,
+>  "uuid": "GzOysSHa8EB",
+>  "external_id": "5fe0a47220148a00686f055a",
+>  "email": "hans.muster@certifaction.com",
+>  "name": "Hans Muster",
+>  "eth_address": "0x124bf6e60b4ec8dc7bc314aaca4ab09dc4da1ecd",
+>  "quota": 2,
+>  "subscription_type": "credits",
+>  "features": {
+>    ...
+>  }
+>}
+>```
+>
+>Explanation of essential fields:
+>Field | Description
+>----- | -----------
+>email| Email address of the user
+>quota| The amount of credits the user has left to register or revoke files if the subscription type is credits.
+>subscription_type| The subscription type of the user. Can be credits or flat_rate
 
 
 
