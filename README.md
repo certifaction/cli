@@ -293,7 +293,11 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >```
 >#### Description
 >
->Revoke the document given as input.  The document must be a digital original document.  After revocation, any additional claims will be ignored during verification. Return an error if the document cannot be revoked.   If the input parameter and the -hash flag are omitted, then the command will take its input from stdin.
+>Revoke the document given as input.  The document must be a digital original
+>document.  After revocation, any additional claims will be ignored during
+>verification. Return an error if the document cannot be revoked.   If the input
+>parameter and the -hash flag are omitted, then the command will take its input
+>from stdin.
 >#### Flags
 >```
 >--hash     string     The hash of the document to revoke
@@ -306,7 +310,10 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >```
 >#### Description
 >
->Return a signature request URL from a Digital Twin document.  The URL can be shared with other people to sign a document.   The document must be a Digital Twin and it  will return an error otherwise. If the input parameter is omitted, then the command will take its input from stdin.  Returns to stdout the URL to be handed to the signer.
+>Return a signature request URL from a Digital Twin document.  The URL can be
+>shared with other people to sign a document.  If the input parameter is
+>omitted, then the command will take its input from stdin.  Returns to stdout
+>the URL to be handed to the signer.
 >#### Flags
 >```
 >--name    string   Full name of signer
@@ -457,7 +464,13 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >POST /prepare
 >```
 >#### Description
->Take the input file and prepare it for signing.  A salt and a document claim encryption key pair is added to the document, and optionally a branded footer.  If enabled, a Digital Twin QR code with a document encryption key will be added to the document.  The resulting document is called a digital original.  If the input file is already a digital original then the command will return the input file unchanged.  Currently only processes PDF files.  An error is returned if the input is not a PDF file.
+>Take the input file and prepare it for signing.  A salt and a document claim
+>encryption key pair is added to the document, and optionally a branded footer.
+>If enabled, a Digital Twin QR code with a document encryption key will be added
+>to the document.  The resulting document is called a digital original.  If the
+>input file is already a digital original then the command will return the input
+>file unchanged.  Currently only processes PDF files.  An error is returned if
+>the input is not a PDF file.
 >#### Authenticated
 >Yes
 >#### Header
