@@ -8,6 +8,11 @@ for your platform.
 
 Please create an [Issue](https://github.com/certifaction/cli/issues) to report any bug and propose new features.
 
+**Notes**: Certifaction CLI is being developped in a fast pace and this
+documentation will already contain upcoming features not yet available in the
+most recent public release.  Those features will be flag with the **[Upcoming
+Feature]** notation.
+
 * [Introduction](#introduction)
 * [Requirements](#requirements)
 * [Principles](#principles)
@@ -116,7 +121,7 @@ command using the standard input and output.
 ![Standalone application diagram](./assets/standalone-application-diagram.svg)
 
 
-### Running the HTTP server on a node
+### Running the HTTP server on a node [Upcoming Feature]
 In this scenario, the Certifaction CLI is started in server mode, either
 directly in a node or VM, or inside a Docker container.  The client will use
 HTTP to sign and verify documents with the guarantee that documents do not leave
@@ -303,7 +308,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >--hash     string     The hash of the document to revoke
 >```
 
-### Request a document signature
+### Request a document signature [Upcoming feature]
 >#### Usage
 >```
 >certifaction request [request flags] [input]
@@ -330,7 +335,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >
 >Return the user information as JSON.  Return an error if the user is not authenticated.
 
-### Start the HTTP server
+### Start the HTTP server [Upcoming feature]
 >#### Usage
 >```
 >certifaction server [server flags]
@@ -343,7 +348,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >--port number    server port number
 >```
 
-## HTTP Server Mode
+## HTTP Server Mode [Upcoming feature]
 
 + [General usage](#general-usage)
 + [Authentication](#authentication-1)
