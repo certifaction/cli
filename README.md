@@ -177,9 +177,9 @@ prepare      prepare a document for signing
 sign         sign a document
 verify       verify a document
 revoke       revoke a document
-request      request a document signature
+request      request a document signature [Upcoming feature]
 user         return the authenticated user information
-server       starts the HTTP server
+server       starts the HTTP server [Upcoming feature]
 
 ```
 
