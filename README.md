@@ -236,7 +236,7 @@ Here are the command global flags that can be used for every command:
 >
 >#### Description:
 >
->Retrive metadata(salt, digital archive URL, hash and claim keys) stored from 
+>Retrieve metadata(salt, digital archive URL, hash and claim keys) stored from 
 >the file and returns them as json
 
 ### Prepare a document for signing
@@ -697,6 +697,5 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >email| Email address of the user
 >quota| The amount of credits the user has left to register or revoke files if the subscription type is credits.
 >subscription_type| The subscription type of the user. Can be credits or flat_rate
-
 
 
