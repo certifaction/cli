@@ -173,11 +173,12 @@ The available commands are:
 help         getting help about a command
 health       return the health of the Certifaction API
 ping         ping the Certifaction API
+info         return the metadata of provided file
 prepare      prepare a document for signing
 sign         sign a document
 verify       verify a document
 revoke       revoke a document
-request      request a document signature [Upcoming feature]
+request      request a document signature
 user         return the authenticated user information
 server       starts the HTTP server [Upcoming feature]
 
@@ -224,6 +225,19 @@ Here are the command global flags that can be used for every command:
 >#### Description:
 >
 >Return success if the API is responsive, returns an error if not.
+
+### Get a document metadata
+
+>#### Usage
+>
+>```
+>certifaction info [input]
+>```
+>
+>#### Description:
+>
+>Retrive metadata(salt, digital archive URL, hash and claim keys) stored from 
+>the file and returns them as json
 
 ### Prepare a document for signing
 
@@ -315,15 +329,19 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >```
 >#### Description
 >
->Return a signature request URL from a Digital Twin document.  The URL can be
->shared with other people to sign a document.  If the input parameter is
->omitted, then the command will take its input from stdin.  Returns to stdout
->the URL to be handed to the signer.
+>Create a document signature URL for the person with the given email address and name.
+>The signature request URL can either be sent to the user mailbox or returned by this
+>command. If the request URL is sent by email, then it is not returned by the command.
+>If the input parameter is omitted, then the command will take its input from stdin.
+>Returns to stdout the URL to be handed to the signer if the URL is not sent by email
+>otherwise return nothing.
 >#### Flags
 >```
->--name    string   Full name of signer
->--email   string   Email address of signer [required]
->--hash    string   The hash of a Digital twin document
+>--name         string   Full name of signer
+>--email        string   Email address of signer [required]
+>--hash         string   The hash of a Digital twin document
+>--requestonly  string   Do not prepare the document if it is not already prepared and return an error instead.
+>--send-email   bool     When this flag is enabled API will send signing request to the user.
 >```
 
 ### Get the authenticated user information
