@@ -175,6 +175,7 @@ health       return the health of the Certifaction API
 ping         ping the Certifaction API
 info         return the metadata of provided file
 prepare      prepare a document for signing
+register     register a document
 sign         sign a document
 verify       verify a document
 revoke       revoke a document
@@ -195,7 +196,7 @@ Here are the command global flags that can be used for every command:
                 Certifaction environment.
 --api URL       Overrides the default Certifaction API URL
 --token         The authentication token
---apikey        An API key created in the account settings
+--api-key        An API key created in the account settings
 --verbose       Increase logs verbosity. Can be repeated multiple times
                 to increase it even more.
 ```
@@ -231,7 +232,7 @@ Here are the command global flags that can be used for every command:
 >#### Usage
 >
 >```
->certifaction info [input]
+>certifaction info [input | url]
 >```
 >
 >#### Description:
@@ -244,7 +245,7 @@ Here are the command global flags that can be used for every command:
 >#### Usage
 >
 >```
->certifaction prepare [prepare flags] [-o output] [input]
+>certifaction prepare [prepare flags] [-o output] [input | url]
 >```
 >
 >#### Description
@@ -265,17 +266,45 @@ Here are the command global flags that can be used for every command:
 >--language         Overrides the default language.
 >```
 
+### register a document 
+>#### Usage
+>```
+>certifaction register [register flags] [prepare flags] [-o output] [input | url]
+>```
+>
+>#### Description
+>Digitally registers the document given as input or digitally register the
+>document with the hash given with the --hash flag. The document must be
+>prepared. If the document is not prepared then it will be prepared first
+>before signing unless the --signonly flag is used. If the --signonly flag is
+>used and the document was not prepared, then an error is returned. If the
+>document is prepared during registration, then the command will honor the
+>prepare command flags. If the input parameter and the --hash flag are omitted,
+>then the command will take its input from stdin. The command will output the
+>prepared file. If the output parameter is omitted, then the output will be
+>returned to stdout.
+>
+>#### Flags
+>```
+>--scope           Optional signature scope override to choose between
+>                  register, sign and certify.
+>--register-only   Do not prepare the document if it is not already
+>                  prepared and return an error instead.
+>--hash            String the hash of the document document to sign
+>```
+
+
 ### Sign a document 
 >#### Usage
 >```
->certifaction sign [sign flags] [prepare flags] [-o output] [input/url]
+>certifaction sign [sign flags] [prepare flags] [-o output] [input | url]
 >```
 >
 >#### Description
 >Digitally sign the document given as input or digitally sign the document with
 the hash given with the --hash flag.  The document must  be prepared.  If the
 document is not prepared then it will be prepared first before signing unless
-the --signonly flag is used.  If the --signonly flag is used and the document
+the --sign-only flag is used.  If the --sign-only flag is used and the document
 was not prepared, then an error is returned.  If the document is prepared during
 signing, then the command will honor the prepare command flags. If the input
 parameter and the --hash flag are omitted, then the command will take its input
@@ -285,7 +314,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >```
 >--scope      Optional signature scope override to choose between
 >             register, sign and certify.
->--signonly   Do not prepare the document if it is not already
+>--sign-only   Do not prepare the document if it is not already
 >             prepared and return an error instead.
 >--hash       String the hash of the document document to sign
 >```
@@ -294,7 +323,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 ### Verify a document
 >#### Usage
 >```
->certifaction verify [-o output] [input]
+>certifaction verify [-o output] [input | url]
 >```
 >#### Description
 >
@@ -308,7 +337,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >
 >#### Usage
 >```
->certifaction revoke [revoke flags] [input]
+>certifaction revoke [revoke flags] [input | url]
 >```
 >#### Description
 >
@@ -322,10 +351,10 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >--hash     string     The hash of the document to revoke
 >```
 
-### Request a document signature [Upcoming feature]
+### Request a document signature
 >#### Usage
 >```
->certifaction request [request flags] [input]
+>certifaction request [request flags] [input | url]
 >```
 >#### Description
 >
@@ -340,7 +369,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >--name         string   Full name of signer
 >--email        string   Email address of signer [required]
 >--hash         string   The hash of a Digital twin document
->--requestonly  string   Do not prepare the document if it is not already prepared and return an error instead.
+>--request-only  string   Do not prepare the document if it is not already prepared and return an error instead.
 >--send-email   bool     When this flag is enabled API will send signing request to the user.
 >```
 
@@ -521,7 +550,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >Digitally sign the document given as input.  The document must be a digital
 >original, i.e. it must have been prepared with the prepare command.  If the
 >document is not a digital original, then it will be prepared first before
->signing unless the signonly flag is used.  If the signonly flag is used and the
+>signing unless the sign-only flag is used.  If the sign-only flag is used and the
 >document was not prepared, then an error is returned.  If the document is
 >prepared during signing, then the command will honor the prepare query
 >parameters.
@@ -534,7 +563,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >#### Query parameters
 >```
 >scope=<string>: overrides the default user signing scope.  The possible values are register, sign and certify
->signonly=true: do not prepare the document if it is not prepared and return an error instead.
+>sign-only=true: do not prepare the document if it is not prepared and return an error instead.
 >filename=<string>: the name of the file
 >
 >In addition, the query will accept the prepare query parameters.
