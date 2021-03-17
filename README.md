@@ -538,6 +538,40 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >#### Body
 >An application/pdf body containing the document to prepare
 
+### Register a document
+>#### Usage
+>```
+>POST /register
+>```
+>#### Description
+>Digitally registers the document given as input.  The document must be a digital
+>original, i.e. it must have been prepared with the prepare command.  If the
+>document is not a digital original, then it will be prepared first before
+>signing unless the register-only flag is used.  If the sign-only flag is used and the
+>document was not prepared, then an error is returned.  If the document is
+>prepared during registering, then the command will honor the prepare query
+>parameters.
+>#### Authenticated
+>Yes
+>#### Header
+>```
+>Accept-Language: used to select the right footer language
+>```
+>#### Query parameters
+>```
+>scope=<string>: overrides the default user signing scope.  The possible values are register, sign and certify
+>register-only=true: do not prepare the document if it is not prepared and return an error instead.
+>hash=<string>: the hash of the document to sign
+>filename=<string>: the name of the file
+>
+>In addition, the query will accept the prepare query parameters.
+>```
+>#### Response
+>```
+>200 OK    the signed application/pdf file
+>```
+>#### Body
+>An application/pdf body containing the document to register
 
 ### Sign a document
 >#### Usage
