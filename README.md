@@ -121,7 +121,7 @@ command using the standard input and output.
 ![Standalone application diagram](./assets/standalone-application-diagram.svg)
 
 
-### Running the HTTP server on a node [Upcoming Feature]
+### Running the HTTP server on a node
 In this scenario, the Certifaction CLI is started in server mode, either
 directly in a node or VM, or inside a Docker container.  The client will use
 HTTP to sign and verify documents with the guarantee that documents do not leave
@@ -181,7 +181,7 @@ verify       verify a document
 revoke       revoke a document
 request      request a document signature
 user         return the authenticated user information
-server       starts the HTTP server [Upcoming feature]
+server       starts the HTTP server
 
 ```
 
@@ -276,7 +276,7 @@ Here are the command global flags that can be used for every command:
 >Digitally registers the document given as input or digitally register the
 >document with the hash given with the --hash flag. The document must be
 >prepared. If the document is not prepared then it will be prepared first
->before signing unless the --signonly flag is used. If the --signonly flag is
+>before signing unless the --sign-only flag is used. If the --sign-only flag is
 >used and the document was not prepared, then an error is returned. If the
 >document is prepared during registration, then the command will honor the
 >prepare command flags. If the input parameter and the --hash flag are omitted,
@@ -290,7 +290,7 @@ Here are the command global flags that can be used for every command:
 >                  register, sign and certify.
 >--register-only   Do not prepare the document if it is not already
 >                  prepared and return an error instead.
->--hash            String the hash of the document document to sign
+>--hash            String, the hash of the document to sign
 >```
 
 
@@ -316,7 +316,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >             register, sign and certify.
 >--sign-only   Do not prepare the document if it is not already
 >             prepared and return an error instead.
->--hash       String the hash of the document document to sign
+>--hash       String, the hash of the document to sign
 >```
 
 
@@ -368,8 +368,6 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >```
 >--name         string   Full name of signer
 >--email        string   Email address of signer [required]
->--hash         string   The hash of a Digital twin document
->--request-only  string   Do not prepare the document if it is not already prepared and return an error instead.
 >--send-email   bool     When this flag is enabled API will send signing request to the user.
 >```
 
@@ -382,7 +380,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >
 >Return the user information as JSON.  Return an error if the user is not authenticated.
 
-### Start the HTTP server [Upcoming feature]
+### Start the HTTP server
 >#### Usage
 >```
 >certifaction server [server flags]
@@ -395,7 +393,7 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >--port number    server port number
 >```
 
-## HTTP Server Mode [Upcoming feature]
+## HTTP Server Mode
 
 + [General usage](#general-usage)
 + [Authentication](#authentication-1)
@@ -460,7 +458,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 503 Service Unavailable     Temporary service unavailability
 ```
 
-### Get the API documentation
+### Get the API documentation [Upcoming feature]
 >#### Usage
 >```
 >GET /docs
@@ -531,7 +529,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >```
 >#### Query parameters
 >```
->digital_twin=true: activates the Digital Twin feature
+>digital-twin=true: activates the Digital Twin feature
 >```
 >#### Response
 >```
@@ -562,8 +560,8 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >```
 >#### Query parameters
 >```
->scope=<string>: overrides the default user signing scope.  The possible values are register, sign and certify
 >sign-only=true: do not prepare the document if it is not prepared and return an error instead.
+>hash=<string>: the hash of the document to sign
 >filename=<string>: the name of the file
 >
 >In addition, the query will accept the prepare query parameters.
@@ -670,8 +668,9 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >None
 >#### Query parameters
 >```
->name=<string>    full name of signer
->email=<string>   email address of signer
+>name=<string>:    full name of signer
+>email=<string>:   email address of signer
+>send-email=true:   When this flag is enabled API will send signing request to the user.
 >```
 >#### Response
 >```
