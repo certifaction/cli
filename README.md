@@ -263,7 +263,7 @@ Here are the command global flags that can be used for every command:
 >--digital-twin     Adds a Digital Twin footer, encrypt the document and store it.
 >                   Use the footer template given by the -footer parameter.
 >                   If not -footer parameter is provided, then use the default footer.
->--language         Overrides the default language.
+>--language         Overrides the default language. Available languages are de, en, fr and it.
 >```
 
 ### register a document 
