@@ -421,7 +421,6 @@ certifaction server [server flags]
 The CLI will start an HTTP server at the configured port and listen to the following endpoints:
 
 ```
-GET /docs        Return the API documentation [Upcoming feature]
 GET /health      Return the health of the Certifaction API
 GET /ping        Ping the Certifaction API
 POST /prepare    Prepare a document for signing
@@ -430,6 +429,7 @@ POST /verify     Verify a document
 POST /revoke     Revoke a document
 POST /request    Request a document signature
 GET /user        Return the authenticated user information
+GET /docs        Return the API documentation [Upcoming feature]
 ```
 
 The endpoints directly mirror the CLI commands.
@@ -441,7 +441,7 @@ When indicated, the requests must be authenticated using the Authorization heade
 Authorization: Bearer <AccessToken>
 ```
 
-If the request is not authenticated, the client will be redirected to a login page.
+If the request is not authenticated a HTTP 401 Unauthorized response is returned.
 
 ### TLS connection
 The server does not terminate TLS connections. If TLS is required, a proxy must be placed before the server.
@@ -456,23 +456,6 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 500 Internal Server Error   An unexpected server error occurred
 503 Service Unavailable     Temporary service unavailability
 ```
-
-### Get the API documentation [Upcoming feature]
->#### Usage
->```
->GET /docs
->```
->#### Description
->Return the API documentation that was generated from a swagger file.  The source swagger file URL can be found in the page
->
->#### Authenticated
->No
->#### Query parameters
->None
->#### Response
->```
->200 OK    Returns the text/html documentation file
->```
 
 ### Checking the health of the API and its dependencies
 >#### Usage
@@ -759,4 +742,19 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >quota| The amount of credits the user has left to register or revoke files if the subscription type is credits.
 >subscription_type| The subscription type of the user. Can be credits or flat_rate
 
-
+### Get the API documentation [Upcoming feature]
+>#### Usage
+>```
+>GET /docs
+>```
+>#### Description
+>Return the API documentation that was generated from a swagger file.  The source swagger file URL can be found in the page
+>
+>#### Authenticated
+>No
+>#### Query parameters
+>None
+>#### Response
+>```
+>200 OK    Returns the text/html documentation file
+>```
