@@ -312,8 +312,6 @@ from stdin.  The command will output the prepared file.  If the output parameter
 is omitted, then the output will be returned to stdout.  Here are the sign
 >#### Flags
 >```
->--scope      Optional signature scope override to choose between
->             register, sign and certify.
 >--sign-only   Do not prepare the document if it is not already
 >             prepared and return an error instead.
 >--hash       String, the hash of the document to sign
