@@ -309,12 +309,10 @@ was not prepared, then an error is returned.  If the document is prepared during
 signing, then the command will honor the prepare command flags. If the input
 parameter and the --hash flag are omitted, then the command will take its input
 from stdin.  The command will output the prepared file.  If the output parameter
-is omitted, then the output will be returned to stdout.  Here are the sign
+is omitted, then the output will be returned to stdout.
 >#### Flags
 >```
->--scope      Optional signature scope override to choose between
->             register, sign and certify.
->--sign-only   Do not prepare the document if it is not already
+>--sign-only  Do not prepare the document if it is not already
 >             prepared and return an error instead.
 >--hash       String, the hash of the document to sign
 >```
@@ -363,7 +361,8 @@ is omitted, then the output will be returned to stdout.  Here are the sign
 >command. If the request URL is sent by email, then it is not returned by the command.
 >If the input parameter is omitted, then the command will take its input from stdin.
 >Returns to stdout the URL to be handed to the signer if the URL is not sent by email
->otherwise return nothing.
+>otherwise return nothing. Document have to be already registered otherwise it will 
+>return an error.
 >#### Flags
 >```
 >--name         string   Full name of signer
@@ -422,7 +421,7 @@ certifaction server [server flags]
 The CLI will start an HTTP server at the configured port and listen to the following endpoints:
 
 ```
-GET /docs        Return the API documentation
+GET /docs        Return the API documentation [Upcoming feature]
 GET /health      Return the health of the Certifaction API
 GET /ping        Ping the Certifaction API
 POST /prepare    Prepare a document for signing
