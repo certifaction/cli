@@ -276,7 +276,7 @@ Here are the command global flags that can be used for every command:
 >Digitally registers the document given as input or digitally register the
 >document with the hash given with the --hash flag. The document must be
 >prepared. If the document is not prepared then it will be prepared first
->before signing unless the --register-only flag is used. If the --register-only flag is
+>before signing unless the --no-prepare flag is used. If the --no-prepare flag is
 >used and the document was not prepared, then an error is returned. If the
 >document is prepared during registration, then the command will honor the
 >prepare command flags. If the input parameter and the --hash flag are omitted,
@@ -288,7 +288,7 @@ Here are the command global flags that can be used for every command:
 >```
 >--scope           Optional signature scope override to choose between
 >                  register, sign and certify.
->--register-only   Do not prepare the document if it is not already
+>--no-prepare      Do not prepare the document if it is not already
 >                  prepared and return an error instead.
 >--hash            String, the hash of the document to sign
 >```
@@ -529,7 +529,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >Digitally registers the document given as input.  The document must be a digital
 >original, i.e. it must have been prepared with the prepare command.  If the
 >document is not a digital original, then it will be prepared first before
->signing unless the register-only flag is used.  If the register-only flag is used and the
+>signing unless the no-prepare flag is used.  If the no-prepare flag is used and the
 >document was not prepared, then an error is returned.  If the document is
 >prepared during registering, then the command will honor the prepare query
 >parameters.
@@ -542,7 +542,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >#### Query parameters
 >```
 >scope=<string>: overrides the default user signing scope.  The possible values are register, sign and certify
->register-only=true: do not prepare the document if it is not prepared and return an error instead.
+>no-prepare=true: do not prepare the document if it is not prepared and return an error instead.
 >hash=<string>: the hash of the document to sign
 >filename=<string>: the name of the file
 >
@@ -564,7 +564,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >Digitally sign the document given as input.  The document must be a digital
 >original, i.e. it must have been prepared with the prepare command.  If the
 >document is not a digital original, then it will be prepared first before
->signing unless the sign-only flag is used.  If the sign-only flag is used and the
+>signing unless the no-prepare flag is used.  If the no-prepare flag is used and the
 >document was not prepared, then an error is returned.  If the document is
 >prepared during signing, then the command will honor the prepare query
 >parameters.
@@ -576,7 +576,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >```
 >#### Query parameters
 >```
->sign-only=true: do not prepare the document if it is not prepared and return an error instead.
+>no-prepare=true: do not prepare the document if it is not prepared and return an error instead.
 >hash=<string>: the hash of the document to sign
 >filename=<string>: the name of the file
 >
