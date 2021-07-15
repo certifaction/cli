@@ -266,6 +266,8 @@ Here are the command global flags that can be used for every command:
 >                   Use the footer template given by the -footer parameter.
 >                   If not -footer parameter is provided, then use the default footer.
 >--language         Overrides the default language. Available languages are de, en, fr and it.
+>--scope            Optional signature scope override to choose between
+>                   register, sign and certify.
 >```
 
 ### register a document 
@@ -514,6 +516,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >#### Query parameters
 >```
 >digital-twin=true: activates the Digital Twin feature
+>scope=<string>: overrides the default user signing scope.  The possible values are register, sign and certify
 >```
 >#### Response
 >```
@@ -733,7 +736,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >  "name": "Hans Muster",
 >  "eth_address": "0x124bf6e60b4ec8dc7bc314aaca4ab09dc4da1ecd",
 >  "quota": 2,
->  "subscription_type": "credits",
+>  "subscription_type": "credits"
 >}
 >```
 >
