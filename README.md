@@ -161,6 +161,7 @@ not find an executable with your platform.
 + [Revoke a document](#revoke-a-document)
 + [Request a document signature](#request-a-document-signature)
 + [Get the authenticated user information](#get-the-authenticated-user-information)
++ [Export data](#export-data)
 + [Start the HTTP server](#start-the-http-server)
       
 ### General usage
@@ -382,6 +383,16 @@ is omitted, then the output will be returned to stdout.
 >#### Description
 >
 >Return the user information as JSON.  Return an error if the user is not authenticated.
+
+### Export data
+>#### Usage
+>```
+>certifaction export [claims]
+>```
+>#### Description
+>
+>Allows export of a user's data. At the moment only claims can be exported. Please note that claims are publicly accessible, but they are encrypted with a key that is integrated in the corresponding document. This export command serves the purpose of making full backups more convenient.
+
 
 ### Start the HTTP server
 >#### Usage
