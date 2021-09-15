@@ -303,7 +303,7 @@ Here are the command global flags that can be used for every command:
 >--note            Optional note to be saved together with the signature
 >--legal-weight    Allows to select type of the signature. Posible values are
 >                  "standard" and "QES". Defaults to "standard".
->--jurisdinction   Only valid with "QES" signature, currently only supported
+>--jurisdiction   Only valid with "QES" signature, currently only supported
 >                  value is "ZertES"
 >```
 
@@ -332,7 +332,7 @@ is omitted, then the output will be returned to stdout.
 >--note            Optional note to be saved together with the signature
 >--legal-weight    Allows to select type of the signature. Posible values are
 >                  "standard" and "QES". Defaults to "standard".
->--jurisdinction   Only valid with "QES" signature, currently only supported
+>--jurisdiction   Only valid with "QES" signature, currently only supported
 >                  value is "ZertES"
 >```
 
@@ -360,7 +360,7 @@ is omitted, then the output will be returned to stdout.
 >--note            Optional note to be saved together with the signature
 >--legal-weight    Allows to select type of the signature. Posible values are
 >                  "standard" and "QES". Defaults to "standard".
->--jurisdinction   Only valid with "QES" signature, currently only supported
+>--jurisdiction   Only valid with "QES" signature, currently only supported
 >                  value is "ZertES"
 >```
 
@@ -381,7 +381,7 @@ will be canceled.
 >--note            Optional note to be saved together with the signature
 >--legal-weight    Allows to select type of the signature. Posible values are
 >                  "standard" and "QES". Defaults to "standard".
->--jurisdinction   Only valid with "QES" signature, currently only supported
+>--jurisdiction   Only valid with "QES" signature, currently only supported
 >                  value is "ZertES"
 >```
 
@@ -654,7 +654,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >no-prepare=true: do not prepare the document if it is not prepared and return an error instead.
 >hash=<string>: the hash of the document to sign
 >filename=<string>: the name of the file
->note=<string>: addinal note to be stored in claim
+>note=<string>: additional note to be stored in claim
 >
 >In addition, the query will accept the prepare query parameters.
 >```
@@ -689,7 +689,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >no-prepare=true: do not prepare the document if it is not prepared and return an error instead.
 >hash=<string>: the hash of the document to sign
 >filename=<string>: the name of the file
->note=<string>: addinal note to be stored in claim
+>note=<string>: additional note to be stored in claim
 >
 >In addition, the query will accept the prepare query parameters.
 >```
