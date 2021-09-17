@@ -157,11 +157,15 @@ not find an executable with your platform.
 + [Checking the API liveliness](#checking-the-api-liveliness)
 + [Prepare a document for signing](#prepare-a-document-for-signing)
 + [Sign a document](#sign-a-document)
-+ [Verify a document](#verify-a-document)
++ [Certify a document](#certify-a-document)
++ [Retract a document](#retract-a-document)
 + [Revoke a document](#revoke-a-document)
++ [Verify a document](#verify-a-document)
 + [Request a document signature](#request-a-document-signature)
++ [Cancel a document signature request](#cancel-a-document-signature-request)
 + [Get the authenticated user information](#get-the-authenticated-user-information)
 + [Export data](#export-data)
++ [Check QES status](#check-qes-status)
 + [Start the HTTP server](#start-the-http-server)
       
 ### General usage
@@ -296,6 +300,11 @@ Here are the command global flags that can be used for every command:
 >--no-prepare      Do not prepare the document if it is not already
 >                  prepared and return an error instead.
 >--hash            String, the hash of the document to sign
+>--note            Optional note to be saved together with the signature
+>--legal-weight    Allows to select type of the signature. Posible values are
+>                  "standard" and "QES". Defaults to "standard".
+>--jurisdiction   Only valid with "QES" signature, currently only supported
+>                  value is "ZertES"
 >```
 
 
@@ -309,7 +318,7 @@ Here are the command global flags that can be used for every command:
 >Digitally sign the document given as input or digitally sign the document with
 the hash given with the --hash flag.  The document must  be prepared.  If the
 document is not prepared then it will be prepared first before signing unless
-the --sign-only flag is used.  If the --sign-only flag is used and the document
+the --no-prepare flag is used.  If the --no-prepare flag is used and the document
 was not prepared, then an error is returned.  If the document is prepared during
 signing, then the command will honor the prepare command flags. If the input
 parameter and the --hash flag are omitted, then the command will take its input
@@ -317,11 +326,64 @@ from stdin.  The command will output the prepared file.  If the output parameter
 is omitted, then the output will be returned to stdout.
 >#### Flags
 >```
->--sign-only  Do not prepare the document if it is not already
->             prepared and return an error instead.
->--hash       String, the hash of the document to sign
+>--no-prepare      Do not prepare the document if it is not already
+>                  prepared and return an error instead.
+>--hash            String, the hash of the document to sign
+>--note            Optional note to be saved together with the signature
+>--legal-weight    Allows to select type of the signature. Posible values are
+>                  "standard" and "QES". Defaults to "standard".
+>--jurisdiction   Only valid with "QES" signature, currently only supported
+>                  value is "ZertES"
 >```
 
+### Certify a document
+>#### Usage
+>```
+>certifaction certify [certify flags] [prepare flags] [-o output] [input | url]
+>```
+>
+>#### Description
+>Digitally certify the document given as input or digitally certify the document
+with the hash given with the --hash flag. The document must be prepared. If the
+document is not prepared then it will be prepared first before certifying unless
+the --no-prepare flag is used.  If the --no-prepare flag is used and the document
+was not prepared, then an error is returned.  If the document is prepared during
+certifying, then the command will honor the prepare command flags. If the input
+parameter and the --hash flag are omitted, then the command will take its input
+from stdin. The command will output the prepared file. If the output parameter
+is omitted, then the output will be returned to stdout.
+>#### Flags
+>```
+>--no-prepare       Do not prepare the document if it is not already
+>                  prepared and return an error instead.
+>--hash            String, the hash of the document to sign
+>--note            Optional note to be saved together with the signature
+>--legal-weight    Allows to select type of the signature. Posible values are
+>                  "standard" and "QES". Defaults to "standard".
+>--jurisdiction   Only valid with "QES" signature, currently only supported
+>                  value is "ZertES"
+>```
+
+### Retract a document
+>#### Usage
+>```
+>certifaction retract [retract flags] [input | url]
+>```
+>
+>#### Description
+>Digitally mark the document given as input as retracted. The document must be 
+already signed. If the input parameter and the --hash flag are omitted, then 
+the command will take its input from stdin. All signature request for give file
+will be canceled. 
+>#### Flags
+>```
+>--hash            String, the hash of the document to sign
+>--note            Optional note to be saved together with the signature
+>--legal-weight    Allows to select type of the signature. Posible values are
+>                  "standard" and "QES". Defaults to "standard".
+>--jurisdiction   Only valid with "QES" signature, currently only supported
+>                  value is "ZertES"
+>```
 
 ### Verify a document
 >#### Usage
@@ -357,7 +419,7 @@ is omitted, then the output will be returned to stdout.
 ### Request a document signature
 >#### Usage
 >```
->certifaction request [request flags] [input | url]
+>certifaction request create [request flags] [input | url]
 >```
 >#### Description
 >
@@ -373,6 +435,21 @@ is omitted, then the output will be returned to stdout.
 >--name         string   Full name of signer
 >--email        string   Email address of signer [required]
 >--send-email   bool     When this flag is enabled API will send signing request to the user.
+>```
+
+### Cancel a document signature request
+>#### Usage
+>```
+>certifaction request cancel [request cancel flags] [input | url]
+>```
+>#### Description
+>
+>Cancels signature request for given file for the user with given e-mail.
+>#### Flags
+>```
+>--email        string   Email address of signer [required]
+>--note         string   Note to be send to the invite explaining why request
+>                        was cancelled
 >```
 
 ### Get the authenticated user information
@@ -393,6 +470,18 @@ is omitted, then the output will be returned to stdout.
 >
 >Allows export of a user's data. At the moment only claims can be exported. Please note that claims are publicly accessible, but they are encrypted with a key that is integrated in the corresponding document. This export command serves the purpose of making full backups more convenient.
 
+### Check QES status
+>#### Usage
+>```
+>certifaction qes check [qes check flags]
+>```
+>#### Description
+>
+>Returns true or false depending on user's QES status. If the user is enabled QES will return exit code 0, otherwise 1
+>#### Flags
+>```
+>--jurisdiction string   Jurisdiction. For example: eIDAS or ZertES
+>```
 
 ### Start the HTTP server
 >#### Usage
@@ -436,15 +525,19 @@ certifaction server [server flags]
 The CLI will start an HTTP server at the configured port and listen to the following endpoints:
 
 ```
-GET /health      Return the health of the Certifaction API
-GET /ping        Ping the Certifaction API
-POST /prepare    Prepare a document for signing
-POST /sign       Sign a document
-POST /verify     Verify a document
-POST /revoke     Revoke a document
-POST /request    Request a document signature
-GET /user        Return the authenticated user information
-GET /docs        Return the API documentation [Upcoming feature]
+GET  /health          Return the health of the Certifaction API
+GET  /ping            Ping the Certifaction API
+POST /prepare         Prepare a document for signing
+POST /sign            Sign a document
+POST /retract         Retract a document
+POST /register        Register a document
+POST /verify          Verify a document
+POST /revoke          Revoke a document
+POST /request/create  Request a document signature
+POST /request/cancel  Request a document signature
+GET  /user            Return the authenticated user information
+POST /qes/check       Checks whether the current user is QES enabled
+GET  /docs            Return the API documentation [Upcoming feature]
 ```
 
 The endpoints directly mirror the CLI commands.
@@ -561,6 +654,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >no-prepare=true: do not prepare the document if it is not prepared and return an error instead.
 >hash=<string>: the hash of the document to sign
 >filename=<string>: the name of the file
+>note=<string>: additional note to be stored in claim
 >
 >In addition, the query will accept the prepare query parameters.
 >```
@@ -595,6 +689,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >no-prepare=true: do not prepare the document if it is not prepared and return an error instead.
 >hash=<string>: the hash of the document to sign
 >filename=<string>: the name of the file
+>note=<string>: additional note to be stored in claim
 >
 >In addition, the query will accept the prepare query parameters.
 >```
@@ -604,6 +699,35 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >```
 >#### Body
 >An application/pdf body containing the document to sign
+
+### Sign a document
+>#### Usage
+>```
+>POST /retract
+>```
+>#### Description
+>Retract the document given as input. The document must be
+>a digital original document. After retraction, all signature
+>requests are cancelled. Return an error if the document cannot
+>be retracted.
+>#### Authenticated
+>Yes
+>#### Header
+>None
+>#### Query parameters
+>```
+>hash=<string>: the hash of the document to sign
+>filename=<string>: the name of the file
+>note=<string>: addinal note to be stored in claim
+>
+>```
+>#### Response
+>```
+>200 OK    the signed application/pdf file
+>```
+>#### Body
+>An application/pdf body containing the document to sign
+
 
 ### Verify a document
 >#### Usage
@@ -690,7 +814,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 ### Request a document signature
 >#### Usage
 >```
->POST /request
+>POST /request/create
 >```
 >#### Description
 >Return a signature request URL from a Digital Twin document.  The URL can be shared with other people to sign a document.   The document must be a digital original document and will return an error otherwise.
@@ -717,6 +841,36 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >    "request_url":"<the URL to be handed to the signer>"
 >}
 >```
+
+### Cancel a document signature request
+>#### Usage
+>```
+>POST /request/cancel
+>```
+>#### Description
+>Cancel a signature request for given document for the person with the given email address.
+>#### Authenticated
+>Yes
+>#### Header
+>None
+>#### Query parameters
+>```
+>email=<string>:   email address of signer
+>```
+>#### Response
+>```
+>200 OK    an application/json containing the resulting request URL
+>```
+>
+>#### Body
+>An application/pdf body containing the document for which a signature request should be cancelled
+>##### Example
+>```json
+>{
+>    "request_url":"<the URL to be handed to the signer>"
+>}
+>```
+
 
 ### Get the authenticated user information
 >#### Usage
