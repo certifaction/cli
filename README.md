@@ -329,7 +329,6 @@ is omitted, then the output will be returned to stdout.
 >--no-prepare      Do not prepare the document if it is not already
 >                  prepared and return an error instead.
 >--hash            String, the hash of the document to sign
->--note            Optional note to be saved together with the signature
 >--legal-weight    Allows to select type of the signature. Posible values are
 >                  "standard" and "QES". Defaults to "standard".
 >--jurisdiction   Only valid with "QES" signature, currently only supported
@@ -357,11 +356,6 @@ is omitted, then the output will be returned to stdout.
 >--no-prepare       Do not prepare the document if it is not already
 >                  prepared and return an error instead.
 >--hash            String, the hash of the document to sign
->--note            Optional note to be saved together with the signature
->--legal-weight    Allows to select type of the signature. Posible values are
->                  "standard" and "QES". Defaults to "standard".
->--jurisdiction   Only valid with "QES" signature, currently only supported
->                  value is "ZertES"
 >```
 
 ### Retract a document
@@ -379,10 +373,6 @@ will be canceled.
 >```
 >--hash            String, the hash of the document to sign
 >--note            Optional note to be saved together with the signature
->--legal-weight    Allows to select type of the signature. Posible values are
->                  "standard" and "QES". Defaults to "standard".
->--jurisdiction   Only valid with "QES" signature, currently only supported
->                  value is "ZertES"
 >```
 
 ### Verify a document
@@ -655,6 +645,8 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >hash=<string>: the hash of the document to sign
 >filename=<string>: the name of the file
 >note=<string>: additional note to be stored in claim
+>legal-weight=<string>: allows to select type of the signature. Posible values are "standard" and "QES". Defaults to "standard".
+>jurisdinction=<string>: only valid with "QES" signature, currently only supported value is "ZertES"
 >
 >In addition, the query will accept the prepare query parameters.
 >```
@@ -689,7 +681,8 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >no-prepare=true: do not prepare the document if it is not prepared and return an error instead.
 >hash=<string>: the hash of the document to sign
 >filename=<string>: the name of the file
->note=<string>: additional note to be stored in claim
+>legal-weight=<string>: allows to select type of the signature. Posible values are "standard" and "QES". Defaults to "standard".
+>jurisdinction=<string>: only valid with "QES" signature, currently only supported value is "ZertES"
 >
 >In addition, the query will accept the prepare query parameters.
 >```
