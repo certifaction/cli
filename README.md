@@ -177,18 +177,27 @@ certifaction [certifaction flags] <command> [arguments]
 The available commands are:
 
 ```
-help         getting help about a command
-health       return the health of the Certifaction API
-ping         ping the Certifaction API
-info         return the metadata of provided file
-prepare      prepare a document for signing
-register     register a document
-sign         sign a document
-verify       verify a document
-revoke       revoke a document
-request      request a document signature
-user         return the authenticated user information
-server       starts the HTTP server
+help                getting help about a command
+delete-access       remove Certifaction access to the file
+download            download and decrypt document from digital archive
+export              export data
+health              return the health of the Certifaction API
+info                return the metadata of provided file
+ping                ping the Certifaction API
+info                return the metadata of provided file
+prepare             prepare a document for signing
+qes check           returns whether the current user is QES enabled
+register            register a document
+sign                sign a document
+verify              verify a document
+revoke              revoke a document
+request cancel      cancel a signature request
+request cancel-all  cancel signing of the document
+request create      request a document signature
+request edit        edit a signature request
+request list        list signature requests for a document
+user                return the authenticated user information
+server              starts the HTTP server
 
 ```
 
@@ -207,6 +216,31 @@ Here are the command global flags that can be used for every command:
 --verbose       Increase logs verbosity. Can be repeated multiple times
                 to increase it even more.
 ```
+### Deleting Certifaction access to the file
+
+>#### Usage
+>
+>```
+>certifaction delete-access [input file | URL]
+>```
+>
+>#### Description
+>This makes file inaccessible for Certifaction system for further processing.
+>Because of that it will be impossible to download file from collection page 
+>or request new signatures, although it will be still possible do access them 
+>with original requests emails.
+
+### Download file from digital archive
+
+>#### Usage
+>
+>```
+>certifaction download [DA URL]
+>```
+>
+>#### Description
+>Download document from digital archive and then decrypts it.
+
 
 ### Checking the health of the API and its dependencies
 
@@ -427,6 +461,31 @@ will be canceled.
 >--send-email   bool     When this flag is enabled API will send signing request to the user.
 >```
 
+### Edit a document signature request
+>#### Usage
+>```
+>certifaction request edit [input file | URL] [flags]
+>```
+>#### Description
+>Allows changing e-mail and/or filename for given signature request for given
+>document. If the input parameter is omitted, then the command will take its
+>input from stdin.
+>#### Flags
+>```
+>--email string       Current email address of signer. [required]
+>--new-email string   New email address of signer.
+>--new-name string    New name of signer.
+>```
+
+### List document signature requests
+>#### Usage
+>```
+>certifaction request list [input file | URL]
+>```
+>#### Description
+>
+>List all sent signature requests for given document.
+
 ### Cancel a document signature request
 >#### Usage
 >```
@@ -441,6 +500,20 @@ will be canceled.
 >--note         string   Note to be send to the invite explaining why request
 >                        was cancelled
 >```
+
+### Cancel a document signing process
+>#### Usage
+>```
+>certifaction request cancel-all [input file | URL] [flags]
+>```
+>#### Description
+>Cancel all signature request for given document. If the input parameter is omitted, then the command will take its input from stdin.
+>#### Flags
+>```
+>--note         string   Note to be send to the invite explaining why request
+>                        was cancelled
+>```
+
 
 ### Get the authenticated user information
 >#### Usage
@@ -523,8 +596,13 @@ POST /retract         Retract a document
 POST /register        Register a document
 POST /verify          Verify a document
 POST /revoke          Revoke a document
+POST /download        Download and decrypt document from digital archive
+POST /delete-access   Remove Certifaction access to the file
 POST /request/create  Request a document signature
+POST /request/edit    Edit a signature request
 POST /request/cancel  Request a document signature
+POST /request/cancel/all  Cancel signing of the document
+POST /request/list        List signature requests for a document
 GET  /user            Return the authenticated user information
 POST /qes/check       Checks whether the current user is QES enabled
 GET  /docs            Return the API documentation [Upcoming feature]
@@ -804,6 +882,43 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >#### Body
 >An application/pdf body containing the document to revoke
 
+
+### Download file from digital archive
+>#### Usage
+>```
+>GET /download
+>```
+>#### Description
+>Download document from digital archive and then decrypts it.
+>#### Authenticated
+>No
+>#### Query parameters
+>file=<string>:    digital archive URL
+>### Response
+>```
+>200 OK    An application/pdf body containing the document
+>```
+
+### Delete Certifaction access to the file
+>#### Usage
+>```
+>GET /delete-access
+>```
+>#### Description
+>This makes file inaccessible for Certifaction system for further processing.
+>Because of that it will be impossible to download file from collection page
+>or request new signatures, although it will be still possible do access them
+>with original requests emails.
+>#### Authenticated
+>Yes
+>#### Body
+>An application/pdf body containing the document for which a signature is requested
+>### Response
+>```
+>200 OK    An application/pdf body containing the document
+>```
+
+
 ### Request a document signature
 >#### Usage
 >```
@@ -835,6 +950,53 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >}
 >```
 
+### Edit a document signature request
+>#### Usage
+>```
+>POST /request/edit
+>```
+>#### Description
+>Allows changing e-mail and/or filename for given signature request for given
+>document. If the input parameter is omitted, then the command will take its
+>input from stdin.
+>#### Authenticated
+>Yes
+>#### Header
+>None
+>#### Query parameters
+>```
+>email=<string>:      Current email address of signer.
+>new-name=<string>:   New name of signer.
+>new-emain=<string>:  New email address of signer.
+>```
+>#### Response
+>```
+>200 OK 
+>```
+>
+>#### Body
+>An application/pdf body containing the document for which a signature is requested
+
+### List document signature requests
+>#### Usage
+>```
+>POST /request/list
+>```
+>#### Description
+>List all sent signature requests for given document.
+>#### Authenticated
+>Yes
+>#### Header
+>None
+>#### Response
+>```
+>200 OK  An json object representing all signature requests for the file.
+>```
+>
+>#### Body
+>An application/pdf body containing the document for which a signature is requested
+
+
 ### Cancel a document signature request
 >#### Usage
 >```
@@ -852,17 +1014,35 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >```
 >#### Response
 >```
->200 OK    an application/json containing the resulting request URL
+>204 No Content
 >```
 >
 >#### Body
 >An application/pdf body containing the document for which a signature request should be cancelled
->##### Example
->```json
->{
->    "request_url":"<the URL to be handed to the signer>"
->}
+
+### Cancel a document signing process
+>#### Usage
 >```
+>POST /request/cancel/all
+>```
+>#### Description
+>Cancel all signature request for given document. If the input parameter is omitted, then the command will take its input from stdin.
+>#### Authenticated
+>Yes
+>#### Header
+>None
+>#### Query parameters
+>```
+>note=<string>:   Note to be send to the invite explaining why request was cancelled.
+>```
+>#### Response
+>```
+>204 No Content
+>```
+>
+>#### Body
+>An application/pdf body containing the document for which a signature is requested
+
 
 
 ### Get the authenticated user information
