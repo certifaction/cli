@@ -614,7 +614,7 @@ The endpoints directly mirror the CLI commands.
 When indicated, the requests must be authenticated using the Authorization header as following:
 
 ```
-Authorization: Bearer <AccessToken>
+authorization: <AccessToken>
 ```
 
 If the request is not authenticated a HTTP 401 Unauthorized response is returned.
