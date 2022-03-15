@@ -253,8 +253,7 @@ Here are the command global flags that can be used for every command:
 
     --env <name>      Optional environment name.  Defaults to prod.
                       Will automatically setup the API URL and
-                      Ethereum contract addresses for a Given
-                      Certifaction environment.
+                      for a given Certifaction environment.
     --api <URL>       Overrides the default Certifaction API URL
     --token <access token>    The authentication token.  Please ensure that you
                               surround the token with quotes as it could contain
