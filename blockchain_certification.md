@@ -1,10 +1,9 @@
-# Certifaction CLI
+# Certifaction CLI for Blockchain Document Certification
 
-This is the [Certifaction](https://certifaction.com) CLI repository with the documentation and the
-executables for different platforms.
+This is [Certifaction](https://certifaction.com) CLI for blockchain document certification.
 
 Directly jump to the [Installation](#installation) section to install the CLI
-for your platform.
+on your platform.
 
 Please create an [Issue](https://github.com/certifaction/cli/issues) to report any bug and propose new features.
 
@@ -16,10 +15,8 @@ Feature]** notation.
 *   [Introduction](#introduction)
 *   [Requirements](#requirements)
 *   [Functionality](#functionality)
-*   [Document signature](#document-signature)
-    *   [Simple Document signature](#simple-document-signature)
-    *   [Document Digital Twin](#document-digital-twin)
-    *   [Document signature request](#document-signature-request)
+*   [Document certification](#document-certification)
+*   [Document verification](#document-verification)
 *   [Usage options](#usage-options)
     *   [Standalone application integration](#standalone-application-integration)
     *   [Running the HTTP server on a node](#running-the-http-server-on-a-node)
@@ -31,7 +28,7 @@ Feature]** notation.
 ## Introduction
 
 [Certifaction](https://certifaction.com) is the electronic signature technology for the Internet. With our solution,
-we empower people and companies to sign and verify
+we empower people and companies to certify and verify
 documents in total privacy at any time, at any scale. By integrating with our
 straightforward API and tools, any business can provide the right level of
 security and compliance to their processes and products.
@@ -39,7 +36,7 @@ security and compliance to their processes and products.
 This document
 describes the Certifaction command line interface (CLI) , which provides a
 command line interface and an HTTP server that can be used by third party
-applications to sign and verify documents while preserving the documents’
+applications to certify and verify documents while preserving the documents’
 confidentiality.
 
 ## Requirements
@@ -61,81 +58,41 @@ The CLI provides three main functionalities for your documents:
 *   Certification
 *   Verification
 
-The certification and verification functionality is detailed in the [Blockchain certification](blockchain_certification.md) page.
-The rest of this document will focus on the document digital signature.
+The document digital signature functionality is detailed in the main [README](README.md).
+The rest of this document will focus on the document certification and verification.
 
-## Document signature
+## Document certification
 
-Certifaction digital signature allows client to add one or more digital signatures to PDF documents.
-
-Client can also invite other people to sign documents by providing them with secure document URLs
-containing a secret key.  The secret key will decrypt the document before signing, ensuring that
-Certifaction never access the document in clear text.
-
-Certifaction document signature is based on the [PAdES](https://en.wikipedia.org/wiki/PAdES) standard,
-which uses cryptography and the public PKI infrastructure to provides the highest guarantee against forgery.
-
-Certifaction uses three signature levels with increasing identity verification assurances:
-
-*   Standard Electronic Signature (SES): email verification
-*   Professional Electronic Signature (PES): identification using ID document scanning and verification
-*   Qualified Electronic Signature (QES): Swiss and EU qualified electronic signature requirements
-
-Certifaction unique privacy-first signature ensures that document content does not leave your
-IT infrastructure in clear text without your consent.
-
-### Simple document signature
-
-Here are the steps during a simple document signature:
-
-1.  The CLI Receives the PDF
-    document to sign and process it (add security features including a unique secure URL and one or more signature
-    pages).
-2.  The hash of the
-    file is sent to Certifaction API for signature
-3.  Certifaction API uses one of its pluggable signature provider depending on the signature level and jurisdiction
-4.  Certifaction API returns the PKCS #7 CMS signature to the CLI
-5.  The CLI embeds the signature in the PDF document and returns to the Client
-
-Additional signatures can be appended to an already signed document sequentially.  Sending a signed document to an
-other signer is a simple and valid option.
-
-![Document signature diagram](./assets/document-signature-diagram.svg)
-
-### Document Digital Twin
-
-In addition to storing the secure URL inside the PDF as custom information.  A Digital Twin QR code can be added
-to the document.  This QR code contains the secure URL that can be used to retrieve the encrypted version of
-document stored in Certifaction servers.
-
-When printing the document, the visible QR code can be scanned to retrieve the last version of the document.
-Certifaction Digital Twin bridges the world of printed and digital documents.
-
-Here are the steps to store an encrypted version of the document and return a Digital Twin URL:
-
-1.  Before signature, a unique and secure URL created and added to the document with a QR code
-2.  The document is encrypted
-3.  The encrypted copy is stored in Certifaction Digital Archive (DA)
-4.  The Digital Twin URL is recorded in Certifaction document locator
-
-![Document digital twin diagram](./assets/document-digital-twin-diagram.svg)
-
-### Document signature request
-
-Certifaction document signature request rely on the Certifaction Digital Archive to store end-to-end encrypted
-document.
-
-During a signature request, the CLI will:
+During document certification, the CLI will:
 
 1.  Receive the PDF
-    document to sign and the signer information
-2.  Processe the document, adding security features including the secure Digital Twin URL
-3.  Encrypt the document using the secret key contained in the Digital Twin URL
-4.  Store the document in Certifaction Digital Archive for later retrieval.
-5.  Return the secure URL
+    document to certify and process it (add security features and the certification
+    footer).
+2.  The processed document is returned and must replace the initial
+    document (as this will be the document that will be certified).
+3.  The hash of the
+    file and a public key is sent to the Certifaction API for registration.
+4.  The
+    certification is timestamped in Ethereum.
+5.  The certification data is stored encrypted in a
+    public database.
 
-The Digital Twin URL can be shared with the invited person.  A new URL must be created for each signer.
-Since the URL contains a secret, access to its content must be protected as well as would be the original document.
+![Document certification diagram](./assets/document-blockchain-certification-diagram.svg)
+
+## Document verification
+
+During verification, the CLI will calculate the document hash and extract the
+private certification data decryption key, then call the Certifaction API that will find any
+certification timestamps in the blockchain and return the encrypted certification data.
+
+1.  The document to verify is provided to the CLI
+2.  The document hash is sent to the Certifaction API
+3.  The verification Certifaction API will search Ethereum for all the certification timestamps for the given hash and return them.
+4.  The timestamps refers to encrypted certification data stored in content addressable storage (CAS).
+5.  The Certifaction API returns the encrypted certification data to the CLI since it cannot decrypt them without the private decryption key contained only in the document.
+6.  The certification data are decrypted and a verification result is returned.
+
+![Document verification diagram](./assets/document-blockchain-verification-diagram.svg)
 
 ## Usage options
 
@@ -147,7 +104,7 @@ The Certifaction CLI can be used in two modes:
     mode that exposes HTTP endpoints.
 
 In both cases, the CLI sits between the third party application and the Certifaction
-API and will handle document signing, certification, verification and revocation without
+API and will handle document certification, verification and revocation without
 leaking the document content outside the controlled IT infrastructure of the
 client.
 
@@ -193,15 +150,6 @@ The authentication is done by passing an authentication token or an API key:
     *   [German](https://download.hin.ch/documentation/oAuth2_Dokumentation_de.pdf)
     *   [French](https://download.hin.ch/documentation/oAuth2_Dokumentation_fr.pdf)
 
-## Proxy settings
-The CLI integrates with Certifaction API using HTTPS. If the deployment is behind a proxy you must configure the proxy using an environment variable.
-
-The proxy can be configured by setting the `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` (or the lowercase versions thereof).
-HTTPS_PROXY takes precedence over HTTP_PROXY for https requests.
-
-The environment values may be either a complete URL or a "host[:port]", in which case the "http" scheme is assumed.
-The schemes "http", "https", and "socks5" are supported. An error is returned if the value is a different form.
-
 ## Installation
 
 The CLI is delivered as an executable compatible with most of the usual
@@ -219,13 +167,11 @@ not find an executable for your platform.
 *   [Checking the health of the API and its dependencies](#checking-the-health-of-the-api-and-its-dependencies)
 *   [Checking the API liveliness](#checking-the-api-liveliness)
 *   [Prepare a document for signing](#prepare-a-document-for-signing)
-*   [Sign a document](#sign-a-document)
-*   [Retract a document](#retract-a-document)
-*   [Request a document signature](#request-a-document-signature)
-*   [Cancel a document signature request](#cancel-a-document-signature-request)
+*   [Certify a document](#certify-a-document)
+*   [Revoke a document](#revoke-a-document)
+*   [Verify a document](#verify-a-document)
 *   [Get the authenticated user information](#get-the-authenticated-user-information)
 *   [Export data](#export-data)
-*   [Check QES status](#check-qes-status)
 *   [Start the HTTP server](#start-the-http-server)
 
 ### General usage
@@ -236,7 +182,6 @@ The available commands are:
 
 ```
 help                getting help about a command
-delete-access       remove Certifaction access to the file
 download            download and decrypt document from digital archive
 export              export data
 health              return the health of the Certifaction API
@@ -244,13 +189,9 @@ info                return the metadata of provided file
 ping                ping the Certifaction API
 info                return the metadata of provided file
 prepare             prepare a document for signing
-qes check           returns whether the current user is QES enabled
-sign                sign a document
-request cancel      cancel a signature request
-request cancel-all  cancel signing of the document
-request create      request a document signature
-request edit        edit a signature request
-request list        list signature requests for a document
+register            register a document
+verify              verify a document
+revoke              revoke a document
 user                return the authenticated user information
 server              starts the HTTP server
 
@@ -262,7 +203,8 @@ Here are the command global flags that can be used for every command:
 
     --env <name>      Optional environment name.  Defaults to prod.
                       Will automatically setup the API URL and
-                      for a given Certifaction environment.
+                      Ethereum contract addresses for a Given
+                      Certifaction environment.
     --api <URL>       Overrides the default Certifaction API URL
     --token <access token>    The authentication token.  Please ensure that you
                               surround the token with quotes as it could contain
@@ -270,19 +212,6 @@ Here are the command global flags that can be used for every command:
     --api-key <api key>       An API key created in the account settings
     --verbose       Increase logs verbosity. Can be repeated multiple times
                     to increase it even more.
-
-### Deleting Certifaction access to the file
-
-> #### Usage
->
->     certifaction delete-access [input file | URL]
->
-> #### Description
->
-> This makes files inaccessible for the Certifaction system for further processing.
-> Because of that it will no longer be possible to download files from the collection page
-> or request new signatures, although it will still be possible to access them
-> through the original signature request emails.
 
 ### Download file from digital archive
 
@@ -353,132 +282,93 @@ Here are the command global flags that can be used for every command:
 >     --scope            Optional signature scope override to choose between
 >                       register, sign and certify.
 
-### Sign a document
+### Register a document
 
 > #### Usage
 >
->     certifaction sign [sign flags] [prepare flags] [-o output] [input | url]
+>     certifaction register [register flags] [prepare flags] [-o output] [input | url]
 >
 > #### Description
 >
-> Digitally sign the document given as input or digitally sign the document with
-> the hash given with the --hash flag. The document must be prepared. If the
-> document is not prepared then it will be prepared first before signing unless
+> Digitally registers the document given as input or digitally registers the
+> document with the hash given with the --hash flag. The document must be
+> prepared. If the document is not prepared then it will be prepared first
+> before signing unless the --no-prepare flag is used. If the --no-prepare flag is
+> used and the document was not prepared, then an error is returned. If the
+> document is prepared during registration, then the command will honor the
+> prepare command flags. If the input parameter and the --hash flag are omitted,
+> then the command will take its input from stdin. The command will output the
+> prepared file. If the output parameter is omitted, then the output will be
+> returned to stdout.
+>
+> #### Flags
+>
+>     --scope           Optional signature scope override to choose between
+>                      register, sign and certify.
+>     --no-prepare      Do not prepare the document if it is not already
+>                      prepared and return an error instead.
+>     --hash            String, the hash of the document to sign
+>     --note            Optional note to be saved together with the signature
+>     --legal-weight    Allows to select type of the signature. Possible values are
+>                      "standard" and "QES". Defaults to "standard".
+>     --jurisdiction   Only valid with "QES" signature, currently the only supported
+>                      value is "ZertES"
+
+### Certify a document
+
+> #### Usage
+>
+>     certifaction certify [certify flags] [prepare flags] [-o output] [input | url]
+>
+> #### Description
+>
+> Digitally certif the document given as input or digitally certifies the document
+> with the hash given with the --hash flag. The document must be prepared. If the
+> document is not prepared then it will be prepared first before certifying unless
 > the --no-prepare flag is used. If the --no-prepare flag is used and the document
 > was not prepared, then an error is returned. If the document is prepared during
-> signing, then the command will honor the prepare command flags. If the input
+> certifying, then the command will honor the prepare command flags. If the input
 > parameter and the --hash flag are omitted, then the command will take its input
 > from stdin. The command will output the prepared file. If the output parameter
 > is omitted, then the output will be returned to stdout.
 >
 > #### Flags
 >
->     --no-prepare      Do not prepare the document if it is not already
+>     --no-prepare       Do not prepare the document if it is not already
 >                      prepared and return an error instead.
 >     --hash            String, the hash of the document to sign
->     --legal-weight    Allows to select type of the signature. Possible values are
->                      "standard" and "QES". Defaults to "standard".
->     --jurisdiction   Only valid with "QES" signature, currently the only supported
->                      value is "ZertES"
 
-### Retract a document
+### Verify a document
 
 > #### Usage
 >
->     certifaction retract [retract flags] [input | url]
+>     certifaction verify [-o output] [input | url]
 >
 > #### Description
 >
-> Digitally mark the document given as input as retracted. The document must be
-> already signed. If the input parameter and the --hash flag are omitted, then
-> the command will take its input from stdin. All signature requests for given file
-> will be canceled.
+> Verifies the file given as input. Returns the verification result as a JSON. If
+> the input parameter is omitted, then the command will take its input from
+> stdin. If the output parameter is omitted, then the output will be returned to
+> stdout. Returns success if the document is authentic and signed from verified
+> users, otherwise returns an error.
+
+### Revoke a document
+
+> #### Usage
+>
+>     certifaction revoke [revoke flags] [input | url]
+>
+> #### Description
+>
+> Revokes the document given as input. The document must be a digital original
+> document. After revocation, any additional claims will be ignored during
+> verification. Return an error if the document cannot be revoked. If the input
+> parameter and the -hash flag are omitted, then the command will take its input
+> from stdin.
 >
 > #### Flags
 >
->     --hash            String, the hash of the document to retract
->     --note            Optional note to be saved together with the signature
-
-### Request a document signature
-
-> #### Usage
->
->     certifaction request create [request flags] [input | url]
->
-> #### Description
->
-> Create a document signature URL for the person with the given email address and name.
-> The signature request URL can either be sent to the user mailbox or returned by this
-> command. If the request URL is sent by email, then it is not returned by the command.
-> If the input parameter is omitted, then the command will take its input from stdin.
-> Returns to stdout the URL to be handed to the signer if the URL is not sent by email
-> otherwise return nothing. Document have to be already registered otherwise it will
-> return an error.
->
-> #### Flags
->
->     --name         string   Full name of the signer
->     --email        string   Email address of the signer [required]
->     --send-email   bool     When this flag is enabled the API will send a signing request to the user
-
-### Edit a document signature request
-
-> #### Usage
->
->     certifaction request edit [input file | URL] [flags]
->
-> #### Description
->
-> Allows changing the email address and/or name for a given signature request for a given
-> document. If the input parameter is omitted, then the command will take its
-> input from stdin.
->
-> #### Flags
->
->     --email string       Current email address of the signer. [required]
->     --new-email string   New email address of the signer.
->     --new-name string    New name of the signer.
-
-### List document signature requests
-
-> #### Usage
->
->     certifaction request list [input file | URL]
->
-> #### Description
->
-> Lists all sent signature requests and their status for a given document.
-
-### Cancel a document signature request
-
-> #### Usage
->
->     certifaction request cancel [request cancel flags] [input | url]
->
-> #### Description
->
-> Cancels a signature request for a given file for the user with a given e-mail address.
->
-> #### Flags
->
->     --email        string   Email address of the signer [required]
->     --note         string   Note to be sent to the invitee explaining why the request
->                            was cancelled
-
-### Cancel a document signing process
-
-> #### Usage
->
->     certifaction request cancel-all [input file | URL] [flags]
->
-> #### Description
->
-> Cancels all signature requests for a given document. If the input parameter is omitted, then the command will take its input from stdin.
->
-> #### Flags
->
->     --note         string   Note to be sent to the invitee explaining why the request
->                            was cancelled
+>     --hash     string     The hash of the document to revoke
 
 ### Get the authenticated user information
 
@@ -490,19 +380,15 @@ Here are the command global flags that can be used for every command:
 >
 > Returns the user information as a JSON. Returns an error if the user is not authenticated.
 
-### Check QES status
+### Export data
 
 > #### Usage
 >
->     certifaction qes check [qes check flags]
+>     certifaction export [claims]
 >
 > #### Description
 >
-> Returns true or false depending on a user's QES status. If the user is QES enabled, it will return exit code 0, otherwise 1.
->
-> #### Flags
->
->     --jurisdiction string   Jurisdiction. For example: eIDAS or ZertES
+> Allows export of a user's data. At the moment only claims can be exported. Please note that claims are publicly accessible, but they are encrypted with a key that is integrated in the corresponding document. This export command serves the purpose of making full backups more convenient.
 
 ### Start the HTTP server
 
@@ -547,17 +433,11 @@ The CLI will start an HTTP server at the configured port and listen to the follo
     GET  /health          Returns the health of the Certifaction API
     GET  /ping            Pings the Certifaction API
     POST /prepare         Prepares a document for signing
-    POST /sign            Signs a document
-    POST /retract         Retracts a document
+    POST /register        Registers a document
+    POST /verify          Verifies a document
+    POST /revoke          Revokes a document
     POST /download        Downloads and decrypts a document from the digital archive
-    POST /delete-access   Removes Certifaction access to the file
-    POST /request/create  Requests a document signature
-    POST /request/edit    Edits a signature request
-    POST /request/cancel  Cancels a signature request
-    POST /request/cancel/all  Cancels signing of the document
-    POST /request/list        Lists signature requests for a document
     GET  /user            Returns the authenticated user information
-    POST /qes/check       Checks whether the current user is QES enabled
     GET  /docs            Returns the API documentation [Upcoming feature]
 
 The endpoints directly mirror the CLI commands.
@@ -566,17 +446,7 @@ The endpoints directly mirror the CLI commands.
 
 When indicated, the requests must be authenticated using the Authorization header as following:
 
-```
-Authorization: <API key>
-```
-
-or
-
-```
-Authorization: Bearer <3rd party Oauth token>
-```
-
-API keys can be created in the setting section of the Certifaction web application.
+    Authorization: Bearer <AccessToken>
 
 If the request is not authenticated a HTTP 401 Unauthorized response is returned.
 
@@ -674,20 +544,20 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >
 > An application/pdf body containing the document to prepare
 
-### Sign a document
+### Register a document
 
 > #### Usage
 >
->     POST /sign
+>     POST /register
 >
 > #### Description
 >
-> Digitally sign the document given as input.  The document must be a digital
-> original, i.e. it must have been prepared with the prepare command.  If the
+> Digitally registers the document given as input. The document must be a digital
+> original, i.e. it must have been prepared with the prepare command. If the
 > document is not a digital original, then it will be prepared first before
-> signing unless the no-prepare flag is used.  If the no-prepare flag is used and the
-> document was not prepared, then an error is returned.  If the document is
-> prepared during signing, then the command will honor the prepare query
+> signing unless the no-prepare flag is used. If the no-prepare flag is used and the
+> document was not prepared, then an error is returned. If the document is
+> prepared during registering, then the command will honor the prepare query
 > parameters.
 >
 > #### Authenticated
@@ -700,11 +570,13 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >
 > #### Query parameters
 >
+>     scope=<string>: overrides the default user signing scope. The possible values are register, sign and certify
 >     no-prepare=true: do not prepare the document if it is not prepared and return an error instead.
 >     hash=<string>: the hash of the document to sign
 >     filename=<string>: the name of the file
->     legal-weight=<string>: allows to select type of the signature. Posible values are "standard" and "QES". Defaults to "standard".
->     jurisdinction=<string>: only valid with "QES" signature, currently only supported value is "ZertES"
+>     note=<string>: additional note to be stored in claim
+>     legal-weight=<string>: allows to select type of the signature. Possible values are "standard" and "QES". Defaults to "standard".
+>     jurisdinction=<string>: only valid with "QES" signature, currently the only supported value is "ZertES"
 >
 >     In addition, the query will accept the prepare query parameters.
 >
@@ -714,20 +586,92 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >
 > #### Body
 >
-> An application/pdf body containing the document to sign
+> An application/pdf body containing the document to register
 
-### Retract a document
+### Verify a document
 
 > #### Usage
 >
->     POST /retract
+>     POST /verify
 >
 > #### Description
 >
-> Retracts the document given as input. The document must be
-> a digital original document. After retraction, all signature
-> requests are cancelled. Returns an error if the document cannot
-> be retracted.
+> Verifies the file given as input. Returns the verification result as a JSON.
+>
+> #### Authenticated
+>
+> No
+>
+> #### Header
+>
+> None
+>
+> #### Query parameters
+>
+> None
+>
+> #### Response
+>
+>     200 OK    the application/json verification result
+>
+> #### Body
+>
+> An application/pdf body containing the document to verify
+>
+> ##### Example
+>
+> Verification result:
+>
+> ```json
+> {
+>  "on_blockchain": true,
+>  "issuer_img": "https://example.com/images/verified_by_acme.png",
+>  "issuer_verified": true,
+>  "issuer_title": "",
+>  "file": {
+>    "hash": "0x61c2ec21338308bb9283917041db4a70dee2c9d3258228d8c6039d5b431a1653",
+>    "status": "registered",
+>    "claim_key": "044aa7b14f1538954c83062083da2db3e41d4d7cb75f7069baeffbbf45f1adcad091c0113fb440ed848d01c667022c73806b8f26622b4562daabdb6dfc87d4b543",
+>    "txHash": "0x64f4b4f5a0baa42f529efe1e2d8f0d2b41481b9b236698f20a92680bf60e386f",
+>    "registered_at": "2021-01-14T09:53:59Z"
+>  },
+>  "revoked": false,
+>  "encrypted": true,
+>  "claims": [
+>    {
+>      "@context": "https://schema.certifaction.io/encryptedclaim/v1",
+>      "@id": "cert:hash:0x61c2ec21338308bb9283917041db4a70dee2c9d3258228d8c6039d5b431a1653",
+>      "algorithm": "ECIES",
+>      "claim": "BHnbTfqOfN93h+lT0fbFdpFareoWq293lopv000HLk9K8EZ5aXUYXXmpx6y9hV7RTgHXQfkgzj/Km3tjOOxrzWpUxQ1JLPHqaTqE0DMzhEV97/UXk1ooF/nlV/fwyhg+zRnoqJWmcUMpB/Rdamu0Ur4pfNVB8VKbr5WFQlDNWrXjFQfWFqH66JebSThX0HcGqcAldxc8yGo5r0rHBcnFQxbZPu/SzxFcsc7fg9IfQaYp1FOyBBYfAJlhbLCtn0ahdb2IKynjltqqLSWpyx8rWq+1CsN4SHfQYE1+XfOhitU+wlsNbj5vhO4Q2t4l8jZyThrEWcc7cVindVmc6cdziAI/nTbDuQ+aj0GN5Gwb0jiR3MP9CNeUKU9vg+Twx4I1W/inOlpYYAuJ8MDz1Kcr58g4FpSIBL4v43rk6ZDfX9I/bMclc3O+HFotmAWoTGWcxfqCKdTSR2PoOw9pmyNd3oPbNQSOXuWGDrbLE2mZB7hR76VIWHe18Pgd6gATsaFqIcnyVGY1OIrcbpMn1cDfMNoeWTd7rg/mjbPztYW5VT/U7oar4jTAiqaZQZpNC7HFypz2DwV6cnDxNnaoVYJMZzia0UmNaW5+WYKVykAueh376OH52FQjt1MAF4jl3bn8l7V0RPHN6Ma4M82/xMb+k+ELucJI8MAVZvqOeobZbATVSadZFbtEw3vykHsPNCuF50SA9FiFELVFSp7CQwpn2k9HR6EM90D6pdtL/QL+q5HFE1iMzUopQyg3Klebpxz9zpOfrIThSTLBwwcr6HiLkbu9A+NpAIwpxqkhKUiOjWeGYeP9nKDQ1Ez6ltqm9dKhpcFci/C+1403b687FEFuk1yrf3znaPzDwjU6gKBmbAFqJRpurnyow+h9+t/F0eFqHBFZSuJrsqf467WTvEewlvuB+yc6cf/DSPnf7mX7u56AJ+amMLkTyn6plC0nD3bTzXYSAWkV1UhSb9Yb7Q/Wj0B6s7YtEgs/3pdEssLGx2nABZa0W4uxQDpejYozX8PBeedZ/S5zW5nfItnFgqVNZOBm5+r9QO2DVGhKJXATDsqORuAbLg/AZlmQv/gSSo6Or0pa7g0kRmy0eS7LDf17KFK27Jec5vv0FAc69/DPtt/CG8b9kcdMVwnjMRnhkcwJhuU1ehubDxqBKvq6iPYLZiOZYvdjE6Fqo4Kxn66mmhNdoHVbmhFYF1FpPE74I9xV2vn6xIvPw70C60yaWe8r+bxDUKdBzIWX1SFWYzUaGMiKlxBuTKSkiqXT3frNzuHqd7A48luk2gNQEOk2o73lnjXkNgEELjPo+CynS94g+g/EoRey+aqnVPfDQaRyfcmBsUwJOKeOf6O0VBaeV9/PxDf7Cg=="
+>    }
+>  ]
+> }
+> ```
+>
+> ##### Explanation of essential fields:
+>
+> Field | Description
+> \----- | -----------
+> on\_blockchain | Indicates whether the file has been registered on the blockchain
+> issuer\_img| Optionally has a path to an image or logo of the issuer
+> issuer\_verified| Defines whether the issuer identity has been verified
+> file.hash| Hash of the file
+> file.status| Temporary status of the file in our database ('registered', 'revoked', 'registering', 'revoking'). Might temporarily differ from status on the blockchain until the file has definitely been confirmed on the blockchain. For verification use on\_blockchain and revoked fields instead.
+> file.txHash| Transaction hash of the registration on the blockchain. Can be checked for example on https://etherscan.io.
+> file.registered\_at| Time when file has been registered.
+> revoked| Indicates whether the file has been revoked on the blockchain. If a file has been revoked it will have on\_blockchain: true
+> encrypted| Indicates where the data under claims is encrypted for privacy reasons
+> claims| Claims about the file. Claims have already been verified before returning the result but can optionally be verified by the costumer.
+
+### Revoke a document
+
+> #### Usage
+>
+>     POST /revoke
+>
+> #### Description
+>
+> Revokes the document given as input. The document must be a digital original document. After revoking, any additional claims will be ignored during verification. Return an error if the document cannot be revoked.
 >
 > #### Authenticated
 >
@@ -739,20 +683,15 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >
 > #### Query parameters
 >
-> ```
-> hash=<string>: the hash of the document to sign
-> filename=<string>: the name of the file
-> note=<string>: additional note to be stored in claim
->
-> ```
+> None
 >
 > #### Response
 >
->     200 OK    the signed application/pdf file
+>     200 OK    no content
 >
 > #### Body
 >
-> An application/pdf body containing the document to retract
+> An application/pdf body containing the document to revoke
 
 ### Download file from digital archive
 
@@ -775,198 +714,6 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 > ### Response
 >
 >     200 OK    An application/pdf body containing the document
-
-### Delete Certifaction access to the file
-
-> #### Usage
->
->     GET /delete-access
->
-> #### Description
->
-> This makes files inaccessible for the Certifaction system for further processing.
-> Because of that it will no longer be possible to download files from the collection page
-> or request new signatures, although it will still be possible to access them
-> through the original signature request emails.
->
-> #### Authenticated
->
-> Yes
->
-> #### Body
->
-> An application/pdf body containing the document for which a signature is requested
->
-> ### Response
->
->     200 OK    An application/pdf body containing the document
-
-### Request a document signature
-
-> #### Usage
->
->     POST /request/create
->
-> #### Description
->
-> Create a document signature URL for the person with the given email address and name.
-> The signature request URL can either be sent to the user mailbox or returned by this
-> command. If the request URL is sent by email, then it is not returned by the command.
-> If the input parameter is omitted, then the command will take its input from stdin.
-> Returns to stdout the URL to be handed to the signer if the URL is not sent by email
-> otherwise return nothing. Document have to be already registered otherwise it will
-> return an error.
->
-> #### Authenticated
->
-> Yes
->
-> #### Header
->
-> None
->
-> #### Query parameters
->
->     name=<string>:    Full name of the signer
->     email=<string>:   Email address of the signer
->     send-email=true:  When this flag is enabled the API will send a signing request to the user
->
-> #### Response
->
->     200 OK    an application/json containing the resulting request URL
->
-> #### Body
->
-> An application/pdf body containing the document for which a signature is requested
->
-> ##### Example
->
-> ```json
-> {
->    "request_url":"<the URL to be handed to the signer>"
-> }
-> ```
-
-### Edit a document signature request
-
-> #### Usage
->
->     POST /request/edit
->
-> #### Description
->
-> Allows changing the email address and/or name for a given signature request for a given
-> document. If the input parameter is omitted, then the command will take its
-> input from stdin.
->
-> #### Authenticated
->
-> Yes
->
-> #### Header
->
-> None
->
-> #### Query parameters
->
->     email=<string>:      Current email address of signer.
->     new-name=<string>:   New name of the signer.
->     new-emain=<string>:  New email address of the signer.
->
-> #### Response
->
->     200 OK 
->
-> #### Body
->
-> An application/pdf body containing the document for which a signature is requested
-
-### List document signature requests
-
-> #### Usage
->
->     POST /request/list
->
-> #### Description
->
-> Lists all sent signature requests and their status for a given document.
->
-> #### Authenticated
->
-> Yes
->
-> #### Header
->
-> None
->
-> #### Response
->
->     200 OK  A JSON object representing all signature requests for the file.
->
-> #### Body
->
-> An application/pdf body containing the document for which a signature is requested
-
-### Cancel a document signature request
-
-> #### Usage
->
->     POST /request/cancel
->
-> #### Description
->
-> Cancels a signature request for a given document for the person with the given email address.
->
-> #### Authenticated
->
-> Yes
->
-> #### Header
->
-> None
->
-> #### Query parameters
->
->     email=<string>:   email address of signer
->     note=<string>:   Note to be sent to the invitee explaining why the request was cancelled.
->
-> #### Response
->
->     204 No Content
->
-> #### Body
->
-> An application/pdf body containing the document for which a signature request should be cancelled
-
-### Cancel a document signing process
-
-> #### Usage
->
->     POST /request/cancel/all
->
-> #### Description
->
-> Cancels all signature request for a given document. If the input parameter is omitted, then the command will take its input from stdin.
->
-> #### Authenticated
->
-> Yes
->
-> #### Header
->
-> None
->
-> #### Query parameters
->
->     note=<string>:   Note to be sent to the invitee explaining why the request was cancelled.
->
-> #### Response
->
->     204 No Content
->
-> #### Body
->
-> An application/pdf body containing the document for which a signature is requested
 
 ### Get the authenticated user information
 
@@ -1040,5 +787,3 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 > None
 >
 > #### Response
->
->     200 OK    Returns the text/html documentation file
