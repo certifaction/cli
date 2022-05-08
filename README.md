@@ -566,7 +566,17 @@ The endpoints directly mirror the CLI commands.
 
 When indicated, the requests must be authenticated using the Authorization header as following:
 
-    Authorization: Bearer <AccessToken>
+```
+Authorization: <API key>
+```
+
+or
+
+```
+Authorization: Bearer <3rd party Oauth token>
+```
+
+API keys can be created in the setting section of the Certifaction web application.
 
 If the request is not authenticated a HTTP 401 Unauthorized response is returned.
 
