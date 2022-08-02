@@ -871,7 +871,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >
 >     email=<string>:      Current email address of signer.
 >     new-name=<string>:   New name of the signer.
->     new-emain=<string>:  New email address of the signer.
+>     new-email=<string>:  New email address of the signer.
 >
 > #### Response
 >
