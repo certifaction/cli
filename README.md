@@ -88,11 +88,9 @@ IT infrastructure in clear text without your consent.
 
 Here are the steps during a simple document signature:
 
-1.  The CLI Receives the PDF
-    document to sign and process it (add security features including a unique secure URL and one or more signature
+1.  The CLI Receives the PDF document to sign and process it (add security features including a unique secure URL and one or more signature
     pages).
-2.  The hash of the
-    file is sent to Certifaction API for signature
+2.  The hash of the file is sent to Certifaction API for signature
 3.  Certifaction API uses one of its pluggable signature provider depending on the signature level and jurisdiction
 4.  Certifaction API returns the PKCS #7 CMS signature to the CLI
 5.  The CLI embeds the signature in the PDF document and returns to the Client
@@ -127,29 +125,25 @@ document.
 
 During a signature request, the CLI will:
 
-1.  Receive the PDF
-    document to sign and the signer information
-2.  Processe the document, adding security features including the secure Digital Twin URL
-3.  Encrypt the document using the secret key contained in the Digital Twin URL
-4.  Store the document in Certifaction Digital Archive for later retrieval.
-5.  Return the secure URL
+1.  Receive the PDF document to sign and the signer information
+2.  Process the document, adding security features including the secure Digital Twin URL
+3.  Encrypt the document using either the secret key contained in the Digital Twin URL, or a manually provided key
+5.  Store the document in Certifaction Digital Archive for later retrieval
+6.  Return the secure URL.
 
-The Digital Twin URL can be shared with the invited person.  A new URL must be created for each signer.
+The Digital Twin URL can be shared with the invited person. A new URL must be created for each signer.
 Since the URL contains a secret, access to its content must be protected as well as would be the original document.
 
 ## Usage options
 
 The Certifaction CLI can be used in two modes:
 
-*   Interactive to execute commands
-    on the shell, as part of a script or from a third party application.
-*   Server
-    mode that exposes HTTP endpoints.
+*   Interactive to execute commands on the shell, as part of a script or from a third party application.
+*   Server mode that exposes HTTP endpoints.
 
 In both cases, the CLI sits between the third party application and the Certifaction
 API and will handle document signing, certification, verification and revocation without
-leaking the document content outside the controlled IT infrastructure of the
-client.
+leaking the document content outside the controlled IT infrastructure of the client.
 
 ![Principles diagram](./assets/principles-diagram.svg)
 
@@ -331,27 +325,38 @@ Here are the command global flags that can be used for every command:
 
 > #### Usage
 >
->     certifaction prepare [prepare flags] [-o output] [input | url]
+>   certifaction prepare [input files | URLs...] [flags]
 >
 > #### Description
 >
-> Prepares a document for signing. A salt and a document claim encryption key
-> pair is added to the document, and optionally a branded footer. If enabled, a
-> Digital Twin QR code with a document encryption key will be added to the
-> document. If the input file is already a digital original then the command
-> will return the input file unchanged. Currently only processes PDF files. An
-> error is returned if the input is not a PDF file. If the input parameter is
-> omitted, then the command will take its input from stdin. If the output
-> parameter is omitted, then the output will be returned to stdout.
->
+> Prepare a document for signing.
+> A salt and a document claim encryption key pair is added to the document, and optionally a branded footer.
+> If enabled, a Digital Twin QR code with a document encryption key will be added to the document.
+> If the input file is already a digital original then the command will return the input file unchanged.
+> Currently only processes PDF files. An error is returned if the input is not a PDF file.
+> If the input file (or URL) is omitted, then the command will take its input from stdin.
+> If the output file is omitted, then the output will be returned to stdout.
+> 
+> The signature and the Digital Twin QR code can be placed manually or on an additional page; they are placed on an additional page by default.
+> To place them manually, set --additional-page=false and pass the necessary positioning flags (see --additional-page help).
+> 
 > #### Flags
 >
->     --digital-twin     Adds a Digital Twin footer, encrypts the document and stores it.
->                       Uses the footer template given by the -footer parameter.
->                       If no -footer parameter is provided, then the default footer is used.
->     --language         Overrides the default language. Available languages are de, en, fr and it.
->     --scope            Optional signature scope override to choose between
->                       register, sign and certify.
+>       --additional-page                Adds an additional page with the signatures of the signers and the Digital Twin QR code.
+>                                        If --additional-page=false, --page, --position-x, --position-y, and --height need to be submitted;
+>                                        if, in addition, --digital-twin=true, --qr-llx, --qr-lly, --qr-height, and --qr-page are required. (default true)
+>       --digital-twin                   Adds a Digital Twin footer, encrypt the document and store it.
+>       --encryption-key generate-keys   Encryption key in hexadecimal format. Generate one with generate-keys. If none is given, a new one is generated for you.
+>   -h, --help                           help for prepare
+>   -l, --language string                Overrides the default language.
+>   -o, --output string                  Output file path. Use '-' for stdout.
+>       --output-dir string              Directory to place all output files.
+>       --password-algorithm string      Password encryption algorithm. Either empty (with no password) or xor-b58
+>       --qr-height float                Height of the Digital Twin QR code. Required when --additional-page=false and --digital-twin=true.
+>       --qr-llx float                   Bottom-left x-coordinate of the Digital Twin QR code. Required when --additional-page=false and --digital-twin=true.
+>       --qr-lly float                   Bottom-left y-coordinate of the Digital Twin QR code. Required when --additional-page=false and --digital-twin=true.
+>       --qr-page uint                   Page number to place the Digital Twin QR code. Required when --additional-page=false and --digital-twin=true.
+>       --scope string                   Optional signature scope override. To choose between register, sign and certify.
 
 ### Sign a document
 
@@ -403,23 +408,17 @@ Here are the command global flags that can be used for every command:
 
 > #### Usage
 >
->     certifaction request create [request flags] [input | url]
->
+>   certifaction request create [input files | URLs...] [flags]
+> 
 > #### Description
 >
-> Create a document signature URL for the person with the given email address and name.
-> The signature request URL can either be sent to the user mailbox or returned by this
-> command. If the request URL is sent by email, then it is not returned by the command.
-> If the input parameter is omitted, then the command will take its input from stdin.
-> Returns to stdout the URL to be handed to the signer if the URL is not sent by email
-> otherwise return nothing. Document have to be already registered otherwise it will
-> return an error.
->
+> Create a document signature URL for the person with the given name, optionally email and mobile phone. The signature request URL can either be sent to the user mailbox or returned by this command. If the request URL is sent by email, then it is not returned by the command. If the input parameter is omitted, then the command will take its input from stdin. Returns to stdout the URL to be handed to the signer if the URL is not sent by email otherwise return nothing.
+> 
 > #### Flags
->
->     --name         string   Full name of the signer
->     --email        string   Email address of the signer [required]
->     --send-email   bool     When this flag is enabled the API will send a signing request to the user
+>       --name         string   Full name of the signer
+>       --email string                   Email address of signer.
+>       --encryption-key generate-keys   Encryption key in hexadecimal format. Generate one with generate-keys. If none is given, a new one is generated for you.
+>       --send-email                     When this flag is enabled API will send signing request to the user.
 
 ### Edit a document signature request
 
@@ -836,10 +835,26 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >     200 OK    an application/json containing the resulting request URL
 >
 > #### Body
+> Either:
 >
-> An application/pdf body containing the document for which a signature is requested
+> - An application/pdf body containing the document for which a signature is requested;
+> - or a multipart/form-data body containing the documents for which signatures are requested under the field name `files`.
 >
 > ##### Example
+> ```sh
+> # Request signature for a single document.
+> curl -X POST \
+>     -H "Content-Type: application/pdf" \
+>     --data-binary @file.pdf \
+>     -H 'authorization:<API_KEY>' \
+>     "http://localhost:8082/request/create?send-email=false&email=<signer-email>"
+> 
+> # Request signatures for multiple documents.
+> curl -X POST \
+>     -F files=@file1.pdf \
+>     -F files=@file2.pdf \
+>     'http://localhost:8082/request/create?send-email=true&encryption-key=<generated-encryption-key>&email=<signer-email>'
+> ```
 >
 > ```json
 > {
