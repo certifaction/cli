@@ -383,8 +383,8 @@ Here are the command global flags that can be used for every command:
 >     --hash            String, the hash of the document to sign
 >     --legal-weight    Allows to select type of the signature. Possible values are
 >                      "standard" and "QES". Defaults to "standard".
->     --jurisdiction   Only valid with "QES" signature, currently the only supported
->                      value is "ZertES"
+>     --jurisdiction   Only valid with "QES" signature, supported
+>                      values are "zertes" and "eidas"
 
 ### Retract a document
 
@@ -501,7 +501,7 @@ Here are the command global flags that can be used for every command:
 >
 > #### Flags
 >
->     --jurisdiction string   Jurisdiction. For example: eIDAS or ZertES
+>     --jurisdiction string   Jurisdiction. For example: zertes or eidas
 
 ### Start the HTTP server
 
@@ -703,7 +703,7 @@ The server does not terminate TLS connections. If TLS is required, a proxy must 
 >     hash=<string>: the hash of the document to sign
 >     filename=<string>: the name of the file
 >     legal-weight=<string>: allows to select type of the signature. Posible values are "standard" and "QES". Defaults to "standard".
->     jurisdinction=<string>: only valid with "QES" signature, currently only supported value is "ZertES"
+>     jurisdiction=<string>: only valid with "QES" signature, supported values are "zertes" and "eidas"
 >
 >     In addition, the query will accept the prepare query parameters.
 >
