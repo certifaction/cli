@@ -19,7 +19,7 @@ export default {
 
   themeConfig: {
     siteTitle: false,
-    logo: "/assets/certifaction_logo.svg",
+    logo: "/certifaction_logo.svg",
     nav: [
       {
         text: "Guide",
