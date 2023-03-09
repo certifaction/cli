@@ -7,7 +7,7 @@ hero:
   text: Privacy-first eSignatures
   tagline: The simplest API to sign, certify and verify documents
   image:
-    src: ./assets/cli_integration.png
+    src: /cli_integration.png
     alt: VitePress
   actions:
     - theme: brand
