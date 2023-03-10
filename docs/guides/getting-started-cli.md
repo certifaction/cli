@@ -10,7 +10,7 @@ In this section, you sign your first document in a few steps:
 
 ## Step 1: Generate an API token
 
-If you have not created a Certifaction account yet, please create in
+If you have not created a Certifaction account yet, please create one at
 [Certifaction web application](https://app.certifaction.io).
 
 To create an API key, please navigate
