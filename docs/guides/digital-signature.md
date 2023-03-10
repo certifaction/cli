@@ -1,6 +1,6 @@
 # Digital signature
 
-Certifaction digital signature allows client to add one or more digital signatures to PDF documents.
+Certifaction's digital signature allows client to add one or more digital signatures to PDF documents.
 
 Certifaction document signature is based on the [PAdES](https://en.wikipedia.org/wiki/PAdES) standard,
 which uses cryptography and the public PKI infrastructure to provides the highest guarantee against forgery.
