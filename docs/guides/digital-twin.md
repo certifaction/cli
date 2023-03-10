@@ -2,7 +2,7 @@
 
 In addition to storing the secure URL inside the PDF as custom information, a Digital Twin QR code can be added
 to the document. This QR code contains the secure URL that can be used to retrieve the encrypted version of
-document stored in Certifaction servers.
+document stored in Certifaction's servers.
 
 When printing the document, the visible QR code can be scanned to retrieve the last version of the document.
 Certifaction Digital Twin bridges the world of printed and digital documents.
