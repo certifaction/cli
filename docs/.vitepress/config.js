@@ -98,8 +98,6 @@ export default {
         },
       ],
 
-      // This sidebar gets displayed when a user
-      // is on `config` directory.
       "/references/": [
         {
           text: "References",
