@@ -18,7 +18,7 @@ IT infrastructure in clear text without your consent.
 
 Here are the steps during a simple document signature:
 
-1.  The CLI Receives the PDF document to sign and process it (add security features including a unique secure URL and one or more signature
+1.  The CLI receives the PDF document to sign and process it (add security features including a unique secure URL and one or more signature
     pages).
 2.  The hash of the file is sent to Certifaction API for signature
 3.  Certifaction API uses one of its pluggable signature provider depending on the signature level and jurisdiction
