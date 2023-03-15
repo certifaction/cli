@@ -7,4 +7,6 @@ aside: false
   import ApiDoc from "../components/ApiDoc.vue";
 </script>
 
-<ApiDoc specUrl="./openapi.yaml"/>
+<ClientOnly>
+   <ApiDoc specUrl="./openapi.yaml"/>
+</ClientOnly>
