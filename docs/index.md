@@ -14,6 +14,9 @@ hero:
       text: Getting Started
       link: /guides/what-is-certifaction
     - theme: alt
+      text: Local API doc
+      link: /references/api
+    - theme: alt
       text: View on GitHub
       link: https://github.com/certifaction/cli
 
