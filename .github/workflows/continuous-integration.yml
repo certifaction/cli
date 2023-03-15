@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "**"
+
 jobs:
   build:
     if: "github.ref != 'refs/heads/main'"
@@ -14,10 +15,10 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: '19'
           cache: npm
       - name: Install dependencies
-        run: make deps
+        run: make prepare-ci
       - name: Build
         run: make build
 
@@ -36,9 +37,9 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: '19'
           cache: npm
-      - run: make deps
+      - run: make prepare-ci
       - name: Build
         run: make build
       - uses: actions/configure-pages@v2
