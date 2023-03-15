@@ -8,5 +8,5 @@ aside: false
 </script>
 
 <ClientOnly>
-   <ApiDoc specUrl="./openapi.yaml"/>
+   <ApiDoc specUrl="/openapi.yaml"/>
 </ClientOnly>

@@ -20,7 +20,9 @@
 </template>
 
 <script setup>
-import "rapidoc";
+// Dynamically loading rapidoc to avoir SSR issues
+import("rapidoc");
+
 import { computed, ref, watch, onMounted } from "vue";
 import { useData } from "vitepress";
 
@@ -33,6 +35,7 @@ const props = defineProps({
 
 const data = useData();
 const isDark = data.isDark;
+
 const rapiDocElement = ref();
 
 onMounted(() => {
