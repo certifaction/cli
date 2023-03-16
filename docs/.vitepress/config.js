@@ -1,8 +1,18 @@
-export default {
+import { defineConfig } from "vitepress";
+
+export default defineConfig({
   title: " ",
   description: "Privacy First eSigning",
   cleanUrls: true,
   lastUpdated: true,
+
+  vue: {
+    template: {
+      compilerOptions: {
+        isCustomElement: (tag) => tag.startsWith("rapi-doc"),
+      },
+    },
+  },
 
   socialLinks: [
     { icon: "github", link: "https://github.com/certifaction/cli" },
@@ -123,4 +133,4 @@ export default {
       ],
     },
   },
-};
+});

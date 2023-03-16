@@ -3,9 +3,27 @@ on:
   workflow_dispatch: {}
   push:
     branches:
-      - main
+      - "**"
+
 jobs:
+  build:
+    if: "github.ref != 'refs/heads/main'"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+          cache: npm
+      - name: Install dependencies
+        run: make prepare-ci
+      - name: Build
+        run: make build
+
   deploy:
+    if: "github.ref == 'refs/heads/main'"
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -19,11 +37,11 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: '19'
           cache: npm
-      - run: npm install --frozen-lockfile
+      - run: make prepare-ci
       - name: Build
-        run: npm run docs:build
+        run: make build
       - uses: actions/configure-pages@v2
       - uses: actions/upload-pages-artifact@v1
         with:
