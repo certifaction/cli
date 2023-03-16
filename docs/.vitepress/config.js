@@ -59,50 +59,71 @@ export default defineConfig({
               link: "/guides/what-is-certifaction",
             },
             { text: "Getting started", link: "/guides/getting-started" },
-            {
-              text: "Document signature",
-              collapsed: false,
-              items: [
-                {
-                  text: "Digital signature",
-                  link: "/guides/digital-signature",
-                },
-                {
-                  text: "Signature request",
-                  link: "/guides/signature-request",
-                },
-                {
-                  text: "Digital Twin",
-                  link: "/guides/digital-twin",
-                },
-                {
-                  text: "Local Processing",
-                  link: "/guides/local-processing",
-                },
-              ],
-            },
+          ],
+        },
+        {
+          text: "Getting Started",
+          collapsed: false,
+          items: [
             {
               text: "Installation",
               link: "./installation",
             },
+            {
+              text: "Local API",
+              link: "/guides/getting-started-api",
+            },
+            {
+              text: "CLI",
+              link: "/guides/getting-started-cli",
+            },
           ],
         },
         {
-          text: "Guides",
+          text: "Concepts",
           collapsed: false,
           items: [
             {
-              text: "Getting started",
-              items: [
-                {
-                  text: "Local API",
-                  link: "/guides/getting-started-api",
-                },
-                {
-                  text: "CLI",
-                  link: "/guides/getting-started-cli",
-                },
-              ],
+              text: "Document signature",
+              link: "/guides/digital-signature",
+            },
+            {
+              text: "Signature request",
+              link: "/guides/signature-request",
+            },
+            {
+              text: "Digital Twin",
+              link: "/guides/digital-twin",
+            },
+            {
+              text: "Local Processing",
+              link: "/guides/local-processing",
+            },
+          ],
+        },
+        {
+          text: "Howto",
+          collapsed: false,
+          items: [
+            {
+              text: "Sign documents",
+              link: "/guides/howto-sign-documents",
+            },
+            {
+              text: "Request one signature",
+              link: "/guides/howto-request-one-signature",
+            },
+            {
+              text: "Request multiple signatures",
+              link: "/guides/howto-request-multiple-signatures",
+            },
+            {
+              text: "Download documents",
+              link: "/guides/howto-download-documents",
+            },
+            {
+              text: "Check document status",
+              link: "/guides/howto-check-document-status",
             },
           ],
         },
