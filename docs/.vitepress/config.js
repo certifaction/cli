@@ -1,7 +1,7 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  title: " ",
+  title: "Certifaction",
   description: "Privacy First eSigning",
   cleanUrls: true,
   lastUpdated: true,

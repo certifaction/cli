@@ -1,6 +1,7 @@
 ---
 layout: home
-editLink: true,
+title: Developers
+editLink: true
 
 hero:
   name: Certifaction
