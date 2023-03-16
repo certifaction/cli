@@ -21,21 +21,14 @@ hero:
       link: https://github.com/certifaction/cli
 
 features:
-  - icon:
-      src: /cool-feature-icon.svg
-    title: Certifaction Local API
+  - title: Certifaction Local API
     details:
       Deploy a stateless secured gateway using docker to integrate Certifaction
       Privacy-first electronic signature to your existing services.
-  - icon:
-      src: /cool-feature-icon.svg
-    title: Certifaction CLI
+  - title: Certifaction CLI
     details: Simply sign documents and request signatures from your shell.
       Always keep your documents secure.
-  - icon:
-      dark: /dark-feature-icon.svg
-      light: /light-feature-icon.svg
-    title: Digital Twin
+  - title: Digital Twin
     details: Make printed documents verifiable with a QR code linking to their
       digital originals.
 ---
