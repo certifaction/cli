@@ -3,10 +3,10 @@
 This is the [Certifaction](https://certifaction.com) Client repository with the documentation and the
 executable releases for different platforms.
 
-- Get Started integrating with Certifaction Local API at our [Developer Portal](https://developers.certifaction.com).
-- Propose documentation update and fixes by creating a pull request.
+- Get Started integrating with the Certifaction Local API at our [Developer Portal](https://developers.certifaction.com).
+- Propose documentation update and fixes by creating a [Pull request](https://github.com/certifaction/cli/pulls).
 - Please create an [Issue](https://github.com/certifaction/cli/issues) to report any bug and propose new features, or
-  [contact us](https://certifaction.com/contact) directly.
+  [contact us](mailto:support@certifaction.com) directly.
 
 If you are interested in integrating with our Blockchain document certification and verification, please go to
 our [Blockchain certification](blockchain_certification.md) page.
