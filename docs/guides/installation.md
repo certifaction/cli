@@ -41,7 +41,7 @@ HTTP to sign documents with the guarantee that documents do not leave
 the local environment. This is the best option for centralized document
 signatures where documents are signed during an automated document workflow.
 
-![HTTP server mode diagram](/assets/http-server-mode-diagram.svg)
+![HTTP server mode diagram](../assets/http-server-mode-diagram.png)
 
 ### Using the client as command line interface
 
@@ -60,4 +60,4 @@ signatures from other people.
 Documents can either be saved and loaded on the file system, or they can be passed to the
 command using the standard input and output.
 
-![Standalone application diagram](/assets/standalone-application-diagram.svg)
+![Standalone application diagram](../assets/standalone-application-diagram.png)
