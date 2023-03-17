@@ -24,7 +24,7 @@ curl --location --request POST 'http://localhost:8082/prepare?scope=sign' \
 
 ## Download a document
 
-To download a document, use the [`/downloads`](../references/api#get-/downloads) endpoint.
+To download a document, use the [`/download`](../references/api#get-/download) endpoint.
 
 _Example:_
 
@@ -35,7 +35,7 @@ curl --location --request GET 'http://localhost:8082/download?file=REQUEST_URL' 
 
 ## Request signatures
 
-You can now request multiple signatures by calling the [`/request/create endpoint`](../references/api#post-/request/create) endpoint
+You can now request multiple signatures by calling the [`/request/create`](../references/api#post-/request/create) endpoint
 for each prepared document.
 
 _Example:_
