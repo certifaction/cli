@@ -29,7 +29,4 @@ features:
   - title: Certifaction CLI
     details: Simply sign documents and request signatures from your shell.
       Always keep your documents secure.
-  - title: Digital Twin
-    details: Make printed documents verifiable with a QR code linking to their
-      digital originals.
 ---
