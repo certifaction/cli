@@ -67,7 +67,7 @@ export default defineConfig({
           items: [
             {
               text: "Installation",
-              link: "./installation",
+              link: "/guides/installation",
             },
             {
               text: "Local API",
