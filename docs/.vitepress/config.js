@@ -13,9 +13,10 @@ export default defineConfig({
       },
     },
   },
-
+  
   socialLinks: [
     { icon: "github", link: "https://github.com/certifaction/cli" },
+    { icon: "linkedin", link: "https://www.linkedin.com/company/certifaction-ag/" },
   ],
 
   editLink: {
