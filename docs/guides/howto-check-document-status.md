@@ -4,7 +4,7 @@ title: Check document status
 
 # Check document status
 
-To check document statuses, use the [`/request/list`](../references/api#post-/request/list) endpoint.
+To check the status of a document, use the [`/request/list`](../references/api#post-/request/list) endpoint.
 
 _Example:_
 
