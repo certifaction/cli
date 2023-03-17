@@ -1,12 +1,12 @@
 # Installation
 
-Use Certifaction local client to integrate with Certifaction.
-Using the local client ensures that your documents are never sent
+Use the Certifaction client to integrate with Certifaction.
+Using the client ensures that your documents are processed locally and are never sent
 in clear text.
 
 ## Requirements
 
-Certifaction local client is distributed as an executable file compatible with recent Linux,
+The Certifaction client is distributed as an executable file compatible with recent Linux,
 Windows and macOS operating systems and can be run in a Docker container.
 
 The client requires access to the Certifaction API and an authentication token for most
@@ -17,7 +17,7 @@ which must be accessible to client applications.
 
 ## How to install
 
-Download Certifaction local client from our [Public Repositor](https://github.com/certifaction/cli/releases).
+Download Certifaction client from our [Public Repository](https://github.com/certifaction/cli/releases).
 
 Please create an [Issue](https://github.com/certifaction/cli/issues) if you do
 not find an executable for your platform.
@@ -37,9 +37,9 @@ Just want to try the Local API? Skip to the [Local API Quickstart](./getting-sta
 </div>
 In this scenario, you will start the Local API, either
 directly in a node or VM, or inside a Docker container. The client will use
-HTTP to sign and verify documents with the guarantee that documents do not leave
-the client local environment. This is the best option for centralized document
-signature where documents are signed during an automated document workflow.
+HTTP to sign documents with the guarantee that documents do not leave
+the local environment. This is the best option for centralized document
+signatures where documents are signed during an automated document workflow.
 
 ![HTTP server mode diagram](/assets/http-server-mode-diagram.svg)
 
@@ -54,7 +54,7 @@ Just want to try the CLI? Skip to the [CLI Quickstart](./getting-started-cli).
 Use the client as a command line interface (CLI) for desktop automation or to integrate Certifaction
 in a standalone application.
 
-Standalone applications can directly call Certifaction executable to sign documents or request
+Standalone applications can directly call the Certifaction executable to sign documents or request
 signatures from other people.
 
 Documents can either be saved and loaded on the file system, or they can be passed to the
