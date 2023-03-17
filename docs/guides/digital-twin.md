@@ -12,4 +12,4 @@ How the Digital Twin works:
 3.  The encrypted copy is stored in Certifaction Digital Archive (DA).
 4.  The Digital Twin URL is recorded in Certifaction document locator.
 
-![Document digital twin diagram](../assets/document-digital-twin-diagram.svg)
+![Document digital twin diagram](../assets/document-digital-twin-diagram.png)
