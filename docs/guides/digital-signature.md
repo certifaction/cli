@@ -28,4 +28,4 @@ Here are the steps during a simple document signature:
 Additional signatures can be appended to an already signed document sequentially. Sending a signed document to an
 other signer is a simple and valid option.
 
-![Document signature diagram](../assets/document-signature-diagram.svg)
+![Document signature diagram](../assets/document-signature-diagram.png)
