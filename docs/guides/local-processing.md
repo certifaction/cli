@@ -11,7 +11,7 @@ In both cases, the Certifaction client serves as a proxy between the third-party
 API. It handles document signing, certification, verification and revocation without
 leaking the document content outside your controlled IT infrastructure.
 
-![Principles diagram](../assets/principles-diagram.svg)
+![Principles diagram](../assets/principles-diagram.png)
 
 ## Running the Local API on a node
 
@@ -21,7 +21,7 @@ HTTP to sign documents with the guarantee that documents do not leave
 the local environment. This is the best option for centralized document
 signatures where documents are signed during an automated document workflow.
 
-![HTTP server mode diagram](../assets/http-server-mode-diagram.svg)
+![HTTP server mode diagram](../assets/http-server-mode-diagram.png)
 
 ## Standalone application integration
 
@@ -32,4 +32,4 @@ integrate and link to external libraries.
 Standalone applications call the Certifaction CLI to sign documents on the
 file system or using the standard input and output.
 
-![Standalone application diagram](../assets/standalone-application-diagram.svg)
+![Standalone application diagram](../assets/standalone-application-diagram.png)
