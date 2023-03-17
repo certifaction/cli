@@ -4,7 +4,7 @@ title: Download documents
 
 # Download documents
 
-To download documents, use the [`/downloads`](../references/api#get-/downloads) endpoint.
+To download documents, use the [`/download`](../references/api#get-/download) endpoint.
 
 _Example:_
 
