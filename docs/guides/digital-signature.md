@@ -11,7 +11,7 @@ Certifaction uses three signature levels with increasing identity verification a
 - Professional Electronic Signature (PES): identification using ID document scanning and verification
 - Qualified Electronic Signature (QES): Swiss and EU qualified electronic signature requirements
 
-Certifaction's unique privacy-first signature ensures that the document content does not leave your
+Certifaction's unique privacy-first signature ensures that document content does not leave your
 IT infrastructure in clear text.
 
 ## Simple document signature
