@@ -2,12 +2,12 @@
 
 Local document processing ensures document confidentiality.
 
-The Certifaction client can be used in two modes:
+The Certifaction Client can be used in two modes:
 
 - Server mode that exposes a Local API.
 - Interactive to execute commands on the shell, as part of a script or from a third-party application.
 
-In both cases, the Certifaction client serves as a proxy between the third-party application and the Certifaction
+In both cases, the Certifaction Client serves as a proxy between the third-party application and the Certifaction
 API. It handles document signing, certification, verification and revocation without
 leaking the document content outside your controlled IT infrastructure.
 
@@ -16,7 +16,7 @@ leaking the document content outside your controlled IT infrastructure.
 ## Running the Local API on a node
 
 In this scenario, you will start the Local API, either
-directly in a node or VM, or inside a Docker container. The client will use
+directly in a node or VM, or inside a Docker container. The Client will use
 HTTP to sign documents with the guarantee that documents do not leave
 the local environment. This is the best option for centralized document
 signatures where documents are signed during an automated document workflow.
