@@ -297,7 +297,7 @@ paths:
       tags:
         - Documents
 
-  /downloads:
+  /download:
     get:
       summary: Download files
       parameters:
@@ -497,87 +497,18 @@ paths:
       tags:
         - Signing
 
-  /retract:
+  /revoke:
     post:
-      operationId: retract_signature
-      parameters:
-        - $ref: "#/components/parameters/digital_twin"
-        - $ref: "#/components/parameters/pdf-a"
-        - $ref: "#/components/parameters/accept_language"
-        - $ref: "#/components/parameters/additional_page"
-        - $ref: "#/components/parameters/qr_llx"
-        - $ref: "#/components/parameters/qr_lly"
-        - $ref: "#/components/parameters/qr_height"
-        - $ref: "#/components/parameters/qr_page"
-        - $ref: "#/components/parameters/encryption_key"
-        - $ref: "#/components/parameters/password_encryption"
-        - name: hash
-          in: query
-          schema:
-            type: string
-        - name: note
-          in: query
-          schema:
-            type: string
-            maxLength: 255
-        - name: legal-weight
-          in: query
-          schema:
-            type: string
-            enum:
-              - AES
-              - PES
-              - QES
-              - SES
-        - name: jurisdiction
-          in: query
-          schema:
-            type: string
-            enum:
-              - eIDAS
-              - ZertES
-        - name: filename
-          in: query
-          schema:
-            type: string
-        - name: no-prepare
-          in: query
-          schema:
-            type: boolean
-        - name: position-x
-          description: |
-            The x-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: position-y
-          description: |
-            The y-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: height
-          description: The height of the signature card. This is required when `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: page
-          description: The page to place the signature on. This is required when `additional-page=false`.
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-      summary: Retract a signature
+      operationId: revoke_document
+      summary: Revoke a document
       requestBody:
-        description: The file to retract.
+        description: The document to revoke.
         required: true
         content:
           application/pdf: {}
       responses:
         200:
-          description: The retraction was successful.
+          description: The revocation was successful.
         400:
           $ref: "#components/responses/bad_request"
         401:
@@ -831,6 +762,17 @@ paths:
         required: true
         content:
           application/pdf: {}
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: url
+                  description: |
+                    DA URLs to the documents to sign. Previous signing links can be reused.
+                    If a link to a password-protected request is provided, also pass the `password` parameter.
           multipart/form-data:
             schema:
               properties:
@@ -838,10 +780,11 @@ paths:
                   type: array
                   items:
                     type: string
-                  description: An array of PDF files or DA URLs.
+                    format: binary
+                  description: Upload PDF documents to sign.
             encoding:
               files:
-                contentType: application/pdf, text/plain
+                contentType: application/pdf
                 style: form
       responses:
         200:
@@ -861,50 +804,6 @@ paths:
           $ref: "#components/responses/unauthorized"
         409:
           description: The signer already has a pending signature request for the file.
-      tags:
-        - Signing
-
-  /request/edit:
-    post:
-      operationId: edit_request
-      parameters:
-        - name: email
-          in: query
-          schema:
-            type: string
-            format: email
-          description: The email of the signer to update.
-          required: true
-        - name: new-email
-          in: query
-          schema:
-            type: string
-            format: email
-          description: The corrected email.
-        - name: new-name
-          in: query
-          schema:
-            type: string
-          description: The corrected name.
-      summary: Correct signer information
-      requestBody:
-        description: A file used in the signature request.
-        required: true
-        content:
-          application/pdf: {}
-      responses:
-        204:
-          description: Update was successful.
-        400:
-          description: |
-            Check that:
-            1. The `email` parameter was provided.
-            2. At least one of `new-email` or `new-name` was provided.
-            3. The file provided has been prepared and can be read.
-        401:
-          $ref: "#components/responses/unauthorized"
-        409:
-          description: The corrected email is already used in a pending signature request for the file.
       tags:
         - Signing
 
@@ -1034,37 +933,6 @@ paths:
           description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
       tags:
         - Signing
-
-  /request/evidence:
-    post:
-      operationId: download_evidences
-      summary: Download evidence
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              properties:
-                request_url:
-                  type: string
-                  format: url
-                all:
-                  type: boolean
-                  description: Download all verified evidences.
-              required:
-                - request_url
-      responses:
-        200:
-          description: A ZIP file containing the evidences.
-          content:
-            application/zip: {}
-        400:
-          description: The request body could not be read.
-        401:
-          $ref: "#components/responses/unauthorized"
-      tags:
-        - Signing
-        - Documents
 
   /qes/check:
     post:
