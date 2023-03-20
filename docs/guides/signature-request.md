@@ -8,7 +8,7 @@ documents.
 During a signature request, the CLI will:
 
 1.  Receive the PDF document to sign and the signer information.
-2.  Process the document, adding security features including the secure Digital Archive URL.
+2.  Process the document, adding security features including a secure Digital Archive URL.
 3.  Encrypt the document using either the secret key contained in the Digital Archive URL, or a manually provided key.
 4.  Store the document in the Certifaction Digital Archive for later retrieval.
 5.  Return the signature request URL.
