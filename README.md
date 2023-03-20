@@ -4,7 +4,7 @@ This is the [Certifaction](https://certifaction.com) Client repository with the 
 executable releases for different platforms.
 
 - Get Started integrating with the Certifaction Local API at our [Developer Portal](https://developers.certifaction.com).
-- Propose documentation update and fixes by creating a [Pull request](https://github.com/certifaction/cli/pulls).
+- Propose documentation update and fixes by creating a [Pull Request](https://github.com/certifaction/cli/pulls).
 - Please create an [Issue](https://github.com/certifaction/cli/issues) to report any bug and propose new features, or
   [contact us](mailto:support@certifaction.com) directly.
 
