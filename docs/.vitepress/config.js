@@ -16,7 +16,10 @@ export default defineConfig({
 
   themeConfig: {
     siteTitle: false,
-    logo: "/certifaction_logo.svg",
+    logo: {
+        "light": "/certifaction_logo.svg",
+        "dark": "/certifaction_logo_white.svg",
+    },
     socialLinks: [
         { icon: "github", link: "https://github.com/certifaction/cli" },
         { icon: "linkedin", link: "https://www.linkedin.com/company/certifaction-ag/" },
