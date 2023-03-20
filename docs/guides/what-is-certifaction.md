@@ -14,7 +14,7 @@ Just want to try it out? Skip to the [Quickstart](./getting-started).
 
 - end-to-end encryption of documents,
 - legally valid identity check,
-- Digital Twin connecting printed documents with their digital original.
+- Digital Twin bridging printed documents with their digital original.
 
 ## End-to-end encryption
 
