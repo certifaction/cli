@@ -2,7 +2,7 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "Certifaction",
-  description: "Privacy First eSigning",
+  description: "Privacy-first eSigning",
   cleanUrls: true,
   lastUpdated: true,
 
@@ -14,22 +14,25 @@ export default defineConfig({
     },
   },
 
-  socialLinks: [
-    { icon: "github", link: "https://github.com/certifaction/cli" },
-  ],
-
-  editLink: {
-    pattern: "https://github.com/certifaction/cli/edit/main/docs/:path",
-    text: "Edit this page on GitHub",
-  },
-
-  footer: {
-    copyright: "Copyright © 2020-present Certifaction AG",
-  },
-
   themeConfig: {
     siteTitle: false,
-    logo: "/certifaction_logo.svg",
+    logo: {
+        "light": "/certifaction_logo.svg",
+        "dark": "/certifaction_logo_white.svg",
+    },
+    socialLinks: [
+        { icon: "github", link: "https://github.com/certifaction/cli" },
+        { icon: "linkedin", link: "https://www.linkedin.com/company/certifaction-ag/" },
+    ],
+
+    editLink: {
+        pattern: "https://github.com/certifaction/cli/edit/main/docs/:path",
+        text: "Edit this page on GitHub",
+    },
+
+    footer: {
+        copyright: "Copyright © 2020-present Certifaction AG",
+    },
     nav: [
       {
         text: "Guide",
@@ -67,7 +70,7 @@ export default defineConfig({
           items: [
             {
               text: "Installation",
-              link: "./installation",
+              link: "/guides/installation",
             },
             {
               text: "Local API",
@@ -102,7 +105,7 @@ export default defineConfig({
           ],
         },
         {
-          text: "Howto",
+          text: "HowTos",
           collapsed: false,
           items: [
             {

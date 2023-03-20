@@ -4,7 +4,7 @@ title: Request one signature
 
 # Request one signature
 
-If want someone else to sign a document, you can use the [`/request/create endpoint`](../references/api#post-/request/create) endpoint.
+If want someone else to sign a document, you can use the [`/request/create`](../references/api#post-/request/create) endpoint.
 You can also use a document that was already signed by you and use it as the input for a signature request.
 
 _Example:_

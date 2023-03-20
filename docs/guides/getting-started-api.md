@@ -5,26 +5,26 @@ title: Getting Started with the Local API
 # Getting Started with the Local API
 
 In this section, you sign your first document in a few steps
-using Certifaction Local API:
+using the Certifaction Local API:
 
 [[toc]]
 
-## Step 1: Generate an API token
+## Step 1: Generate a personal API key
 
-If you have not created a Certifaction account yet, please create in
+If you have not created a Certifaction account yet, please create one in the
 [Certifaction web application](https://app.certifaction.io).
 
-To create an API key, please navigate
-to the [API Key setting page](https://app.certifaction.io/settings/api-keys)
+To create a personal API key, please navigate
+to the [API key settings page](https://app.certifaction.io/settings/api-keys)
 and follow the instructions.
 
 Please ensure that you copy the key and
 store it safely. The key will give any holder the same account rights
 as yours. The key is shown only once.
 
-## Step 2: Download the client tool
+## Step 2: Download the Certifaction Client
 
-Please download and install the latest client tool release from our [Github repository](https://github.com/certifaction/cli/releases/latest).
+Please download and install the latest Certifaction Client from our [Github repository](https://github.com/certifaction/cli/releases/latest).
 
 Do not hesitate to create an [Issue](https://github.com/certifaction/cli/issues) if you do
 not find an executable for your platform.
@@ -56,7 +56,7 @@ Sign your first PDF document by calling the Local API using HTTP:
 ::: code-group
 
 ```curl
-curl -X POST -H 'authorization:API_KEY' -F files=@INPUT_FILE.pdf 'http://localhost:8082/request/sign'
+curl -X POST -H 'authorization: PERSONAL_API_KEY' -F files=@INPUT_FILE.pdf 'http://localhost:8082/sign'
 
 ```
 
@@ -64,4 +64,4 @@ curl -X POST -H 'authorization:API_KEY' -F files=@INPUT_FILE.pdf 'http://localho
 
 ## What next?
 
-For further information about the Local API, please refer to the [Local API Reference](/references/api)
+For further information about the Local API, please refer to the [Local API Reference](/references/api) or check out the [HowTos](/guides/howto-sign-documents).

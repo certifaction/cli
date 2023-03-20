@@ -42,7 +42,7 @@ function setTheme(theme) {
         rapiDocElementInstance.setAttribute('nav-hover-bg-color', '#ffebea')
         rapiDocElementInstance.setAttribute('nav-hover-text-color', '#9b0700')
         rapiDocElementInstance.setAttribute('nav-accent-color', '#f87070')
-        rapiDocElementInstance.setAttribute('primary-color', '#f63c41')
+        rapiDocElementInstance.setAttribute('primary-color', '#0669F2')
     } else if (theme === 'light') {
         rapiDocElementInstance.setAttribute('theme', 'light')
         rapiDocElementInstance.setAttribute('bg-color', '#ffffff')
@@ -51,7 +51,7 @@ function setTheme(theme) {
         rapiDocElementInstance.setAttribute('nav-hover-bg-color', '#ffebea')
         rapiDocElementInstance.setAttribute('nav-hover-text-color', '#9b0700')
         rapiDocElementInstance.setAttribute('nav-accent-color', '#f87070')
-        rapiDocElementInstance.setAttribute('primary-color', '#f63c41')
+        rapiDocElementInstance.setAttribute('primary-color', '#0669F2')
     }
 }
 </script>
