@@ -1,3 +1,6 @@
 :root {
   --vp-c-brand: #0669F2;
+  --vp-c-brand-dark: #0551BB;
+  --vp-button-brand-border: #0551BB;
+  --vp-button-brand-hover-bg: #0551BB;
 }
