@@ -22,9 +22,9 @@ Please ensure that you copy the key and
 store it safely. The key will give any holder the same account rights
 as yours. The key is shown only once.
 
-## Step 2: Download the Certifaction client
+## Step 2: Download the Certifaction Client
 
-Please download and install the latest Certifaction client from our [Github repository](https://github.com/certifaction/cli/releases/latest).
+Please download and install the latest Certifaction Client from our [Github repository](https://github.com/certifaction/cli/releases/latest).
 
 Do not hesitate to create an [Issue](https://github.com/certifaction/cli/issues) if you do
 not find an executable for your platform.
