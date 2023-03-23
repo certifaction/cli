@@ -31,7 +31,7 @@ export default defineConfig({
     },
 
     footer: {
-        copyright: "Copyright © 2020-present Certifaction AG",
+        copyright: "Copyright © 2020-present Certifaction AG.",
     },
     nav: [
       {
@@ -101,6 +101,10 @@ export default defineConfig({
             {
               text: "Local Processing",
               link: "/guides/local-processing",
+            },
+            {
+              text: "Security and Privacy",
+              link: "/guides/security",
             },
           ],
         },
