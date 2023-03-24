@@ -4,13 +4,15 @@ One of our main pillars is the Security and Privacy of our customers information
 
 ## Document encryption and storage
 
-Protecting the confidentiality, integrity, and availability of our customers' data is a critical priority for us. As part of our commitment to security, we have implemented a strict policy for the storage of documents that requires all documents to be stored solely in an encrypted format and on servers that are certified by ISO 27001, within the Azure cloud computing platform.
+Protecting the confidentiality, integrity, and availability of our customers' data is an important priority for us. To this end, we employ client-side encryption as a critical measure to protect sensitive data from unauthorized access and breaches.
 
-The encryption of data in transit and at rest is an essential measure for protecting sensitive information from unauthorized access. By encrypting our data, we ensure that even if someone were to gain access to our servers, they would not be able to read or access any of the data without the proper decryption key. We use industry-standard encryption algorithms to ensure the highest levels of security.
+Client-side encryption is a method of encrypting data before it is transmitted over a network or stored in the cloud. In this approach, the encryption and decryption of the data are performed on the client-side, rather than on the server-side, ensuring that only authorized users with the decryption key can access the data.
 
-In addition to encryption, we have also chosen to store our documents on servers that are certified by ISO 27001. This certification is a widely recognized standard for information security management, and it provides us with independent verification that our servers meet strict security requirements. These requirements include physical security measures, access controls, network security, and other measures that help to safeguard our data against threats.
+By utilizing client-side encryption, we ensure that all documents uploaded by our customers are encrypted before leaving their device. This reduces the risk of data breaches and unauthorized access to sensitive information. Furthermore, since the encryption keys are generated and stored on the client-side, the organization has no access to the contents of the encrypted documents, providing an extra layer of data privacy and security.
 
-By choosing to store our documents within the Azure cloud computing platform, we can take advantage of a range of advanced security features and controls that are built into the platform. For example, Azure provides us with robust access controls that allow us to manage access to our data and applications effectively. We can set granular permissions to ensure that only authorized individuals have access to specific data and resources.
+In addition to encryption, we have also chosen to store our documents on Swiss servers that are certified by ISO 27001. This certification is a widely recognized standard for information security management, and it provides us with independent verification that our servers meet strict security requirements. These requirements include physical security measures, access controls, network security, and other measures that help to safeguard our data against threats.
+
+> Although Azure is our cloud provider, customers are free to use their own document storage.
 
 ## Swiss data residency
 
@@ -22,7 +24,9 @@ Our policy of storing documents only on servers based in Switzerland ensures tha
 
 ## High availability servers
 
-We employ high availability servers within the Azure cloud computing platform and maintain a comprehensive disaster recovery plan. Our use of high availability servers ensures that our systems remain operational and accessible to users, even in the event of hardware or software failures, while our disaster recovery plan outlines the steps we will take in the event of a major disruption or outage.
+We employ high availability servers within our cloud computing platform and maintain a comprehensive disaster recovery plan. Our use of high availability servers ensures that our systems remain operational and accessible to users, even in the event of hardware or software failures, while our disaster recovery plan outlines the steps we will take in the event of a major disruption or outage.
+
+> Although Azure is our cloud provider, customers are free to use their own document storage.
 
 ## Two-factor authentication
 
