@@ -12,7 +12,7 @@ By utilizing client-side encryption, we ensure that all documents uploaded by ou
 
 In addition to encryption, we have also chosen to store our documents on Swiss servers that are certified by ISO 27001. This certification is a widely recognized standard for information security management, and it provides us with independent verification that our servers meet strict security requirements. These requirements include physical security measures, access controls, network security, and other measures that help to safeguard our data against threats.
 
-> Although Azure is our cloud provider, customers are free to use their own document storage.
+> Although Azure is our cloud provider, customers are free to deploy their own document store instance.
 
 ## Swiss data residency
 
@@ -26,7 +26,7 @@ Our policy of storing documents only on servers based in Switzerland ensures tha
 
 We employ high availability servers within our cloud computing platform and maintain a comprehensive disaster recovery plan. Our use of high availability servers ensures that our systems remain operational and accessible to users, even in the event of hardware or software failures, while our disaster recovery plan outlines the steps we will take in the event of a major disruption or outage.
 
-> Although Azure is our cloud provider, customers are free to use their own document storage.
+> Although Azure is our cloud provider, customers are free to deploy their own document store instance.
 
 ## Two-factor authentication
 
