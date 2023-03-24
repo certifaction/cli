@@ -31,7 +31,7 @@ export default defineConfig({
     },
 
     footer: {
-        copyright: "Copyright © 2020-present Certifaction AG.",
+        copyright: "Copyright © 2020-present Certifaction AG",
     },
     nav: [
       {
