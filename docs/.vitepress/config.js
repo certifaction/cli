@@ -102,6 +102,10 @@ export default defineConfig({
               text: "Local Processing",
               link: "/guides/local-processing",
             },
+            {
+              text: "Security and Privacy",
+              link: "/guides/security",
+            },
           ],
         },
         {
