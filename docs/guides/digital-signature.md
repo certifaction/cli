@@ -1,4 +1,9 @@
-# Digital signature
+---
+title: Certifaction PAdES Digital Signature
+description: Details of Certifaction PAdES digital signature for highly confidential documents
+---
+
+# Digital Signature
 
 Certifaction's digital signature allows users to add one or more digital signatures to PDF documents.
 

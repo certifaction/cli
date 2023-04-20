@@ -1,8 +1,9 @@
 ---
-title: Check document status
+title: Check Document Status
+description: How to check the status of Certifaction digital signature of highly confidential documents
 ---
 
-# Check document status
+# Check Document Status
 
 To check the status of a document, use the [`/request/list`](../references/api#post-/request/list) endpoint.
 

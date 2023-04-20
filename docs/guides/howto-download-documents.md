@@ -1,8 +1,9 @@
 ---
-title: Download documents
+title: Download Documents
+description: How to download highly confidential documents digitally signed with Certifaction
 ---
 
-# Download documents
+# Download Documents
 
 To download documents, use the [`/download`](../references/api#get-/download) endpoint.
 

@@ -1,5 +1,6 @@
 ---
-title: Getting Started with the Local API
+title: Getting Started with Certifaction Local API
+description: How to use Certifaction Client to digitally sign highly confidential documents
 ---
 
 # Getting Started with the Local API

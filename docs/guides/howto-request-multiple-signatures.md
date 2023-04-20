@@ -1,8 +1,9 @@
 ---
-title: Request multiple signatures
+title: Request Multiple Signatures
+description: How to request several digital signatures of highly confidential documents using Certifaction
 ---
 
-# Request multiple signatures
+# Request Multiple Signatures
 
 If one document needs to be signed by multiple signers, you need to prepare the document
 first or download the document after you have created the first signature request and

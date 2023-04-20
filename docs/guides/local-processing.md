@@ -1,3 +1,8 @@
+---
+title: Certifaction Local Processing
+description: Certifaction client local processing and E2E encryption protects your highly confidential documents
+---
+
 # Local Processing
 
 Local document processing ensures document confidentiality.

@@ -1,5 +1,6 @@
 ---
-title: Getting Started with the CLI
+title: Getting Started with Certifaction CLI
+description: How to use Certifaction command line interface to igitally sign highly confidential documents
 ---
 
 # Getting Started with the CLI

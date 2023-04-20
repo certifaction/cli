@@ -1,3 +1,8 @@
+---
+title: Authentication
+description: How to authenticate to Certifaction to digitally sign highly confidential documents.
+---
+
 # Authentication
 
 Document signature, revocation and getting user information require authentication.

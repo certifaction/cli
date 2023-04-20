@@ -1,4 +1,9 @@
-# Signature request
+---
+title: Signature Request
+description: Use Certifaction to request digital signature for highly confidential documents
+---
+
+# Signature Request
 
 Users can invite other people to sign documents by providing them with secure signature request URLs, which contain a secret key. The secret key will decrypt the document before signing, ensuring that no third-party (not even Certifaction) has access to the document in clear text.
 
