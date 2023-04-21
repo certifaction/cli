@@ -1,6 +1,6 @@
 ---
 title: Certifaction Digital Twin
-description: Use Certifaction E2E encryption QR code to share and sign highly confidentiy documents
+description: Use Certifaction E2E encryption QR code to share and sign highly confidential documents
 ---
 
 # Certifaction Digital Twin
