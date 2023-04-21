@@ -1,3 +1,8 @@
+---
+title: Certifaction Security and Privacy
+description: Certifaction digital signature security and privacy features protects highly confidential documents
+---
+
 # Security and Privacy
 
 One of our main pillars is the Security and Privacy of our customers information. This section highlights some of the specific security measures that we have taken to achieve this objective.

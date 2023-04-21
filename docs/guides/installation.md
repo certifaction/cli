@@ -1,3 +1,8 @@
+---
+title: How to install Certifaction Client
+description: How to install the Certifaction Client to digitally sign highly confidential documents
+---
+
 # Installation
 
 Use the Certifaction Client to integrate with Certifaction.

@@ -1,8 +1,11 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
-  title: "Certifaction",
-  description: "Privacy-first eSigning",
+  title: "Developer Portal | Certifaction Digital PAdES Signature with Privacy",
+  titleTemplate: ":title - Certifaction Digital PAdES Signature with Privacy",
+  description:
+    "Integrate Certifaction PAdES digital signature of highly confidential documents in your application and service.",
+
   cleanUrls: true,
   lastUpdated: true,
 
@@ -17,21 +20,24 @@ export default defineConfig({
   themeConfig: {
     siteTitle: false,
     logo: {
-        "light": "/certifaction_logo.svg",
-        "dark": "/certifaction_logo_white.svg",
+      light: "/certifaction_logo.svg",
+      dark: "/certifaction_logo_white.svg",
     },
     socialLinks: [
-        { icon: "github", link: "https://github.com/certifaction/cli" },
-        { icon: "linkedin", link: "https://www.linkedin.com/company/certifaction-ag/" },
+      { icon: "github", link: "https://github.com/certifaction/cli" },
+      {
+        icon: "linkedin",
+        link: "https://www.linkedin.com/company/certifaction-ag/",
+      },
     ],
 
     editLink: {
-        pattern: "https://github.com/certifaction/cli/edit/main/docs/:path",
-        text: "Edit this page on GitHub",
+      pattern: "https://github.com/certifaction/cli/edit/main/docs/:path",
+      text: "Edit this page on GitHub",
     },
 
     footer: {
-        copyright: "Copyright © 2020-present Certifaction AG",
+      copyright: "Copyright © 2020-present Certifaction AG",
     },
     nav: [
       {

@@ -1,5 +1,6 @@
 ---
 title: What is Certifaction?
+description: Certifaction the solution to digitally sigh highly confidential documents
 ---
 
 # What is Certifaction?

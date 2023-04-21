@@ -1,3 +1,8 @@
+---
+title: Certifaction CLI Reference
+description: Certifaction Client command line interface uses local processing and E2E encryption to digitally sign highly confidential documents.
+---
+
 # CLI Reference
 
 [[toc]]

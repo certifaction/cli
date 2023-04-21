@@ -1,8 +1,9 @@
 ---
 title: Request one signature
+description: How to request the digital signature of a highly confidential document using Certifaction
 ---
 
-# Request one signature
+# Request a Signature
 
 If want someone else to sign a document, you can use the [`/request/create`](../references/api#post-/request/create) endpoint.
 You can also use a document that was already signed by you and use it as the input for a signature request.
