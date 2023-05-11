@@ -1,6 +1,6 @@
 ---
 title: HTTP Proxy Settings
-description: Certifaction Client API uses local processing and E2E encryption to digitally sign highly confidential documents.
+description: How to configure your HTTP Proxy Settings for Certifaction API integration
 ---
 
 # HTTP Proxy Settings

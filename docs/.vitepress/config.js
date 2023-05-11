@@ -67,7 +67,6 @@ export default defineConfig({
               text: "What is Certifaction?",
               link: "/guides/what-is-certifaction",
             },
-            { text: "Getting started", link: "/guides/getting-started" },
           ],
         },
         {
