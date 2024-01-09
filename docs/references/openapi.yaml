@@ -128,6 +128,14 @@ components:
       type: apiKey
 
   schemas:
+    envelope_item_status:
+      type: string
+      enum:
+        - unsigned
+        - awaiting_upload
+        - signed
+        - cancelled
+
     language:
       type: string
       enum:
@@ -762,6 +770,23 @@ paths:
         required: true
         content:
           application/pdf: {}
+          application/json:
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        format: url
+                        description: |
+                          DA URLs to the documents to sign.
+                      name:
+                        type: string
+                        description: |
+                          Name of the document. This is used in the signature request email.
           application/x-www-form-urlencoded:
             schema:
               properties:
@@ -923,6 +948,161 @@ paths:
                     $ref: "#/components/schemas/user"
                   requester:
                     $ref: "#/components/schemas/user"
+        400:
+          description: Check that the file provided has been prepared and can be read.
+        401:
+          $ref: "#components/responses/unauthorized"
+        403:
+          description: You cannot list signature requests for this file.
+        404:
+          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+      tags:
+        - Signing
+  /request/status:
+    post:
+      operationId: request_status
+      summary: Show status of signature request
+      parameters:
+        - name: request_url
+          in: query
+          required: true
+          schema:
+            type: string
+            format: url
+          description: The URL of the signature request to check.
+        - name: password
+          in: query
+          schema:
+            type: string
+          description: Password for password encrypted requests
+      responses:
+        200:
+          description: All pending signature requests for the file were cancelled.
+          content:
+            application/json:
+              schema:
+                properties:
+                  url:
+                    type: string
+                    format: url
+                  id:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  cancelled:
+                    type: boolean
+                  envelope_items:
+                    type: object
+                    properties:
+                      legal_weight:
+                        $ref: "#/components/schemas/legal_weight"
+                      jurisdiction:
+                        type: string
+                      status:
+                        $ref: "#/components/schemas/envelope_item_status"
+                      signed_at:
+                        type: string
+                        format: date-time
+                      file_url:
+                        type: string
+                        format: url
+                      file_id:
+                        type: string
+                  signer:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        format: email
+                  used_identification_at:
+                    type: string
+                    format: date-time
+                  identification_method:
+                    type: string
+        400:
+          description: Check that the file provided has been prepared and can be read.
+        401:
+          $ref: "#components/responses/unauthorized"
+        403:
+          description: You cannot list signature requests for this file.
+        404:
+          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+      tags:
+        - Signing
+
+  /request/file/status:
+    post:
+      operationId: file_requests_status
+      summary: Show status of signature requests of given file
+      parameters:
+        - name: file_url
+          in: query
+          required: true
+          schema:
+            type: string
+            format: url
+          description: The DA URL of the file to check.
+        - name: password
+          in: query
+          schema:
+            type: string
+          description: Password for password encrypted document.
+      responses:
+        200:
+          description: All pending signature requests for the file were cancelled.
+          content:
+            application/json:
+              schema:
+                properties:
+                  file_url:
+                    type: string
+                    format: url
+                  file_id:
+                    type: string
+                  signature_requests:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          format: url
+                        id:
+                          type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        cancelled:
+                          type: boolean
+                        envelope_items:
+                          type: object
+                          properties:
+                            legal_weight:
+                              $ref: "#/components/schemas/legal_weight"
+                            jurisdiction:
+                              type: string
+                            status:
+                              $ref: "#/components/schemas/envelope_item_status"
+                            signed_at:
+                              type: string
+                              format: date-time
+                            file_url:
+                              type: string
+                              format: url
+                            file_id:
+                              type: string
+                        signer:
+                          type: object
+                          properties:
+                            email:
+                              type: string
+                              format: email
+                        used_identification_at:
+                          type: string
+                          format: date-time
+                        identification_method:
+                          type: string
         400:
           description: Check that the file provided has been prepared and can be read.
         401:
