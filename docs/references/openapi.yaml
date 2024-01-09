@@ -782,7 +782,7 @@ paths:
                         type: string
                         format: url
                         description: |
-                          DA URLs to the documents to sign.
+                          DA URL of the documents to sign.
                       name:
                         type: string
                         description: |
@@ -931,7 +931,7 @@ paths:
                 contentType: application/pdf
       responses:
         200:
-          description: All pending signature requests for the file were cancelled.
+          description: List of signature requests for the file.
           content:
             application/json:
               schema:
@@ -977,7 +977,7 @@ paths:
           description: Password for password encrypted requests
       responses:
         200:
-          description: All pending signature requests for the file were cancelled.
+          description: Status of the signature request.
           content:
             application/json:
               schema:
@@ -1050,7 +1050,7 @@ paths:
           description: Password for password encrypted document.
       responses:
         200:
-          description: All pending signature requests for the file were cancelled.
+          description: File status across all signature requests.
           content:
             application/json:
               schema:
