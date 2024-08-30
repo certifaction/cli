@@ -403,7 +403,6 @@ components:
                 type: boolean
             required:
               - name
-              - admin
     organization_user_invite:
       content:
         application/json:
