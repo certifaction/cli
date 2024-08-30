@@ -1,0 +1,488 @@
+openapi: "3.0.2"
+
+info:
+  title: Certifaction Core API
+  description: |
+    Certifaction Core-API is the central management system for our digital signing platform, enabling secure handling of users, organizations, roles and others.
+  version: ""
+
+servers:
+  - url: https://api.certifaction.io
+
+security:
+  - api_key: [ ]
+
+tags:
+  - name: Organization
+    description: Manage your organization, users, and roles.
+
+components:
+
+  responses:
+    bad_request:
+      description: The request is not properly formed. For example, the content could not be read.
+    unauthorized:
+      description: You are not authorized to carry out the operation. Check that your API key is correct.
+    forbidden:
+      description: You do not have permission to carry out the operation. For example you might not have the required role.
+    not_found:
+      description: The requested resource was not found.
+    conflict:
+      description: Conflict detected in the request. For example, a user might have already been joined an organization.
+    internal_server_error:
+      description: An error occurred on the server
+
+  securitySchemes:
+    api_key:
+      name: Authorization
+      in: header
+      type: apiKey
+
+  schemas:
+    identity:
+      properties:
+        uid:
+          type: string
+        user_uid:
+          type: string
+        issuer:
+          type: string
+        status:
+          type: string
+        verification_url:
+          type: string
+        verification_id:
+          type: string
+        evidence_url:
+          type: string
+        proof:
+          type: string
+        name:
+          type: string
+        given_name:
+          type: string
+        family_name:
+          type: string
+        birthday:
+          type: string
+        signature_level:
+          type: string
+        signature_jurisdiction:
+          type: string
+      required:
+        - uid
+        - user_uid
+        - issuer
+        - status
+        - verification_url
+        - verification_id
+        - evidence_url
+        - proof
+        - name
+        - given_name
+        - family_name
+        - birthday
+
+    organization:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          minLength: 2
+          maxLength: 80
+        name_verified:
+          type: boolean
+        email:
+          type: string
+          format: email
+          nullable: true
+        organization_users:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_user'
+        quota:
+          type: integer
+          nullable: true
+        legacy_credits:
+          type: boolean
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_role'
+
+    organization_user:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+        role:
+          deprecated: true
+        status:
+          type: string
+        invite_email:
+          type: string
+          format: email
+          nullable: true
+        organization:
+          type: boolean
+        is_admin:
+          type: boolean
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_role'
+        teamspaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/team_space_description'
+          nullable: true
+
+    organization_role:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        default:
+          type: boolean
+        admin:
+          type: boolean
+
+    team_space_description:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+
+    user:
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        external_id:
+          type: string
+        email:
+          type: string
+        title:
+          type: string
+        name:
+          type: string
+        first_name:
+          type: string
+        middle_names:
+          type: string
+        last_name:
+          type: string
+        affiliation:
+          type: string
+        address:
+          type: string
+        postalcode:
+          type: string
+        location:
+          type: string
+        eth_address:
+          type: string
+        quota:
+          type: integer
+        disabled:
+          type: boolean
+        file_suffix:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        subscription_type:
+          type: string
+        encrypt_claims:
+          type: boolean
+        verified_by:
+          type: string
+        features:
+          type: object
+        organizations:
+          type: array
+          items:
+            $ref: "#/components/schemas/organization"
+        identities:
+          type: array
+          items:
+            $ref: "#/components/schemas/identity"
+        theme:
+          properties:
+            name:
+              type: string
+          required:
+            - name
+        name_verified:
+          type: boolean
+
+    role_update:
+      type: object
+      properties:
+        role_id:
+          type: string
+          description: The ID of the role to be assigned to the user.
+      anyOf:
+        - properties:
+            user_uid:
+              type: string
+              description: The unique identifier of the user. Either user_uid or invite_email must be provided.
+          required: [user_uid]
+        - properties:
+            invite_email:
+              description: The email of the user being invited. Either user_uid or invite_email must be provided.
+              type: string
+          required: [invite_email]
+
+  requestBodies:
+    organization_role_create_or_update:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 100
+              admin:
+                type: boolean
+            required:
+              - name
+    organization_user_invite:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              role_id:
+                type: string
+
+    organization_role_assign:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user_uid:
+                type: string
+                description: "Either user_uid OR invite_email have to be set, depending if the user already joined or not"
+              invite_email:
+                type: string
+              role_id:
+                type: string
+
+paths:
+  "/organization":
+    servers:
+      - url: https://api.certifaction.io
+    get:
+      tags:
+        - Organization
+      summary: Get your organization
+      operationId: getOrganization
+      responses:
+        "200":
+          description: Organization details fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/organization"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/{id}/user":
+    servers:
+      - url: https://api.certifaction.io
+    post:
+      tags:
+        - "Organization"
+      summary: Invite user
+      description: "A user could be invited multiple times, assuming he didn't accept the invite yet. An email is sent out for each invitation"
+
+      parameters:
+        - description: The ID of the organization to which you want to invite the user
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/organization_user_invite"
+
+      responses:
+        "200":
+          description: Invited
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+    delete:
+      tags:
+        - "Organization"
+      summary: Remove a user from an organization
+      description: |
+        Removes a user from the specified organization. You can specify the user by `user_uid` or `invite_email`.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the organization
+          schema:
+            type: string
+      requestBody:
+        description: User details for removal. You can specify the user by `user_uid` or `invite_email`. If the user joined the organization, use `user_uid`. If the user was invited but did not join, use `invite_email` as it might not have created a user account yet (and therefore not linked to a user uid).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              anyOf:
+                - properties:
+                    user_uid:
+                      type: string
+                      description: The UID of the user to remove
+                  required: [user_uid]
+                - properties:
+                    invite_email:
+                      description: The email of the invited user to remove
+                      type: string
+                  required: [invite_email]
+      responses:
+        "200":
+          description: User removed successfully
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  /organization/{id}/role:
+    servers:
+      - url: https://api.certifaction.io
+    post:
+      tags:
+        - "Organization"
+      summary: Reassign a role
+      description: Reassign a role to a user within the specified organization.
+      operationId: updateRoleAssignment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the organization where the role assignment is to be updated.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/role_update'
+      responses:
+        "200":
+          description: "Role assignment updated successfully."
+        "400":
+          $ref: '#/components/responses/bad_request'
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/role/{id}":
+    servers:
+      - url: https://api.certifaction.io
+    parameters:
+      - description: Role ID
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      tags:
+        - "Organization"
+      summary: Update an existing role
+      requestBody:
+        $ref: "#/components/requestBodies/organization_role_create_or_update"
+
+      responses:
+        "200":
+          description: Role changed successfully
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+    delete:
+      tags:
+        - "Organization"
+      summary: Delete a role
+
+      responses:
+        "200":
+          description: Role deleted successfully
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/role":
+    servers:
+      - url: https://api.certifaction.io
+    post:
+      tags:
+        - "Organization"
+      summary: Create a role
+      requestBody:
+        $ref: "#/components/requestBodies/organization_role_create_or_update"
+
+      responses:
+        "200":
+          description: Role created successfully
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
