@@ -21,7 +21,7 @@ servers:
         default: "8081"
 
 security:
-  - api_key: []
+  - api_key: [ ]
 
 tags:
   - name: Signing
@@ -120,6 +120,14 @@ components:
       description: The request is not properly formed. For example, the content could not be read.
     unauthorized:
       description: You are not authorized to carry out the operation. Check that your API key is correct.
+    forbidden:
+      description: You do not have permission to carry out the operation. For example you might not have the required role.
+    not_found:
+      description: The requested resource was not found.
+    conflict:
+      description: Conflict detected in the request. For example, a user might have already been joined an organization.
+    internal_server_error:
+      description: An error occurred on the server
 
   securitySchemes:
     api_key:
@@ -220,6 +228,82 @@ components:
       required:
         - id
 
+    organization_detail:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          minLength: 2
+          maxLength: 80
+        name_verified:
+          type: boolean
+        email:
+          type: string
+          format: email
+          nullable: true
+        organization_users:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_user'
+        quota:
+          type: integer
+          nullable: true
+        legacy_credits:
+          type: boolean
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_role'
+
+    organization_user:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+        role:
+          deprecated: true
+        status:
+          type: string
+        invite_email:
+          type: string
+          format: email
+          nullable: true
+        organization:
+          type: boolean
+        is_admin:
+          type: boolean
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_role'
+        teamspaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/team_space_description'
+          nullable: true
+
+    organization_role:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        default:
+          type: boolean
+        admin:
+          type: boolean
+
+    team_space_description:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+
     user:
       properties:
         id:
@@ -285,6 +369,65 @@ components:
         name_verified:
           type: boolean
 
+    role_update:
+      type: object
+      properties:
+        user_uid:
+          type: string
+          nullable: true
+          description: The unique identifier of the user. Either user_uid or invite_email must be provided.
+        invite_email:
+          type: string
+          format: email
+          nullable: true
+          description: The email of the user being invited. Either user_uid or invite_email must be provided.
+        role_id:
+          type: string
+          description: The ID of the role to be assigned to the user.
+      oneOf:
+        - required: [ "user_uid" ]
+        - required: [ "invite_email" ]
+
+  requestBodies:
+    organization_role_create_or_update:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+                maxLength: 100
+              admin:
+                type: boolean
+            required:
+              - name
+    organization_user_invite:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              role_id:
+                type: string
+
+    organization_role_assign:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user_uid:
+                type: string
+                description: "Either user_uid OR invite_email have to be set, depending if the user already joined or not"
+              invite_email:
+                type: string
+              role_id:
+                type: string
+
 paths:
   /delete-access:
     post:
@@ -294,14 +437,14 @@ paths:
         description: The file that you want to remove Certifaction's access for.
         required: true
         content:
-          application/pdf: {}
+          application/pdf: { }
       responses:
         200:
           description: File access was removed successfully.
         400:
-          $ref: "#components/responses/bad_request"
+          $ref: "#/components/responses/bad_request"
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
       tags:
         - Documents
 
@@ -333,10 +476,10 @@ paths:
               schema:
                 type: string
         400:
-          $ref: "#components/responses/bad_request"
+          $ref: "#/components/responses/bad_request"
         401:
-          $ref: "#components/responses/unauthorized"
-      security: []
+          $ref: "#/components/responses/unauthorized"
+      security: [ ]
       tags:
         - Documents
 
@@ -357,7 +500,7 @@ paths:
                     type: string
                   status:
                     type: string
-      security: []
+      security: [ ]
       tags:
         - Server
 
@@ -373,7 +516,7 @@ paths:
                 type: string
                 enum:
                   - pong
-      security: []
+      security: [ ]
       tags:
         - Server
 
@@ -397,7 +540,7 @@ paths:
         description: The file to prepare.
         required: true
         content:
-          application/pdf: {}
+          application/pdf: { }
       responses:
         200:
           description: The prepared file content.
@@ -406,9 +549,9 @@ paths:
               schema:
                 type: string
         400:
-          $ref: "#components/responses/bad_request"
+          $ref: "#/components/responses/bad_request"
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
       tags:
         - Certification
         - Signing
@@ -490,7 +633,7 @@ paths:
         description: The file to sign.
         required: true
         content:
-          application/pdf: {}
+          application/pdf: { }
       responses:
         200:
           description: The signed file content.
@@ -499,9 +642,9 @@ paths:
               schema:
                 type: string
         400:
-          $ref: "#components/responses/bad_request"
+          $ref: "#/components/responses/bad_request"
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
       tags:
         - Signing
 
@@ -513,14 +656,14 @@ paths:
         description: The document to revoke.
         required: true
         content:
-          application/pdf: {}
+          application/pdf: { }
       responses:
         200:
           description: The revocation was successful.
         400:
-          $ref: "#components/responses/bad_request"
+          $ref: "#/components/responses/bad_request"
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
       tags:
         - Certification
 
@@ -607,7 +750,7 @@ paths:
         description: The file to register.
         required: true
         content:
-          application/pdf: {}
+          application/pdf: { }
       responses:
         200:
           description: The registered file content. There is no response body if `scope` was `revoke`.
@@ -616,9 +759,9 @@ paths:
               schema:
                 type: string
         400:
-          $ref: "#components/responses/bad_request"
+          $ref: "#/components/responses/bad_request"
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
       tags:
         - Certification
 
@@ -769,7 +912,7 @@ paths:
         description: The files to sign
         required: true
         content:
-          application/pdf: {}
+          application/pdf: { }
           application/json:
             schema:
               properties:
@@ -824,9 +967,9 @@ paths:
                   password:
                     type: string
         400:
-          $ref: "#components/responses/bad_request"
+          $ref: "#/components/responses/bad_request"
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
         409:
           description: The signer already has a pending signature request for the file.
       tags:
@@ -853,7 +996,7 @@ paths:
         description: A file used in the signature request.
         required: true
         content:
-          application/pdf: {}
+          application/pdf: { }
       responses:
         204:
           description: The signature request to the given signer was cancelled.
@@ -863,7 +1006,7 @@ paths:
             1. The `email` parameter was provided.
             2. The file provided has been prepared and can be read.
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
         403:
           description: You cannot cancel the request at this time. It could be because the signer has signed already.
         404:
@@ -885,14 +1028,14 @@ paths:
         description: A file used in the signature request.
         required: true
         content:
-          application/pdf: {}
+          application/pdf: { }
       responses:
         204:
           description: All pending signature requests for the file were cancelled.
         400:
           description: Check that the file provided has been prepared and can be read.
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
         403:
           description: You cannot cancel the requests at this time. It could be because a signer has signed already.
         404:
@@ -951,7 +1094,7 @@ paths:
         400:
           description: Check that the file provided has been prepared and can be read.
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
         403:
           description: You cannot list signature requests for this file.
         404:
@@ -1023,7 +1166,7 @@ paths:
         400:
           description: Check that the file provided has been prepared and can be read.
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
         403:
           description: You cannot list signature requests for this file.
         404:
@@ -1106,7 +1249,7 @@ paths:
         400:
           description: Check that the file provided has been prepared and can be read.
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
         403:
           description: You cannot list signature requests for this file.
         404:
@@ -1130,9 +1273,9 @@ paths:
         200:
           description: QES is enabled for your account.
         400:
-          $ref: "#components/responses/bad_request"
+          $ref: "#/components/responses/bad_request"
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
         404:
           description: QES is disabled for your account.
       tags:
@@ -1151,6 +1294,209 @@ paths:
               schema:
                 $ref: "#/components/schemas/user"
         401:
-          $ref: "#components/responses/unauthorized"
+          $ref: "#/components/responses/unauthorized"
       tags:
         - Account
+
+  "/organization":
+    servers:
+      - url: https://api.certifaction.io
+    get:
+      tags:
+        - Organization
+      summary: Get your organization
+      operationId: getOrganization
+      responses:
+        "200":
+          description: Organization details fetched successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/organization_detail"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/{id}/user":
+    servers:
+      - url: https://api.certifaction.io
+    post:
+      tags:
+        - "Organization"
+      summary: Invite user
+      description: "A user could be invited multiple times, assuming he didn't accept the invite yet. An email is sent out for each invitation"
+
+      parameters:
+        - description: The ID of the organization to which you want to invite the user
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/organization_user_invite"
+
+      responses:
+        "200":
+          description: Invited
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+    delete:
+      tags:
+        - "Organization"
+      summary: Remove a user from an organization
+      description: |
+        Removes a user from the specified organization. You can specify the user by `user_uid` or `invite_email`.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the organization
+          schema:
+            type: string
+      requestBody:
+        description: User details for removal. You can specify the user by `user_uid` or `invite_email`. If the user joined the organization, use `user_uid`. If the user was invited but did not join, use `invite_email` as it might not have created a user account yet (and therefore not linked to a user uid).
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_uid:
+                  type: string
+                  description: The UID of the user to remove
+                invite_email:
+                  type: string
+                  description: The email of the invited user to remove
+              oneOf:
+                - required: [ "user_uid" ]
+                - required: [ "invite_email" ]
+      responses:
+        "200":
+          description: User removed successfully
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  /organization/{id}/role:
+    servers:
+      - url: https://api.certifaction.io
+    post:
+      tags:
+        - "Organization"
+      summary: Reassign a role
+      description: Reassign a role to a user within the specified organization.
+      operationId: updateRoleAssignment
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the organization where the role assignment is to be updated.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/role_update'
+      responses:
+        "200":
+          description: "Role assignment updated successfully."
+        "400":
+            $ref: '#/components/responses/bad_request'
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/role/{id}":
+    servers:
+      - url: https://api.certifaction.io
+    parameters:
+      - description: Role ID
+        name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      tags:
+        - "Organization"
+      summary: Update an existing role
+      requestBody:
+        $ref: "#/components/requestBodies/organization_role_create_or_update"
+
+      responses:
+        "200":
+          description: Role changed successfully
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+    delete:
+      tags:
+        - "Organization"
+      summary: Delete a role
+
+      responses:
+        "200":
+          description: Role deleted successfully
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/role":
+    servers:
+      - url: https://api.certifaction.io
+    post:
+      tags:
+        - "Organization"
+      summary: Create a role
+      requestBody:
+        $ref: "#/components/requestBodies/organization_role_create_or_update"
+
+      responses:
+        "200":
+          description: Role created successfully
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
