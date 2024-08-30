@@ -243,20 +243,6 @@ components:
           required: [invite_email]
 
   requestBodies:
-    organization_role_create_or_update:
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 1
-                maxLength: 100
-              admin:
-                type: boolean
-            required:
-              - name
     organization_user_invite:
       content:
         application/json:
@@ -385,38 +371,6 @@ paths:
   /organization/{id}/role:
     servers:
       - url: https://api.certifaction.io
-    post:
-      tags:
-        - "Organization"
-      summary: Reassign a role
-      description: Reassign a role to a user within the specified organization.
-      operationId: updateRoleAssignment
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The ID of the organization where the role assignment is to be updated.
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/role_update'
-      responses:
-        "200":
-          description: "Role assignment updated successfully."
-        "400":
-          $ref: '#/components/responses/bad_request'
-        "401":
-          $ref: "#/components/responses/unauthorized"
-        "403":
-          $ref: "#/components/responses/forbidden"
-        "409":
-          $ref: "#/components/responses/conflict"
-        "500":
-          $ref: "#/components/responses/internal_server_error"
 
   "/organization/role/{id}":
     servers:
@@ -428,61 +382,3 @@ paths:
         required: true
         schema:
           type: string
-    put:
-      tags:
-        - "Organization"
-      summary: Update an existing role
-      requestBody:
-        $ref: "#/components/requestBodies/organization_role_create_or_update"
-
-      responses:
-        "200":
-          description: Role changed successfully
-        "401":
-          $ref: "#/components/responses/unauthorized"
-        "403":
-          $ref: "#/components/responses/forbidden"
-        "404":
-          $ref: "#/components/responses/not_found"
-        "409":
-          $ref: "#/components/responses/conflict"
-        "500":
-          $ref: "#/components/responses/internal_server_error"
-    delete:
-      tags:
-        - "Organization"
-      summary: Delete a role
-
-      responses:
-        "200":
-          description: Role deleted successfully
-        "401":
-          $ref: "#/components/responses/unauthorized"
-        "403":
-          $ref: "#/components/responses/forbidden"
-        "500":
-          $ref: "#/components/responses/internal_server_error"
-
-  "/organization/role":
-    servers:
-      - url: https://api.certifaction.io
-    post:
-      tags:
-        - "Organization"
-      summary: Create a role
-      requestBody:
-        $ref: "#/components/requestBodies/organization_role_create_or_update"
-
-      responses:
-        "200":
-          description: Role created successfully
-        "401":
-          $ref: "#/components/responses/unauthorized"
-        "403":
-          $ref: "#/components/responses/forbidden"
-        "404":
-          $ref: "#/components/responses/not_found"
-        "409":
-          $ref: "#/components/responses/conflict"
-        "500":
-          $ref: "#/components/responses/internal_server_error"
