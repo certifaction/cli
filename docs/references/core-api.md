@@ -1,5 +1,5 @@
 ---
-title: Certifaction Local API
+title: Certifaction Core-API
 description: Certifaction Core-API is the central management system for our digital signing platform, enabling secure handling of users, organizations, roles and others.
 aside: false
 ---
