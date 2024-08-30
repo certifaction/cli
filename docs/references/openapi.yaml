@@ -372,21 +372,20 @@ components:
     role_update:
       type: object
       properties:
-        user_uid:
-          type: string
-          nullable: true
-          description: The unique identifier of the user. Either user_uid or invite_email must be provided.
-        invite_email:
-          type: string
-          format: email
-          nullable: true
-          description: The email of the user being invited. Either user_uid or invite_email must be provided.
         role_id:
           type: string
           description: The ID of the role to be assigned to the user.
-      oneOf:
-        - required: [ "user_uid" ]
-        - required: [ "invite_email" ]
+      anyOf:
+        - properties:
+            user_uid:
+              type: string
+              description: The unique identifier of the user. Either user_uid or invite_email must be provided.
+          required: [user_uid]
+        - properties:
+            invite_email:
+              description: The email of the user being invited. Either user_uid or invite_email must be provided.
+              type: string
+          required: [invite_email]
 
   requestBodies:
     organization_role_create_or_update:
@@ -1370,16 +1369,17 @@ paths:
           application/json:
             schema:
               type: object
-              properties:
-                user_uid:
-                  type: string
-                  description: The UID of the user to remove
-                invite_email:
-                  type: string
-                  description: The email of the invited user to remove
-              oneOf:
-                - required: [ "user_uid" ]
-                - required: [ "invite_email" ]
+              anyOf:
+                - properties:
+                    user_uid:
+                      type: string
+                      description: The UID of the user to remove
+                  required: [user_uid]
+                - properties:
+                    invite_email:
+                      description: The email of the invited user to remove
+                      type: string
+                  required: [invite_email]
       responses:
         "200":
           description: User removed successfully
@@ -1422,7 +1422,7 @@ paths:
         "200":
           description: "Role assignment updated successfully."
         "400":
-            $ref: '#/components/responses/bad_request'
+          $ref: '#/components/responses/bad_request'
         "401":
           $ref: "#/components/responses/unauthorized"
         "403":
