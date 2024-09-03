@@ -165,56 +165,18 @@ components:
           type: integer
         uid:
           type: string
-        external_id:
-          type: string
         email:
           type: string
-        title:
-          type: string
         name:
-          type: string
-        first_name:
-          type: string
-        middle_names:
-          type: string
-        last_name:
-          type: string
-        affiliation:
-          type: string
-        address:
-          type: string
-        postalcode:
-          type: string
-        location:
-          type: string
-        eth_address:
-          type: string
-        quota:
-          type: integer
-        disabled:
-          type: boolean
-        file_suffix:
           type: string
         permissions:
           type: array
           items:
             type: string
+        quota:
+          type: integer
         subscription_type:
           type: string
-        encrypt_claims:
-          type: boolean
-        verified_by:
-          type: string
-        features:
-          type: object
-        organizations:
-          type: array
-          items:
-            $ref: "#/components/schemas/organization"
-        identities:
-          type: array
-          items:
-            $ref: "#/components/schemas/identity"
         theme:
           properties:
             name:
