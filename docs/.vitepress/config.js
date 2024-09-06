@@ -150,8 +150,8 @@ export default defineConfig({
               link: "/references/api",
             },
             {
-              text: "Core API",
-              link: "/references/core-api",
+              text: "Admin API",
+              link: "/references/admin-api",
             },
             {
               text: "HTTP Proxy settings",
