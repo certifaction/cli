@@ -3,7 +3,7 @@ openapi: "3.0.2"
 info:
   title: Certifaction Admin API
   description: |
-    Certifaction Core-API is the central management system for our digital signing platform, enabling secure handling of users, organizations, roles and others.
+    Certifaction Admin API is used to to manage users, roles and organisations.
   version: ""
 
 servers:
