@@ -40,50 +40,6 @@ components:
       type: apiKey
 
   schemas:
-    identity:
-      properties:
-        uid:
-          type: string
-        user_uid:
-          type: string
-        issuer:
-          type: string
-        status:
-          type: string
-        verification_url:
-          type: string
-        verification_id:
-          type: string
-        evidence_url:
-          type: string
-        proof:
-          type: string
-        name:
-          type: string
-        given_name:
-          type: string
-        family_name:
-          type: string
-        birthday:
-          type: string
-        signature_level:
-          type: string
-        signature_jurisdiction:
-          type: string
-      required:
-        - uid
-        - user_uid
-        - issuer
-        - status
-        - verification_url
-        - verification_id
-        - evidence_url
-        - proof
-        - name
-        - given_name
-        - family_name
-        - birthday
-        
     teamspace_member_add_request:
       type: object
       properties:
