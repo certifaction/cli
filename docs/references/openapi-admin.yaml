@@ -3,7 +3,7 @@ openapi: "3.0.2"
 info:
   title: Certifaction Admin API
   description: |
-    Certifaction Admin API is used to manage users, roles, teamspaces, and cost centers.
+    Certifaction Admin API is used to manage users, roles and teamspaces.
   version: ""
 
 servers:
@@ -17,9 +17,6 @@ tags:
     description: Manage your organization, users, and roles.
   - name: TeamSpace
     description: Manage teamspaces and their members.
-  - name: CostCenter
-    description: Manage cost centers and assign users.
-
 components:
 
   responses:
@@ -387,80 +384,6 @@ paths:
         "500":
           $ref: "#/components/responses/internal_server_error"
 
-  "/cost-center/user/{user_uid}":
-    post:
-      tags:
-        - CostCenter
-      summary: Assign or remove a user from a cost center
-      description: Assign a user to a specific cost center by ID or remove them by setting the ID to null.
-      parameters:
-        - name: user_uid
-          in: path
-          required: true
-          schema:
-            type: string
-          description: UID of the user to update
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                cost_center_id:
-                  type: string
-                  nullable: true
-                  description: ID of the cost center to assign, or null to remove
-      responses:
-        "200":
-          description: User's cost center updated successfully
-        "400":
-          $ref: "#/components/responses/bad_request"
-        "401":
-          $ref: "#/components/responses/unauthorized"
-        "403":
-          $ref: "#/components/responses/forbidden"
-        "404":
-          $ref: "#/components/responses/not_found"
-        "500":
-          $ref: "#/components/responses/internal_server_error"
-
-  "/cost-center/{id}":
-    put:
-      tags:
-        - CostCenter
-      summary: Rename a cost center
-      description: Update the name of a cost center.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-          description: ID of the cost center to rename
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-      responses:
-        "200":
-          description: Cost center renamed successfully
-        "400":
-          $ref: "#/components/responses/bad_request"
-        "401":
-          $ref: "#/components/responses/unauthorized"
-        "403":
-          $ref: "#/components/responses/forbidden"
-        "404":
-          $ref: "#/components/responses/not_found"
-        "500":
-          $ref: "#/components/responses/internal_server_error"
-          
   "/team-space/{id}/rename":
     patch:
       tags:
