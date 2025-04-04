@@ -453,7 +453,7 @@ paths:
   "/team-space/{id}/members/{memberId}":
     delete:
       tags:
-        - TeamSpace
+        - Teamspace
       summary: Remove a member from a teamspace
       description: Remove a specific user from a teamspace.
       parameters:
@@ -469,6 +469,13 @@ paths:
           schema:
             type: string
           description: User's UID to remove
+        - name: send_email
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+          description: Whether to send a notification email. Default is true.
       responses:
         "204":
           description: Member removed successfully
