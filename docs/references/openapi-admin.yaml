@@ -468,7 +468,7 @@ paths:
           required: true
           schema:
             type: string
-          description: ID of the member to remove
+          description: User's UID to remove
       responses:
         "204":
           description: Member removed successfully
