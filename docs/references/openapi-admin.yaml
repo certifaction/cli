@@ -1,4 +1,4 @@
-openapi: "3.0.2"
+openapi: "3.1.0"
 
 info:
   title: Certifaction Admin API
@@ -15,7 +15,7 @@ security:
 tags:
   - name: Organization
     description: Manage your organization, users, and roles.
-  - name: TeamSpace
+  - name: Teamspace
     description: Manage teamspaces and their members.
 components:
 
@@ -387,7 +387,7 @@ paths:
   "/team-space/{id}/rename":
     patch:
       tags:
-        - TeamSpace
+        - Teamspace
       summary: Rename a teamspace
       description: Update the name of a teamspace.
       parameters:
@@ -420,7 +420,7 @@ paths:
   "/team-space/{id}/members":
     post:
       tags:
-        - TeamSpace
+        - Teamspace
       summary: Add members to a teamspace
       description: Add one or more users to a teamspace by user ID or email.
       parameters:
