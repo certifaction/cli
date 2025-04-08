@@ -104,6 +104,7 @@ components:
         user:
           $ref: '#/components/schemas/user'
         role:
+          type: string
           deprecated: true
         status:
           type: string
