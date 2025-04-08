@@ -104,6 +104,7 @@ components:
         user:
           $ref: '#/components/schemas/user'
         role:
+          type: string
           deprecated: true
         status:
           type: string
@@ -146,6 +147,7 @@ components:
           type: string
 
     user:
+      type: object
       properties:
         id:
           type: integer
@@ -164,6 +166,7 @@ components:
         subscription_type:
           type: string
         theme:
+          type: object
           properties:
             name:
               type: string
@@ -171,24 +174,6 @@ components:
             - name
         name_verified:
           type: boolean
-
-    role_update:
-      type: object
-      properties:
-        role_id:
-          type: string
-          description: The ID of the role to be assigned to the user.
-      anyOf:
-        - properties:
-            user_uid:
-              type: string
-              description: The unique identifier of the user. Either user_uid or invite_email must be provided.
-          required: [user_uid]
-        - properties:
-            invite_email:
-              description: The email of the user being invited. Either user_uid or invite_email must be provided.
-              type: string
-          required: [invite_email]
 
   requestBodies:
     organization_user_invite:
