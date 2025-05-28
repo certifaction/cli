@@ -66,11 +66,11 @@ components:
       in: header
       schema:
         $ref: "#/components/schemas/language"
-    scope:
+    prepare_scope:
       name: scope
       in: query
       schema:
-        $ref: "#/components/schemas/scope"
+        $ref: "#/components/schemas/prepare_scope"
       required: true
     qr_llx:
       name: qr-llx
@@ -168,6 +168,12 @@ components:
         - certify
         - revoke
         - retract
+    prepare_scope:
+      type: string
+      enum:
+        - sign
+        - certify
+        - attachment
 
     identity:
       properties:
@@ -392,7 +398,7 @@ paths:
         - $ref: "#/components/parameters/digital_twin"
         - $ref: "#/components/parameters/pdf-a"
         - $ref: "#/components/parameters/accept_language"
-        - $ref: "#/components/parameters/scope"
+        - $ref: "#/components/parameters/prepare_scope"
         - $ref: "#/components/parameters/additional_page"
         - $ref: "#/components/parameters/qr_llx"
         - $ref: "#/components/parameters/qr_lly"
@@ -910,6 +916,7 @@ paths:
 
   /request/list:
     post:
+      deprecated: true
       operationId: list_requests
       summary: List signature requests for file
       requestBody:
@@ -967,7 +974,7 @@ paths:
       tags:
         - Signing
   /request/status:
-    post:
+    get:
       operationId: request_status
       summary: Show status of signature request
       parameters:
@@ -1040,7 +1047,7 @@ paths:
         - Signing
 
   /request/file/status:
-    post:
+    get:
       operationId: file_requests_status
       summary: Show status of signature requests of given file
       parameters:
@@ -1073,9 +1080,6 @@ paths:
                     items:
                       type: object
                       properties:
-                        url:
-                          type: string
-                          format: url
                         id:
                           type: string
                         createdAt:
