@@ -56,9 +56,14 @@ components:
         send_email:
           type: boolean
           description: Whether to send an email invitation. Default is true if not specified.
-      anyOf:
-        - required: [member_user_ids]
-        - required: [member_user_emails]
+      not:
+        allOf:
+          - properties:
+              member_user_ids:
+                maxItems: 0
+          - properties:
+              member_user_emails:
+                maxItems: 0
           
     teamspace_rename_request:
       type: object
