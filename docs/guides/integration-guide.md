@@ -1,6 +1,6 @@
 ---
 title: Integration guide
-description: A basic step by step integraiton guide
+description: A basic step by step integration guide
 ---
 
 # Integration guide
