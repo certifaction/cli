@@ -1,15 +1,16 @@
 ---
-title: Complete integration guide
-description: A complete step by step integraiton guide
+title: Integration guide
+description: A basic step by step integraiton guide
 ---
 
-# Complete integration guide
+# Integration guide
 
 1. Download the [latest Certifaction Client](https://github.com/certifaction/cli/releases)
 
 2. Run the Certifaction Client - Options:
 
    1. Start server-mode via command line: `./certifaction server`
+   
    2. Start server-mode via docker container: `docker run -p 8082:8082 certifaction/server:v.X.Y.Z`
 
 3. Prepare documents:
@@ -26,10 +27,7 @@ description: A complete step by step integraiton guide
       --data-binary '@/INPUT_FILE.pdf'
       ```
 
-      <aside>
-      ℹ️ The response will contain a `FILE_URL` in the `location` header, which needs to be used to create a signature request.
-
-      </aside>
+        > ℹ️ The response will contain a `FILE_URL` in the `location` header, which needs to be used to create a signature request.
 
 4. Create a signature request:
 
@@ -56,10 +54,8 @@ description: A complete step by step integraiton guide
       }'
       ```
 
-      <aside>
-      ℹ️ The response will be a `request_url`, which needs to be sent to the signer.
+      > ℹ️ The response will be a `request_url`, which needs to be sent to the signer.
 
-      </aside>
 
 5. Wait for the webhook to be called (gets triggered when documents are signed or declined)
 
@@ -74,10 +70,7 @@ description: A complete step by step integraiton guide
       --header 'Authorization: API_KEY'
       ```
 
-      <aside>
-      ℹ️ The `status` of the `envelope_items` need to be checked.
-
-      </aside>
+      > ℹ️ The `status` of the `envelope_items` need to be checked.
 
 7. Download the signed document:
 
@@ -90,7 +83,4 @@ description: A complete step by step integraiton guide
       --header 'Authorization: API_KEY'
       ```
 
-      <aside>
-      ℹ️ The `request_url` must be URL encoded.
-
-      </aside>
+      > ℹ️ The `request_url` must be URL encoded.

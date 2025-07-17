@@ -138,8 +138,8 @@ export default defineConfig({
               link: "/guides/howto-check-document-status",
             },
             {
-              text: "Complete integration guide",
-              link: "/guides/complete-integration-guide",
+              text: "Integration guide",
+              link: "/guides/integration-guide",
             },
           ],
         },
