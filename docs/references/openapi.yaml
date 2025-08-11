@@ -156,7 +156,6 @@ components:
       type: string
       enum:
         - AES
-        - PES
         - QES
         - SES
 
@@ -456,7 +455,6 @@ paths:
             type: string
             enum:
               - AES
-              - PES
               - QES
               - SES
         - name: jurisdiction
@@ -573,7 +571,6 @@ paths:
             type: string
             enum:
               - AES
-              - PES
               - QES
               - SES
         - name: jurisdiction

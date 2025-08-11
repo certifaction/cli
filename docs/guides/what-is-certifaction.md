@@ -26,10 +26,7 @@ password.
 
 ## Legally valid identity check
 
-Certifaction supports several signature levels from the standard electronic signature (SES) to the
-qualified electronic signature (QES). In addition, Certifaction offers the professional
-electronic signature ([PES](https://certifaction.com/professional-electronic-signature-pes/)),
-which combines an instant ID-check with a convenient simple signature.
+Certifaction supports several signature levels from the standard electronic signature (SES) or the advanced electronic signature (AES) to the qualified electronic signature (QES).
 
 ## Verifiable signatures for printed documents
 
