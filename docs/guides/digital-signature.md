@@ -13,7 +13,7 @@ which uses cryptography and Public Key Infrastructure (PKI) to provide the highe
 Certifaction uses three signature levels with increasing identity verification assurances:
 
 - Standard Electronic Signature (SES): email verification
-- Professional Electronic Signature (PES): identification using ID document scanning and verification
+- Advanced Electronic Signature (AES): enhanced verification requirements
 - Qualified Electronic Signature (QES): Swiss and EU qualified electronic signature requirements
 
 Certifaction's unique privacy-first signature ensures that document content does not leave your
