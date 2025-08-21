@@ -47,12 +47,12 @@ components:
           type: array
           items:
             type: string
-          description: List of user IDs to add to the teamspace
+          description: List of user IDs to add to the teamspace. Can only be used if the user joined already.
         member_user_emails:
           type: array
           items:
             type: string
-          description: List of user emails to invite to the teamspace
+          description: List of user emails to invite to the teamspace. Needs to be used if the user did not join yet.
         send_email:
           type: boolean
           description: Whether to send an email invitation. Default is true if not specified.
@@ -414,7 +414,7 @@ paths:
           required: true
           schema:
             type: string
-          description: User's UID to remove
+          description: ID of the member to remove
         - name: send_email
           in: query
           required: false
