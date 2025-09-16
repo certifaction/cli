@@ -1,4 +1,5 @@
-// Placeholder for German locale - content to be translated later
+import { deNavigation } from "../navigation/de.js";
+
 export const deConfig = {
   label: 'Deutsch',
   lang: 'de',
@@ -7,24 +8,7 @@ export const deConfig = {
   description: "Integrieren Sie Certifaction PAdES digitale Signatur hochvertraulicher Dokumente in Ihre Anwendung und Service.",
 
   themeConfig: {
-    // Navigation will be added when German content is created
-    nav: [
-      {
-        text: "Anleitung",
-        link: "/de/guides/what-is-certifaction",
-        activeMatch: "/de/guides/",
-      },
-      {
-        text: "Referenz",
-        link: "/de/references/api",
-        activeMatch: "/de/references/",
-      },
-      {
-        text: "Änderungsprotokoll",
-        link: "https://github.com/certifaction/cli/releases",
-      },
-    ],
-    sidebar: {},
+    ...deNavigation,
     editLink: {
       pattern: "https://github.com/certifaction/cli/edit/main/docs/de/:path",
       text: "Diese Seite auf GitHub bearbeiten",

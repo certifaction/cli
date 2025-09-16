@@ -1,4 +1,5 @@
-// Placeholder for Italian locale - content to be translated later
+import { itNavigation } from "../navigation/it.js";
+
 export const itConfig = {
   label: 'Italiano',
   lang: 'it',
@@ -7,23 +8,7 @@ export const itConfig = {
   description: "Integra la firma digitale PAdES Certifaction di documenti altamente riservati nella tua applicazione e servizio.",
 
   themeConfig: {
-    nav: [
-      {
-        text: "Guida",
-        link: "/it/guides/what-is-certifaction",
-        activeMatch: "/it/guides/",
-      },
-      {
-        text: "Riferimento",
-        link: "/it/references/api",
-        activeMatch: "/it/references/",
-      },
-      {
-        text: "Registro delle modifiche",
-        link: "https://github.com/certifaction/cli/releases",
-      },
-    ],
-    sidebar: {},
+    ...itNavigation,
     editLink: {
       pattern: "https://github.com/certifaction/cli/edit/main/docs/it/:path",
       text: "Modifica questa pagina su GitHub",
