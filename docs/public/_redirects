@@ -1,0 +1,6 @@
+# Netlify language-based redirects
+# Redirect based on Accept-Language header
+/ /de/ 302 Language=de
+/ /fr/ 302 Language=fr
+/ /it/ 302 Language=it
+/ /en/ 302

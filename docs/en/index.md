@@ -13,10 +13,10 @@ hero:
   actions:
     - theme: brand
       text: Getting Started
-      link: /guides/what-is-certifaction
+      link: /en/guides/what-is-certifaction
     - theme: alt
       text: Local API doc
-      link: /references/api
+      link: /en/references/api
     - theme: alt
       text: View on GitHub
       link: https://github.com/certifaction/cli
