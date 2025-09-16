@@ -1,16 +1,16 @@
 openapi: "3.0.2"
 
 info:
-  title: Certifaction Local API
+  title: API Locale Certifaction
   description: |
-    A proxy server for integrating with the Certifaction platform.
+    Un server proxy per l'integrazione con la piattaforma Certifaction.
 
-    ## Setup requirements
+    ## Requisiti di configurazione
 
-    1. An API key is required to perform some operations. You can get one from your Certifaction account settings.
-    2. Start the local server on the CLI using the command `certifaction server`
+    1. È richiesta una chiave API per eseguire alcune operazioni. Può ottenerla dalle impostazioni del Suo account Certifaction.
+    2. Avviare il server locale sulla CLI utilizzando il comando `certifaction server`
 
-    Refer to [our setup guide](https://developers.certifaction.com/guides/getting-started-api#getting-started-with-the-local-api) to get started.
+    Consulti la [nostra guida di configurazione](https://developers.certifaction.com/guides/getting-started-api#getting-started-with-the-local-api) per iniziare.
 
   version: ""
 
@@ -25,35 +25,35 @@ security:
 
 tags:
   - name: Signing
-    description: Sign files and request signatures
+    description: Firmare file e richiedere firme
   - name: Documents
-    description: Download your documents or remove Certifaction's access to them
+    description: Scaricare i propri documenti o rimuovere l'accesso di Certifaction ad essi
   - name: Account
-    description: Access your user account data
+    description: Accedere ai dati del proprio account utente
   - name: Server
-    description: Check the server's status
+    description: Controllare lo stato del server
   - name: Certification
-    description: Blockchain certification
+    description: Certificazione blockchain
 
 components:
   parameters:
     additional_page:
       name: additional-page
-      description: Whether to place Digital Twin and signatures on an additional page or inline.
+      description: Se posizionare Digital Twin e firme su una pagina aggiuntiva o inline.
       in: query
       schema:
         type: boolean
         default: true
     digital_twin:
       name: digital-twin
-      description: Enable [Digital Twin](https://certifaction.com/digital-twin/) for the document.
+      description: Abilitare [Digital Twin](https://certifaction.com/digital-twin/) per il documento.
       in: query
       schema:
         type: boolean
         default: false
     pdf-a:
       name: pdf-a
-      description: Enable PDF/A compatibility
+      description: Abilitare la compatibilità PDF/A
       in: query
       schema:
         type: boolean
@@ -61,8 +61,8 @@ components:
     accept_language:
       name: Accept-Language
       description: |
-        The language for text object placed added to the document. Pass `de` for German, `en` for English,
-        `fr` for French, or `it` for Italian.
+        La lingua per gli oggetti di testo aggiunti al documento. Inserire `de` per il tedesco, `en` per l'inglese,
+        `fr` per il francese, o `it` per l'italiano.
       in: header
       schema:
         $ref: "#/components/schemas/language"
@@ -75,40 +75,40 @@ components:
     qr_llx:
       name: qr-llx
       description: |
-        The x-coordinate of the Digital Twin QR code from the lower left corner of the document.
-        This is required when `additional-page=false`.
+        La coordinata x del codice QR Digital Twin dall'angolo inferiore sinistro del documento.
+        Questo è richiesto quando `additional-page=false`.
       in: query
       schema:
         type: number
     qr_lly:
       name: qr-lly
       description: |
-        The y-coordinate of the Digital Twin QR code from the lower left corner of the document.
-        This is required when `additional-page=false`.
+        La coordinata y del codice QR Digital Twin dall'angolo inferiore sinistro del documento.
+        Questo è richiesto quando `additional-page=false`.
       in: query
       schema:
         type: number
     qr_height:
       name: qr-height
-      description: The height of the Digital Twin QR code. This is required when `additional-page=false`.
+      description: L'altezza del codice QR Digital Twin. Questo è richiesto quando `additional-page=false`.
       in: query
       schema:
         type: number
     qr_page:
       name: qr-page
-      description: The page to place the Digital Twin QR code on. This is required when `additional-page=false`.
+      description: La pagina su cui posizionare il codice QR Digital Twin. Questo è richiesto quando `additional-page=false`.
       in: query
       schema:
         type: integer
     encryption_key:
       name: encryption-key
-      description: A hexadecimal string to encrypt the document with.
+      description: Una stringa esadecimale per crittografare il documento.
       in: query
       schema:
         type: string
     password_encryption:
       name: password-encryption
-      description: The password encryption algorithm to use in encrypting the encryption key.
+      description: L'algoritmo di crittografia password da utilizzare per crittografare la chiave di crittografia.
       in: query
       schema:
         type: string
@@ -117,17 +117,17 @@ components:
 
   responses:
     bad_request:
-      description: The request is not properly formed. For example, the content could not be read.
+      description: La richiesta non è formattata correttamente. Ad esempio, il contenuto non può essere letto.
     unauthorized:
-      description: You are not authorized to carry out the operation. Check that your API key is correct.
+      description: Non è autorizzato a eseguire l'operazione. Verifichi che la Sua chiave API sia corretta.
     forbidden:
-      description: You do not have permission to carry out the operation. For example you might not have the required role.
+      description: Non ha il permesso di eseguire l'operazione. Ad esempio potrebbe non avere il ruolo richiesto.
     not_found:
-      description: The requested resource was not found.
+      description: La risorsa richiesta non è stata trovata.
     conflict:
-      description: Conflict detected in the request. For example, a user might have already been joined an organization.
+      description: Conflitto rilevato nella richiesta. Ad esempio, un utente potrebbe essere già stato aggiunto a un'organizzazione.
     internal_server_error:
-      description: An error occurred on the server
+      description: Si è verificato un errore sul server
 
   securitySchemes:
     api_key:
@@ -302,15 +302,15 @@ paths:
   /delete-access:
     post:
       operationId: remove_access
-      summary: Remove Certifaction's access to a file
+      summary: Rimuovere l'accesso di Certifaction a un file
       requestBody:
-        description: The file that you want to remove Certifaction's access for.
+        description: Il file per cui si desidera rimuovere l'accesso di Certifaction.
         required: true
         content:
           application/pdf: { }
       responses:
         200:
-          description: File access was removed successfully.
+          description: L'accesso al file è stato rimosso con successo.
         400:
           $ref: "#/components/responses/bad_request"
         401:
@@ -320,24 +320,24 @@ paths:
 
   /download:
     get:
-      summary: Download files
+      summary: Scaricare file
       parameters:
         - name: file
-          description: A Digital Archive URL
+          description: Un URL del Digital Archive
           in: query
           required: true
           schema:
             type: string
             format: url
         - name: password
-          description: The signature request password, if Privacy 2.0 was enabled
+          description: La password della richiesta di firma, se Privacy 2.0 era abilitato
           in: query
           schema:
             type: string
       operationId: download_file
       responses:
         200:
-          description: File download content.
+          description: Contenuto del download del file.
           content:
             application/pdf:
               schema:
@@ -356,10 +356,10 @@ paths:
   /health:
     get:
       operationId: server_health_check
-      summary: Check server health
+      summary: Controllare lo stato del server
       responses:
         200:
-          description: Health check response.
+          description: Risposta di controllo dello stato.
           content:
             application/json:
               schema:
@@ -376,10 +376,10 @@ paths:
 
   /ping:
     get:
-      summary: Check that the API server is running
+      summary: Controllare che il server API sia in funzione
       responses:
         200:
-          description: The server is up and running.
+          description: Il server è attivo e funzionante.
           content:
             text/plain:
               schema:
@@ -405,15 +405,15 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
-      summary: Prepare a file for signing or certification
+      summary: Preparare un file per la firma o certificazione
       requestBody:
-        description: The file to prepare.
+        description: Il file da preparare.
         required: true
         content:
           application/pdf: { }
       responses:
         200:
-          description: The prepared file content.
+          description: Il contenuto del file preparato.
           content:
             application/pdf:
               schema:
@@ -474,38 +474,38 @@ paths:
             type: boolean
         - name: position-x
           description: |
-            The x-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
+            La coordinata x della firma dal basso-sinistra della pagina.
+            Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: number
         - name: position-y
           description: |
-            The y-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
+            La coordinata y della firma dal basso-sinistra della pagina.
+            Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: number
         - name: height
-          description: The height of the signature card. This is required when `additional-page=false`.
+          description: L'altezza della scheda firma. Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: number
         - name: page
-          description: The page to place the signature on. This is required when `additional-page=false`.
+          description: La pagina su cui posizionare la firma. Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: integer
             minimum: 1
-      summary: Sign a file
+      summary: Firmare un file
       requestBody:
-        description: The file to sign.
+        description: Il file da firmare.
         required: true
         content:
           application/pdf: { }
       responses:
         200:
-          description: The signed file content.
+          description: Il contenuto del file firmato.
           content:
             application/pdf:
               schema:
@@ -520,15 +520,15 @@ paths:
   /revoke:
     post:
       operationId: revoke_document
-      summary: Revoke a document
+      summary: Revocare un documento
       requestBody:
-        description: The document to revoke.
+        description: Il documento da revocare.
         required: true
         content:
           application/pdf: { }
       responses:
         200:
-          description: The revocation was successful.
+          description: La revoca è stata completata con successo.
         400:
           $ref: "#/components/responses/bad_request"
         401:
@@ -590,38 +590,38 @@ paths:
             type: boolean
         - name: position-x
           description: |
-            The x-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
+            La coordinata x della firma dal basso-sinistra della pagina.
+            Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: number
         - name: position-y
           description: |
-            The y-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
+            La coordinata y della firma dal basso-sinistra della pagina.
+            Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: number
         - name: height
-          description: The height of the signature card. This is required when `additional-page=false`.
+          description: L'altezza della scheda firma. Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: number
         - name: page
-          description: The page to place the signature on. This is required when `additional-page=false`.
+          description: La pagina su cui posizionare la firma. Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: integer
             minimum: 1
-      summary: Register a file
+      summary: Registrare un file
       requestBody:
-        description: The file to register.
+        description: Il file da registrare.
         required: true
         content:
           application/pdf: { }
       responses:
         200:
-          description: The registered file content. There is no response body if `scope` was `revoke`.
+          description: Il contenuto del file registrato. Non c'è corpo di risposta se `scope` era `revoke`.
           content:
             application/pdf:
               schema:
@@ -645,15 +645,15 @@ paths:
             type: boolean
             default: false
           description: |
-            If `send-email=true`, the server will send the signature request to the signer's email
-            and also send reminder emails to get them to sign.
+            Se `send-email=true`, il server invierà la richiesta di firma all'email del firmatario
+            e invierà anche email di promemoria per spingerlo a firmare.
         - name: name
           in: query
           schema:
             type: string
             description: |
-              The full name of the signer. You can omit this and send the name in parts using
-              `first-name`, `middle-names`, and `last-name`.
+              Il nome completo del firmatario. Può ometterlo e inviare il nome in parti utilizzando
+              `first-name`, `middle-names`, e `last-name`.
         - name: first-name
           in: query
           schema:
@@ -671,7 +671,7 @@ paths:
           schema:
             type: string
             format: email
-          description: The signer's email address.
+          description: L'indirizzo email del firmatario.
           required: true
         - name: mobile-phone
           in: query
@@ -711,8 +711,8 @@ paths:
           schema:
             type: boolean
           description: |
-            Protect the request using a password so that only the password bearer can sign.
-            If enabled, a password will be generated. Send the password, together with the request URL, to the signer.
+            Proteggere la richiesta usando una password in modo che solo il portatore della password possa firmare.
+            Se abilitato, verrà generata una password. Invii la password, insieme all'URL della richiesta, al firmatario.
         - name: hash
           in: query
           schema:
@@ -752,32 +752,32 @@ paths:
             type: boolean
         - name: position-x
           description: |
-            The x-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
+            La coordinata x della firma dal basso-sinistra della pagina.
+            Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: number
         - name: position-y
           description: |
-            The y-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
+            La coordinata y della firma dal basso-sinistra della pagina.
+            Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: number
         - name: height
-          description: The height of the signature card. This is required when `additional-page=false`.
+          description: L'altezza della scheda firma. Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: number
         - name: page
-          description: The page to place the signature on. This is required when `additional-page=false`.
+          description: La pagina su cui posizionare la firma. Questo è richiesto quando `additional-page=false`.
           in: query
           schema:
             type: integer
             minimum: 1
-      summary: Request a signature
+      summary: Richiedere una firma
       requestBody:
-        description: The files to sign
+        description: I file da firmare
         required: true
         content:
           application/pdf: { }
@@ -793,11 +793,11 @@ paths:
                         type: string
                         format: url
                         description: |
-                          DA URL of the documents to sign.
+                          URL DA dei documenti da firmare.
                       name:
                         type: string
                         description: |
-                          Name of the document. This is used in the signature request email.
+                          Nome del documento. Questo viene utilizzato nell'email della richiesta di firma.
           application/x-www-form-urlencoded:
             schema:
               properties:
@@ -807,8 +807,8 @@ paths:
                     type: string
                     format: url
                   description: |
-                    DA URLs to the documents to sign. Previous signing links can be reused.
-                    If a link to a password-protected request is provided, also pass the `password` parameter.
+                    URL DA ai documenti da firmare. I precedenti link di firma possono essere riutilizzati.
+                    Se viene fornito un link a una richiesta protetta da password, passare anche il parametro `password`.
           multipart/form-data:
             schema:
               properties:
@@ -817,14 +817,14 @@ paths:
                   items:
                     type: string
                     format: binary
-                  description: Upload PDF documents to sign.
+                  description: Caricare documenti PDF da firmare.
             encoding:
               files:
                 contentType: application/pdf
                 style: form
       responses:
         200:
-          description: The signature request was created.
+          description: La richiesta di firma è stata creata.
           content:
             application/json:
               schema:
@@ -839,75 +839,75 @@ paths:
         401:
           $ref: "#/components/responses/unauthorized"
         409:
-          description: The signer already has a pending signature request for the file.
+          description: Il firmatario ha già una richiesta di firma in sospeso per il file.
       tags:
         - Signing
 
   /request/cancel:
     post:
       operationId: cancel_request
-      summary: Cancel signature request for signer
+      summary: Annullare la richiesta di firma per il firmatario
       parameters:
         - name: email
           in: query
           schema:
             type: string
             format: email
-          description: The email of the signer to cancel the request for.
+          description: L'email del firmatario per cui annullare la richiesta.
           required: true
         - name: note
           in: query
           schema:
             type: string
-          description: A message to the signer. You can use this to explain why you cancelled the request.
+          description: Un messaggio al firmatario. Può usarlo per spiegare perché ha annullato la richiesta.
       requestBody:
-        description: A file used in the signature request.
+        description: Un file utilizzato nella richiesta di firma.
         required: true
         content:
           application/pdf: { }
       responses:
         204:
-          description: The signature request to the given signer was cancelled.
+          description: La richiesta di firma al firmatario specificato è stata annullata.
         400:
           description: |
-            Check that:
-            1. The `email` parameter was provided.
-            2. The file provided has been prepared and can be read.
+            Verifichi che:
+            1. Il parametro `email` sia stato fornito.
+            2. Il file fornito sia stato preparato e possa essere letto.
         401:
           $ref: "#/components/responses/unauthorized"
         403:
-          description: You cannot cancel the request at this time. It could be because the signer has signed already.
+          description: Non può annullare la richiesta in questo momento. Potrebbe essere perché il firmatario ha già firmato.
         404:
-          description: Either the file provided or the signer email was not found.
+          description: Il file fornito o l'email del firmatario non è stata trovata.
       tags:
         - Signing
 
   /request/cancel/all:
     post:
       operationId: cancel_request_all
-      summary: Cancel signature requests for file
+      summary: Annullare le richieste di firma per il file
       parameters:
         - name: note
           in: query
           schema:
             type: string
-          description: A message to the signers. You can use this to explain why you cancelled the request.
+          description: Un messaggio ai firmatari. Può usarlo per spiegare perché ha annullato la richiesta.
       requestBody:
-        description: A file used in the signature request.
+        description: Un file utilizzato nella richiesta di firma.
         required: true
         content:
           application/pdf: { }
       responses:
         204:
-          description: All pending signature requests for the file were cancelled.
+          description: Tutte le richieste di firma in sospeso per il file sono state annullate.
         400:
-          description: Check that the file provided has been prepared and can be read.
+          description: Verifichi che il file fornito sia stato preparato e possa essere letto.
         401:
           $ref: "#/components/responses/unauthorized"
         403:
-          description: You cannot cancel the requests at this time. It could be because a signer has signed already.
+          description: Non può annullare le richieste in questo momento. Potrebbe essere perché un firmatario ha già firmato.
         404:
-          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+          description: Il file fornito non è stato trovato. Verifichi che il file sia stato elaborato e che lo abbia utilizzato in una richiesta di firma.
       tags:
         - Signing
 
@@ -915,9 +915,9 @@ paths:
     post:
       deprecated: true
       operationId: list_requests
-      summary: List signature requests for file
+      summary: Elencare le richieste di firma per il file
       requestBody:
-        description: A file (or a file URL) used in the signature request.
+        description: Un file (o un URL di file) utilizzato nella richiesta di firma.
         required: true
         content:
           application/x-www-form-urlencoded:
@@ -943,7 +943,7 @@ paths:
                 contentType: application/pdf
       responses:
         200:
-          description: List of signature requests for the file.
+          description: Elenco delle richieste di firma per il file.
           content:
             application/json:
               schema:
@@ -961,19 +961,19 @@ paths:
                   requester:
                     $ref: "#/components/schemas/user"
         400:
-          description: Check that the file provided has been prepared and can be read.
+          description: Verifichi che il file fornito sia stato preparato e possa essere letto.
         401:
           $ref: "#/components/responses/unauthorized"
         403:
-          description: You cannot list signature requests for this file.
+          description: Non può elencare le richieste di firma per questo file.
         404:
-          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+          description: Il file fornito non è stato trovato. Verifichi che il file sia stato elaborato e che lo abbia utilizzato in una richiesta di firma.
       tags:
         - Signing
   /request/status:
     get:
       operationId: request_status
-      summary: Show status of signature request
+      summary: Mostrare lo stato della richiesta di firma
       parameters:
         - name: request_url
           in: query
@@ -981,15 +981,15 @@ paths:
           schema:
             type: string
             format: url
-          description: The URL of the signature request to check.
+          description: L'URL della richiesta di firma da controllare.
         - name: password
           in: query
           schema:
             type: string
-          description: Password for password encrypted requests
+          description: Password per richieste crittografate con password
       responses:
         200:
-          description: Status of the signature request.
+          description: Stato della richiesta di firma.
           content:
             application/json:
               schema:
@@ -1033,20 +1033,20 @@ paths:
                   identification_method:
                     type: string
         400:
-          description: Check that the file provided has been prepared and can be read.
+          description: Verifichi che il file fornito sia stato preparato e possa essere letto.
         401:
           $ref: "#/components/responses/unauthorized"
         403:
-          description: You cannot list signature requests for this file.
+          description: Non può elencare le richieste di firma per questo file.
         404:
-          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+          description: Il file fornito non è stato trovato. Verifichi che il file sia stato elaborato e che lo abbia utilizzato in una richiesta di firma.
       tags:
         - Signing
 
   /request/file/status:
     get:
       operationId: file_requests_status
-      summary: Show status of signature requests of given file
+      summary: Mostrare lo stato delle richieste di firma del file specificato
       parameters:
         - name: file_url
           in: query
@@ -1054,15 +1054,15 @@ paths:
           schema:
             type: string
             format: url
-          description: The DA URL of the file to check.
+          description: L'URL DA del file da controllare.
         - name: password
           in: query
           schema:
             type: string
-          description: Password for password encrypted document.
+          description: Password per documento crittografato con password.
       responses:
         200:
-          description: File status across all signature requests.
+          description: Stato del file attraverso tutte le richieste di firma.
           content:
             application/json:
               schema:
@@ -1113,19 +1113,19 @@ paths:
                         identification_method:
                           type: string
         400:
-          description: Check that the file provided has been prepared and can be read.
+          description: Verifichi che il file fornito sia stato preparato e possa essere letto.
         401:
           $ref: "#/components/responses/unauthorized"
         403:
-          description: You cannot list signature requests for this file.
+          description: Non può elencare le richieste di firma per questo file.
         404:
-          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+          description: Il file fornito non è stato trovato. Verifichi che il file sia stato elaborato e che lo abbia utilizzato in una richiesta di firma.
       tags:
         - Signing
 
   /qes/check:
     post:
-      summary: Check account QES status
+      summary: Controllare lo stato QES dell'account
       requestBody:
         content:
           application/json:
@@ -1137,13 +1137,13 @@ paths:
                 - jurisdiction
       responses:
         200:
-          description: QES is enabled for your account.
+          description: QES è abilitato per il Suo account.
         400:
           $ref: "#/components/responses/bad_request"
         401:
           $ref: "#/components/responses/unauthorized"
         404:
-          description: QES is disabled for your account.
+          description: QES è disabilitato per il Suo account.
       tags:
         - Account
         - Signing
@@ -1151,10 +1151,10 @@ paths:
   /user:
     get:
       operationId: get_user
-      summary: Get account data
+      summary: Ottenere i dati dell'account
       responses:
         200:
-          description: The user data for your account.
+          description: I dati utente per il Suo account.
           content:
             application/json:
               schema:

@@ -3,7 +3,7 @@ openapi: "3.1.0"
 info:
   title: Certifaction Admin API
   description: |
-    Certifaction Admin API is used to manage users, roles and teamspaces.
+    Die Certifaction Admin API wird zur Verwaltung von Benutzern, Rollen und Teamspaces verwendet.
   version: ""
 
 servers:
@@ -14,24 +14,24 @@ security:
 
 tags:
   - name: Organization
-    description: Manage your organization, users, and roles.
+    description: Ihre Organisation, Benutzer und Rollen verwalten.
   - name: Teamspace
-    description: Manage teamspaces and their members.
+    description: Teamspaces und ihre Mitglieder verwalten.
 components:
 
   responses:
     bad_request:
-      description: The request is not properly formed. For example, the content could not be read.
+      description: Die Anfrage ist nicht ordnungsgemäß formatiert. Beispielsweise konnte der Inhalt nicht gelesen werden.
     unauthorized:
-      description: You are not authorized to carry out the operation. Check that your API key is correct.
+      description: Sie sind nicht berechtigt, die Operation durchzuführen. Prüfen Sie, ob Ihr API-Schlüssel korrekt ist.
     forbidden:
-      description: You do not have permission to carry out the operation. For example you might not have the required role.
+      description: Sie haben keine Berechtigung, die Operation durchzuführen. Beispielsweise haben Sie möglicherweise nicht die erforderliche Rolle.
     not_found:
-      description: The requested resource was not found.
+      description: Die angeforderte Ressource wurde nicht gefunden.
     conflict:
-      description: Conflict detected in the request. For example, a user might have already been joined an organization.
+      description: Konflikt in der Anfrage erkannt. Beispielsweise könnte ein Benutzer bereits einer Organisation beigetreten sein.
     internal_server_error:
-      description: An error occurred on the server
+      description: Ein Fehler ist auf dem Server aufgetreten
 
   securitySchemes:
     api_key:
@@ -47,15 +47,15 @@ components:
           type: array
           items:
             type: string
-          description: List of user IDs to add to the teamspace. Can only be used if the user joined already.
+          description: Liste der Benutzer-IDs, die dem Teamspace hinzugefügt werden sollen. Kann nur verwendet werden, wenn der Benutzer bereits beigetreten ist.
         member_user_emails:
           type: array
           items:
             type: string
-          description: List of user emails to invite to the teamspace. Needs to be used if the user did not join yet.
+          description: Liste der Benutzer-E-Mails, die in den Teamspace eingeladen werden sollen. Muss verwendet werden, wenn der Benutzer noch nicht beigetreten ist.
         send_email:
           type: boolean
-          description: Whether to send an email invitation. Default is true if not specified.
+          description: Ob eine E-Mail-Einladung gesendet werden soll. Standard ist true, wenn nicht angegeben.
       not:
         allOf:
           - properties:
@@ -64,13 +64,13 @@ components:
           - properties:
               member_user_emails:
                 maxItems: 0
-          
+
     teamspace_rename_request:
       type: object
       properties:
         name:
           type: string
-          description: The new name for the teamspace
+          description: Der neue Name für den Teamspace
       required:
         - name
 
@@ -193,7 +193,7 @@ components:
                 type: string
               send_email:
                 type: boolean
-                description: "Whether to send an email invitation. Default is true if not specified."
+                description: "Ob eine E-Mail-Einladung gesendet werden soll. Standard ist true, wenn nicht angegeben."
 
     organization_role_assign:
       content:
@@ -203,7 +203,7 @@ components:
             properties:
               user_uid:
                 type: string
-                description: "Either user_uid OR invite_email have to be set, depending if the user already joined or not"
+                description: "Entweder user_uid ODER invite_email müssen gesetzt werden, abhängig davon, ob der Benutzer bereits beigetreten ist oder nicht"
               invite_email:
                 type: string
               role_id:
@@ -214,11 +214,11 @@ paths:
     get:
       tags:
         - Organization
-      summary: Get your organization
+      summary: Ihre Organisation abrufen
       operationId: getOrganization
       responses:
         "200":
-          description: Organization details fetched successfully.
+          description: Organisationsdetails erfolgreich abgerufen.
           content:
             application/json:
               schema:
@@ -234,20 +234,20 @@ paths:
     post:
       tags:
         - Organization
-      summary: Invite user
-      description: "A user could be invited multiple times, assuming he didn't accept the invite yet. An email is sent out for each invitation"
+      summary: Benutzer einladen
+      description: "Ein Benutzer kann mehrmals eingeladen werden, vorausgesetzt, er hat die Einladung noch nicht angenommen. Für jede Einladung wird eine E-Mail versandt"
       parameters:
         - name: id
           in: path
           required: true
-          description: The ID of the organization to which you want to invite the user
+          description: Die ID der Organisation, in die Sie den Benutzer einladen möchten
           schema:
             type: string
       requestBody:
         $ref: "#/components/requestBodies/organization_user_invite"
       responses:
         "200":
-          description: Invited
+          description: Eingeladen
         "401":
           $ref: "#/components/responses/unauthorized"
         "403":
@@ -260,12 +260,12 @@ paths:
     delete:
       tags:
         - Organization
-      summary: Remove a user from an organization
+      summary: Einen Benutzer aus einer Organisation entfernen
       parameters:
         - name: id
           in: path
           required: true
-          description: The ID of the organization
+          description: Die ID der Organisation
           schema:
             type: string
       requestBody:
@@ -278,16 +278,16 @@ paths:
                 - properties:
                     user_uid:
                       type: string
-                      description: The UID of the user to remove
+                      description: Die UID des zu entfernenden Benutzers
                   required: [user_uid]
                 - properties:
                     invite_email:
-                      description: The email of the invited user to remove
+                      description: Die E-Mail des eingeladenen Benutzers, der entfernt werden soll
                       type: string
                   required: [invite_email]
       responses:
         "200":
-          description: User removed successfully
+          description: Benutzer erfolgreich entfernt
         "400":
           $ref: "#/components/responses/bad_request"
         "401":
@@ -305,20 +305,20 @@ paths:
     post:
       tags:
         - Organization
-      summary: Change the role of a user
-      description: Change a user's role in an organization, using either user UID or invite email.
+      summary: Die Rolle eines Benutzers ändern
+      description: Die Rolle eines Benutzers in einer Organisation ändern, unter Verwendung der Benutzer-UID oder der Einladungs-E-Mail.
       parameters:
         - name: organization_id
           in: path
           required: true
-          description: The ID of the organization
+          description: Die ID der Organisation
           schema:
             type: string
       requestBody:
         $ref: '#/components/requestBodies/organization_role_assign'
       responses:
         "200":
-          description: Role updated successfully
+          description: Rolle erfolgreich aktualisiert
         "400":
           $ref: "#/components/responses/bad_request"
         "401":
@@ -334,15 +334,15 @@ paths:
     patch:
       tags:
         - Teamspace
-      summary: Rename a teamspace
-      description: Update the name of a teamspace.
+      summary: Einen Teamspace umbenennen
+      description: Den Namen eines Teamspaces aktualisieren.
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-          description: ID of the teamspace to rename
+          description: ID des umzubenennenden Teamspaces
       requestBody:
         required: true
         content:
@@ -351,7 +351,7 @@ paths:
               $ref: "#/components/schemas/teamspace_rename_request"
       responses:
         "201":
-          description: Teamspace renamed successfully
+          description: Teamspace erfolgreich umbenannt
         "400":
           $ref: "#/components/responses/bad_request"
         "401":
@@ -362,20 +362,20 @@ paths:
           $ref: "#/components/responses/not_found"
         "500":
           $ref: "#/components/responses/internal_server_error"
-          
+
   "/team-space/{id}/members":
     post:
       tags:
         - Teamspace
-      summary: Add members to a teamspace
-      description: Add one or more users to a teamspace by user ID or email.
+      summary: Mitglieder zu einem Teamspace hinzufügen
+      description: Einen oder mehrere Benutzer per Benutzer-ID oder E-Mail zu einem Teamspace hinzufügen.
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-          description: ID of the teamspace
+          description: ID des Teamspaces
       requestBody:
         required: true
         content:
@@ -384,7 +384,7 @@ paths:
               $ref: "#/components/schemas/teamspace_member_add_request"
       responses:
         "201":
-          description: Members added successfully
+          description: Mitglieder erfolgreich hinzugefügt
         "400":
           $ref: "#/components/responses/bad_request"
         "401":
@@ -395,36 +395,36 @@ paths:
           $ref: "#/components/responses/not_found"
         "500":
           $ref: "#/components/responses/internal_server_error"
-          
+
   "/team-space/{id}/members/{memberId}":
     delete:
       tags:
         - Teamspace
-      summary: Remove a member from a teamspace
-      description: Remove a specific user from a teamspace.
+      summary: Ein Mitglied aus einem Teamspace entfernen
+      description: Einen bestimmten Benutzer aus einem Teamspace entfernen.
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
-          description: ID of the teamspace
+          description: ID des Teamspaces
         - name: memberId
           in: path
           required: true
           schema:
             type: string
-          description: ID of the member to remove
+          description: ID des zu entfernenden Mitglieds
         - name: send_email
           in: query
           required: false
           schema:
             type: boolean
             default: true
-          description: Whether to send a notification email. Default is true.
+          description: Ob eine Benachrichtigungs-E-Mail gesendet werden soll. Standard ist true.
       responses:
         "204":
-          description: Member removed successfully
+          description: Mitglied erfolgreich entfernt
         "400":
           $ref: "#/components/responses/bad_request"
         "401":

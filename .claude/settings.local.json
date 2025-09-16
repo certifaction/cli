@@ -6,7 +6,8 @@
       "Bash(npm run docs:dev:*)",
       "Bash(find:*)",
       "Bash(npm run docs:build:*)",
-      "WebFetch(domain:developers.certifaction.com)"
+      "WebFetch(domain:developers.certifaction.com)",
+      "Bash(yq eval:*)"
     ],
     "deny": [],
     "ask": []
