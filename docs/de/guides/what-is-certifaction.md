@@ -11,7 +11,7 @@ Möchten Sie es einfach ausprobieren? Gehen Sie direkt zum [Schnellstart](./gett
 
 </div>
 
-[Certifaction](https://certifaction.com) ist die datenschutzorientierte elektronische Signatur mit
+[Certifaction](https://certifaction.com) ist die Privacy-First elektronische Signatur mit
 
 - Ende-zu-Ende-Verschlüsselung von Dokumenten,
 - rechtsgültiger Identitätsprüfung,

@@ -5,7 +5,7 @@ editLink: true
 
 hero:
   name: Certifaction
-  text: Datenschutzorientierte E-Signaturen
+  text: Privacy-First eSignaturen
   tagline: Die einfachste API zum Signieren, Zertifizieren und Verifizieren von Dokumenten
   image:
     src: /cli_integration.png
@@ -23,9 +23,9 @@ hero:
 
 features:
   - title: Certifaction Lokale API
-    details:
-      Stellen Sie ein zustandsloses, gesichertes Gateway mit Docker bereit, um die datenschutzorientierte elektronische Signatur von Certifaction in Ihre bestehenden Services zu integrieren.
+    details: Stellen Sie ein zustandsloses, gesichertes Gateway mit Docker bereit, um die sichere elektronische Signatur von Certifaction in Ihre bestehenden Services zu integrieren.
   - title: Certifaction CLI
-    details: Signieren Sie einfach Dokumente und fordern Sie Signaturen von Ihrer Shell aus an.
+    details:
+      Signieren Sie einfach Dokumente und fordern Sie Signaturen von Ihrer Shell aus an.
       Halten Sie Ihre Dokumente immer sicher.
 ---
