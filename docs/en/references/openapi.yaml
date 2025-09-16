@@ -1,0 +1,1165 @@
+openapi: "3.0.2"
+
+info:
+  title: Certifaction Local API
+  description: |
+    A proxy server for integrating with the Certifaction platform.
+
+    ## Setup requirements
+
+    1. An API key is required to perform some operations. You can get one from your Certifaction account settings.
+    2. Start the local server on the CLI using the command `certifaction server`
+
+    Refer to [our setup guide](https://developers.certifaction.com/guides/getting-started-api#getting-started-with-the-local-api) to get started.
+
+  version: ""
+
+servers:
+  - url: http://localhost:{port}
+    variables:
+      port:
+        default: "8081"
+
+security:
+  - api_key: [ ]
+
+tags:
+  - name: Signing
+    description: Sign files and request signatures
+  - name: Documents
+    description: Download your documents or remove Certifaction's access to them
+  - name: Account
+    description: Access your user account data
+  - name: Server
+    description: Check the server's status
+  - name: Certification
+    description: Blockchain certification
+
+components:
+  parameters:
+    additional_page:
+      name: additional-page
+      description: Whether to place Digital Twin and signatures on an additional page or inline.
+      in: query
+      schema:
+        type: boolean
+        default: true
+    digital_twin:
+      name: digital-twin
+      description: Enable [Digital Twin](https://certifaction.com/digital-twin/) for the document.
+      in: query
+      schema:
+        type: boolean
+        default: false
+    pdf-a:
+      name: pdf-a
+      description: Enable PDF/A compatibility
+      in: query
+      schema:
+        type: boolean
+        default: false
+    accept_language:
+      name: Accept-Language
+      description: |
+        The language for text object placed added to the document. Pass `de` for German, `en` for English,
+        `fr` for French, or `it` for Italian.
+      in: header
+      schema:
+        $ref: "#/components/schemas/language"
+    prepare_scope:
+      name: scope
+      in: query
+      schema:
+        $ref: "#/components/schemas/prepare_scope"
+      required: true
+    qr_llx:
+      name: qr-llx
+      description: |
+        The x-coordinate of the Digital Twin QR code from the lower left corner of the document.
+        This is required when `additional-page=false`.
+      in: query
+      schema:
+        type: number
+    qr_lly:
+      name: qr-lly
+      description: |
+        The y-coordinate of the Digital Twin QR code from the lower left corner of the document.
+        This is required when `additional-page=false`.
+      in: query
+      schema:
+        type: number
+    qr_height:
+      name: qr-height
+      description: The height of the Digital Twin QR code. This is required when `additional-page=false`.
+      in: query
+      schema:
+        type: number
+    qr_page:
+      name: qr-page
+      description: The page to place the Digital Twin QR code on. This is required when `additional-page=false`.
+      in: query
+      schema:
+        type: integer
+    encryption_key:
+      name: encryption-key
+      description: A hexadecimal string to encrypt the document with.
+      in: query
+      schema:
+        type: string
+    password_encryption:
+      name: password-encryption
+      description: The password encryption algorithm to use in encrypting the encryption key.
+      in: query
+      schema:
+        type: string
+        enum:
+          - xor-b58
+
+  responses:
+    bad_request:
+      description: The request is not properly formed. For example, the content could not be read.
+    unauthorized:
+      description: You are not authorized to carry out the operation. Check that your API key is correct.
+    forbidden:
+      description: You do not have permission to carry out the operation. For example you might not have the required role.
+    not_found:
+      description: The requested resource was not found.
+    conflict:
+      description: Conflict detected in the request. For example, a user might have already been joined an organization.
+    internal_server_error:
+      description: An error occurred on the server
+
+  securitySchemes:
+    api_key:
+      name: Authorization
+      in: header
+      type: apiKey
+
+  schemas:
+    envelope_item_status:
+      type: string
+      enum:
+        - unsigned
+        - awaiting_upload
+        - signed
+        - cancelled
+
+    language:
+      type: string
+      enum:
+        - de
+        - en
+        - fr
+        - it
+
+    legal_weight:
+      type: string
+      enum:
+        - AES
+        - QES
+        - SES
+
+    scope:
+      type: string
+      enum:
+        - register
+        - sign
+        - certify
+        - revoke
+        - retract
+    prepare_scope:
+      type: string
+      enum:
+        - sign
+        - certify
+        - attachment
+
+    identity:
+      properties:
+        uid:
+          type: string
+        user_uid:
+          type: string
+        issuer:
+          type: string
+        status:
+          type: string
+        verification_url:
+          type: string
+        verification_id:
+          type: string
+        evidence_url:
+          type: string
+        proof:
+          type: string
+        name:
+          type: string
+        given_name:
+          type: string
+        family_name:
+          type: string
+        birthday:
+          type: string
+        signature_level:
+          type: string
+        signature_jurisdiction:
+          type: string
+      required:
+        - uid
+        - user_uid
+        - issuer
+        - status
+        - verification_url
+        - verification_id
+        - evidence_url
+        - proof
+        - name
+        - given_name
+        - family_name
+        - birthday
+
+    organization:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          maxLength: 80
+          minLength: 2
+        subscription_type:
+          type: string
+        quota:
+          type: integer
+      required:
+        - id
+
+    user:
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        external_id:
+          type: string
+        email:
+          type: string
+        title:
+          type: string
+        name:
+          type: string
+        first_name:
+          type: string
+        middle_names:
+          type: string
+        last_name:
+          type: string
+        affiliation:
+          type: string
+        address:
+          type: string
+        postalcode:
+          type: string
+        location:
+          type: string
+        eth_address:
+          type: string
+        quota:
+          type: integer
+        disabled:
+          type: boolean
+        file_suffix:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        subscription_type:
+          type: string
+        encrypt_claims:
+          type: boolean
+        verified_by:
+          type: string
+        features:
+          type: object
+        organizations:
+          type: array
+          items:
+            $ref: "#/components/schemas/organization"
+        identities:
+          type: array
+          items:
+            $ref: "#/components/schemas/identity"
+        theme:
+          properties:
+            name:
+              type: string
+          required:
+            - name
+        name_verified:
+          type: boolean
+
+paths:
+  /delete-access:
+    post:
+      operationId: remove_access
+      summary: Remove Certifaction's access to a file
+      requestBody:
+        description: The file that you want to remove Certifaction's access for.
+        required: true
+        content:
+          application/pdf: { }
+      responses:
+        200:
+          description: File access was removed successfully.
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Documents
+
+  /download:
+    get:
+      summary: Download files
+      parameters:
+        - name: file
+          description: A Digital Archive URL
+          in: query
+          required: true
+          schema:
+            type: string
+            format: url
+        - name: password
+          description: The signature request password, if Privacy 2.0 was enabled
+          in: query
+          schema:
+            type: string
+      operationId: download_file
+      responses:
+        200:
+          description: File download content.
+          content:
+            application/pdf:
+              schema:
+                type: string
+            application/zip:
+              schema:
+                type: string
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      security: [ ]
+      tags:
+        - Documents
+
+  /health:
+    get:
+      operationId: server_health_check
+      summary: Check server health
+      responses:
+        200:
+          description: Health check response.
+          content:
+            application/json:
+              schema:
+                properties:
+                  description:
+                    type: string
+                  service_name:
+                    type: string
+                  status:
+                    type: string
+      security: [ ]
+      tags:
+        - Server
+
+  /ping:
+    get:
+      summary: Check that the API server is running
+      responses:
+        200:
+          description: The server is up and running.
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum:
+                  - pong
+      security: [ ]
+      tags:
+        - Server
+
+  /prepare:
+    post:
+      operationId: prepare_file
+      parameters:
+        - $ref: "#/components/parameters/digital_twin"
+        - $ref: "#/components/parameters/pdf-a"
+        - $ref: "#/components/parameters/accept_language"
+        - $ref: "#/components/parameters/prepare_scope"
+        - $ref: "#/components/parameters/additional_page"
+        - $ref: "#/components/parameters/qr_llx"
+        - $ref: "#/components/parameters/qr_lly"
+        - $ref: "#/components/parameters/qr_height"
+        - $ref: "#/components/parameters/qr_page"
+        - $ref: "#/components/parameters/encryption_key"
+        - $ref: "#/components/parameters/password_encryption"
+      summary: Prepare a file for signing or certification
+      requestBody:
+        description: The file to prepare.
+        required: true
+        content:
+          application/pdf: { }
+      responses:
+        200:
+          description: The prepared file content.
+          content:
+            application/pdf:
+              schema:
+                type: string
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Certification
+        - Signing
+
+  /sign:
+    post:
+      operationId: sign_file
+      parameters:
+        - $ref: "#/components/parameters/digital_twin"
+        - $ref: "#/components/parameters/pdf-a"
+        - $ref: "#/components/parameters/accept_language"
+        - $ref: "#/components/parameters/additional_page"
+        - $ref: "#/components/parameters/qr_llx"
+        - $ref: "#/components/parameters/qr_lly"
+        - $ref: "#/components/parameters/qr_height"
+        - $ref: "#/components/parameters/qr_page"
+        - $ref: "#/components/parameters/encryption_key"
+        - $ref: "#/components/parameters/password_encryption"
+        - name: hash
+          in: query
+          schema:
+            type: string
+        - name: note
+          in: query
+          schema:
+            type: string
+            maxLength: 255
+        - name: legal-weight
+          in: query
+          schema:
+            type: string
+            enum:
+              - AES
+              - QES
+              - SES
+        - name: jurisdiction
+          in: query
+          schema:
+            type: string
+            enum:
+              - eIDAS
+              - ZertES
+        - name: filename
+          in: query
+          schema:
+            type: string
+        - name: no-prepare
+          in: query
+          schema:
+            type: boolean
+        - name: position-x
+          description: |
+            The x-coordinate of the signature from the bottom-left of the page.
+            This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: number
+        - name: position-y
+          description: |
+            The y-coordinate of the signature from the bottom-left of the page.
+            This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: number
+        - name: height
+          description: The height of the signature card. This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: number
+        - name: page
+          description: The page to place the signature on. This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+      summary: Sign a file
+      requestBody:
+        description: The file to sign.
+        required: true
+        content:
+          application/pdf: { }
+      responses:
+        200:
+          description: The signed file content.
+          content:
+            application/pdf:
+              schema:
+                type: string
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Signing
+
+  /revoke:
+    post:
+      operationId: revoke_document
+      summary: Revoke a document
+      requestBody:
+        description: The document to revoke.
+        required: true
+        content:
+          application/pdf: { }
+      responses:
+        200:
+          description: The revocation was successful.
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Certification
+
+  /register:
+    post:
+      operationId: register_file
+      parameters:
+        - $ref: "#/components/parameters/digital_twin"
+        - $ref: "#/components/parameters/pdf-a"
+        - $ref: "#/components/parameters/accept_language"
+        - name: scope
+          in: query
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/scope"
+              - default: register
+        - $ref: "#/components/parameters/additional_page"
+        - $ref: "#/components/parameters/qr_llx"
+        - $ref: "#/components/parameters/qr_lly"
+        - $ref: "#/components/parameters/qr_height"
+        - $ref: "#/components/parameters/qr_page"
+        - $ref: "#/components/parameters/encryption_key"
+        - $ref: "#/components/parameters/password_encryption"
+        - name: hash
+          in: query
+          schema:
+            type: string
+        - name: note
+          in: query
+          schema:
+            type: string
+            maxLength: 255
+        - name: legal-weight
+          in: query
+          schema:
+            type: string
+            enum:
+              - AES
+              - QES
+              - SES
+        - name: jurisdiction
+          in: query
+          schema:
+            type: string
+            enum:
+              - eIDAS
+              - ZertES
+        - name: filename
+          in: query
+          schema:
+            type: string
+        - name: no-prepare
+          in: query
+          schema:
+            type: boolean
+        - name: position-x
+          description: |
+            The x-coordinate of the signature from the bottom-left of the page.
+            This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: number
+        - name: position-y
+          description: |
+            The y-coordinate of the signature from the bottom-left of the page.
+            This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: number
+        - name: height
+          description: The height of the signature card. This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: number
+        - name: page
+          description: The page to place the signature on. This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+      summary: Register a file
+      requestBody:
+        description: The file to register.
+        required: true
+        content:
+          application/pdf: { }
+      responses:
+        200:
+          description: The registered file content. There is no response body if `scope` was `revoke`.
+          content:
+            application/pdf:
+              schema:
+                type: string
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Certification
+
+  /request/create:
+    post:
+      operationId: request_signature
+      parameters:
+        - $ref: "#/components/parameters/digital_twin"
+        - $ref: "#/components/parameters/pdf-a"
+        - name: send-email
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: |
+            If `send-email=true`, the server will send the signature request to the signer's email
+            and also send reminder emails to get them to sign.
+        - name: name
+          in: query
+          schema:
+            type: string
+            description: |
+              The full name of the signer. You can omit this and send the name in parts using
+              `first-name`, `middle-names`, and `last-name`.
+        - name: first-name
+          in: query
+          schema:
+            type: string
+        - name: middle-names
+          in: query
+          schema:
+            type: string
+        - name: last-name
+          in: query
+          schema:
+            type: string
+        - name: email
+          in: query
+          schema:
+            type: string
+            format: email
+          description: The signer's email address.
+          required: true
+        - name: mobile-phone
+          in: query
+          schema:
+            type: string
+        - name: citizenship
+          in: query
+          schema:
+            type: string
+        - name: birthday
+          in: query
+          schema:
+            type: string
+        - name: gender
+          in: query
+          schema:
+            type: string
+        - name: domicile
+          in: query
+          schema:
+            type: string
+        - name: webhook-url
+          in: query
+          schema:
+            type: string
+            format: url
+        - $ref: "#/components/parameters/accept_language"
+        - $ref: "#/components/parameters/additional_page"
+        - $ref: "#/components/parameters/qr_llx"
+        - $ref: "#/components/parameters/qr_lly"
+        - $ref: "#/components/parameters/qr_height"
+        - $ref: "#/components/parameters/qr_page"
+        - $ref: "#/components/parameters/encryption_key"
+        - $ref: "#/components/parameters/password_encryption"
+        - name: with-password
+          in: query
+          schema:
+            type: boolean
+          description: |
+            Protect the request using a password so that only the password bearer can sign.
+            If enabled, a password will be generated. Send the password, together with the request URL, to the signer.
+        - name: hash
+          in: query
+          schema:
+            type: string
+        - name: message
+          in: query
+          schema:
+            type: string
+            maxLength: 255
+        - name: transaction-id
+          in: query
+          schema:
+            type: string
+        - name: auto-sign
+          in: query
+          schema:
+            type: boolean
+            default: false
+        - name: legal-weight
+          in: query
+          schema:
+            $ref: "#/components/schemas/legal_weight"
+        - name: jurisdiction
+          in: query
+          schema:
+            type: string
+            enum:
+              - eIDAS
+              - ZertES
+        - name: filename
+          in: query
+          schema:
+            type: string
+        - name: no-prepare
+          in: query
+          schema:
+            type: boolean
+        - name: position-x
+          description: |
+            The x-coordinate of the signature from the bottom-left of the page.
+            This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: number
+        - name: position-y
+          description: |
+            The y-coordinate of the signature from the bottom-left of the page.
+            This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: number
+        - name: height
+          description: The height of the signature card. This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: number
+        - name: page
+          description: The page to place the signature on. This is required when `additional-page=false`.
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+      summary: Request a signature
+      requestBody:
+        description: The files to sign
+        required: true
+        content:
+          application/pdf: { }
+          application/json:
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        format: url
+                        description: |
+                          DA URL of the documents to sign.
+                      name:
+                        type: string
+                        description: |
+                          Name of the document. This is used in the signature request email.
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: url
+                  description: |
+                    DA URLs to the documents to sign. Previous signing links can be reused.
+                    If a link to a password-protected request is provided, also pass the `password` parameter.
+          multipart/form-data:
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: Upload PDF documents to sign.
+            encoding:
+              files:
+                contentType: application/pdf
+                style: form
+      responses:
+        200:
+          description: The signature request was created.
+          content:
+            application/json:
+              schema:
+                properties:
+                  request_url:
+                    type: string
+                    format: url
+                  password:
+                    type: string
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+        409:
+          description: The signer already has a pending signature request for the file.
+      tags:
+        - Signing
+
+  /request/cancel:
+    post:
+      operationId: cancel_request
+      summary: Cancel signature request for signer
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+            format: email
+          description: The email of the signer to cancel the request for.
+          required: true
+        - name: note
+          in: query
+          schema:
+            type: string
+          description: A message to the signer. You can use this to explain why you cancelled the request.
+      requestBody:
+        description: A file used in the signature request.
+        required: true
+        content:
+          application/pdf: { }
+      responses:
+        204:
+          description: The signature request to the given signer was cancelled.
+        400:
+          description: |
+            Check that:
+            1. The `email` parameter was provided.
+            2. The file provided has been prepared and can be read.
+        401:
+          $ref: "#/components/responses/unauthorized"
+        403:
+          description: You cannot cancel the request at this time. It could be because the signer has signed already.
+        404:
+          description: Either the file provided or the signer email was not found.
+      tags:
+        - Signing
+
+  /request/cancel/all:
+    post:
+      operationId: cancel_request_all
+      summary: Cancel signature requests for file
+      parameters:
+        - name: note
+          in: query
+          schema:
+            type: string
+          description: A message to the signers. You can use this to explain why you cancelled the request.
+      requestBody:
+        description: A file used in the signature request.
+        required: true
+        content:
+          application/pdf: { }
+      responses:
+        204:
+          description: All pending signature requests for the file were cancelled.
+        400:
+          description: Check that the file provided has been prepared and can be read.
+        401:
+          $ref: "#/components/responses/unauthorized"
+        403:
+          description: You cannot cancel the requests at this time. It could be because a signer has signed already.
+        404:
+          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+      tags:
+        - Signing
+
+  /request/list:
+    post:
+      deprecated: true
+      operationId: list_requests
+      summary: List signature requests for file
+      requestBody:
+        description: A file (or a file URL) used in the signature request.
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                file:
+                  type: string
+                  format: url
+                password:
+                  type: string
+              required:
+                - file
+          multipart/form-data:
+            schema:
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+                - file
+            encoding:
+              file:
+                contentType: application/pdf
+      responses:
+        200:
+          description: List of signature requests for the file.
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                  legal_weight:
+                    $ref: "#/components/schemas/legal_weight"
+                  cancelled:
+                    type: boolean
+                  signed:
+                    type: boolean
+                  signer:
+                    $ref: "#/components/schemas/user"
+                  requester:
+                    $ref: "#/components/schemas/user"
+        400:
+          description: Check that the file provided has been prepared and can be read.
+        401:
+          $ref: "#/components/responses/unauthorized"
+        403:
+          description: You cannot list signature requests for this file.
+        404:
+          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+      tags:
+        - Signing
+  /request/status:
+    get:
+      operationId: request_status
+      summary: Show status of signature request
+      parameters:
+        - name: request_url
+          in: query
+          required: true
+          schema:
+            type: string
+            format: url
+          description: The URL of the signature request to check.
+        - name: password
+          in: query
+          schema:
+            type: string
+          description: Password for password encrypted requests
+      responses:
+        200:
+          description: Status of the signature request.
+          content:
+            application/json:
+              schema:
+                properties:
+                  url:
+                    type: string
+                    format: url
+                  id:
+                    type: string
+                  createdAt:
+                    type: string
+                    format: date-time
+                  cancelled:
+                    type: boolean
+                  envelope_items:
+                    type: object
+                    properties:
+                      legal_weight:
+                        $ref: "#/components/schemas/legal_weight"
+                      jurisdiction:
+                        type: string
+                      status:
+                        $ref: "#/components/schemas/envelope_item_status"
+                      signed_at:
+                        type: string
+                        format: date-time
+                      file_url:
+                        type: string
+                        format: url
+                      file_id:
+                        type: string
+                  signer:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        format: email
+                  used_identification_at:
+                    type: string
+                    format: date-time
+                  identification_method:
+                    type: string
+        400:
+          description: Check that the file provided has been prepared and can be read.
+        401:
+          $ref: "#/components/responses/unauthorized"
+        403:
+          description: You cannot list signature requests for this file.
+        404:
+          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+      tags:
+        - Signing
+
+  /request/file/status:
+    get:
+      operationId: file_requests_status
+      summary: Show status of signature requests of given file
+      parameters:
+        - name: file_url
+          in: query
+          required: true
+          schema:
+            type: string
+            format: url
+          description: The DA URL of the file to check.
+        - name: password
+          in: query
+          schema:
+            type: string
+          description: Password for password encrypted document.
+      responses:
+        200:
+          description: File status across all signature requests.
+          content:
+            application/json:
+              schema:
+                properties:
+                  file_url:
+                    type: string
+                    format: url
+                  file_id:
+                    type: string
+                  signature_requests:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        cancelled:
+                          type: boolean
+                        envelope_items:
+                          type: object
+                          properties:
+                            legal_weight:
+                              $ref: "#/components/schemas/legal_weight"
+                            jurisdiction:
+                              type: string
+                            status:
+                              $ref: "#/components/schemas/envelope_item_status"
+                            signed_at:
+                              type: string
+                              format: date-time
+                            file_url:
+                              type: string
+                              format: url
+                            file_id:
+                              type: string
+                        signer:
+                          type: object
+                          properties:
+                            email:
+                              type: string
+                              format: email
+                        used_identification_at:
+                          type: string
+                          format: date-time
+                        identification_method:
+                          type: string
+        400:
+          description: Check that the file provided has been prepared and can be read.
+        401:
+          $ref: "#/components/responses/unauthorized"
+        403:
+          description: You cannot list signature requests for this file.
+        404:
+          description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
+      tags:
+        - Signing
+
+  /qes/check:
+    post:
+      summary: Check account QES status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                jurisdiction:
+                  type: string
+              required:
+                - jurisdiction
+      responses:
+        200:
+          description: QES is enabled for your account.
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+        404:
+          description: QES is disabled for your account.
+      tags:
+        - Account
+        - Signing
+
+  /user:
+    get:
+      operationId: get_user
+      summary: Get account data
+      responses:
+        200:
+          description: The user data for your account.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Account

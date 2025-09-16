@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(grep:*)",
+      "Bash(npm run docs:dev:*)",
+      "Bash(find:*)",
+      "Bash(npm run docs:build:*)",
+      "WebFetch(domain:developers.certifaction.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
