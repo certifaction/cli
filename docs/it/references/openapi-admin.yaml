@@ -1,0 +1,437 @@
+openapi: "3.1.0"
+
+info:
+  title: API Admin Certifaction
+  description: |
+    L'API Admin di Certifaction è utilizzata per gestire utenti, ruoli e teamspace.
+  version: ""
+
+servers:
+  - url: https://api.certifaction.io
+
+security:
+  - api_key: [ ]
+
+tags:
+  - name: Organization
+    description: Gestire la propria organizzazione, gli utenti e i ruoli.
+  - name: Teamspace
+    description: Gestire i teamspace e i loro membri.
+components:
+
+  responses:
+    bad_request:
+      description: La richiesta non è formattata correttamente. Ad esempio, il contenuto non può essere letto.
+    unauthorized:
+      description: Non è autorizzato a eseguire l'operazione. Verifichi che la Sua chiave API sia corretta.
+    forbidden:
+      description: Non ha il permesso di eseguire l'operazione. Ad esempio potrebbe non avere il ruolo richiesto.
+    not_found:
+      description: La risorsa richiesta non è stata trovata.
+    conflict:
+      description: Conflitto rilevato nella richiesta. Ad esempio, un utente potrebbe essere già stato aggiunto a un'organizzazione.
+    internal_server_error:
+      description: Si è verificato un errore sul server
+
+  securitySchemes:
+    api_key:
+      name: Authorization
+      in: header
+      type: apiKey
+
+  schemas:
+    teamspace_member_add_request:
+      type: object
+      properties:
+        member_user_ids:
+          type: array
+          items:
+            type: string
+          description: Lista degli ID utente da aggiungere al teamspace. Può essere utilizzato solo se l'utente si è già registrato.
+        member_user_emails:
+          type: array
+          items:
+            type: string
+          description: Lista delle email utente da invitare al teamspace. Deve essere utilizzato se l'utente non si è ancora registrato.
+        send_email:
+          type: boolean
+          description: Se inviare un invito via email. Il valore predefinito è true se non specificato.
+      not:
+        allOf:
+          - properties:
+              member_user_ids:
+                maxItems: 0
+          - properties:
+              member_user_emails:
+                maxItems: 0
+
+    teamspace_rename_request:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Il nuovo nome per il teamspace
+      required:
+        - name
+
+    organization:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          minLength: 2
+          maxLength: 80
+        name_verified:
+          type: boolean
+        email:
+          type: string
+          format: email
+          nullable: true
+        organization_users:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_user'
+        quota:
+          type: integer
+          nullable: true
+        legacy_credits:
+          type: boolean
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_role'
+
+    organization_user:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+        role:
+          type: string
+          deprecated: true
+        status:
+          type: string
+        invite_email:
+          type: string
+          format: email
+          nullable: true
+        organization:
+          type: boolean
+        is_admin:
+          type: boolean
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_role'
+        teamspaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/team_space_description'
+          nullable: true
+
+    organization_role:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        default:
+          type: boolean
+        admin:
+          type: boolean
+
+    team_space_description:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        quota:
+          type: integer
+        subscription_type:
+          type: string
+        theme:
+          type: object
+          properties:
+            name:
+              type: string
+          required:
+            - name
+        name_verified:
+          type: boolean
+
+  requestBodies:
+    organization_user_invite:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              role_id:
+                type: string
+              send_email:
+                type: boolean
+                description: "Se inviare un invito via email. Il valore predefinito è true se non specificato."
+
+    organization_role_assign:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user_uid:
+                type: string
+                description: "Deve essere impostato user_uid O invite_email, a seconda se l'utente si è già registrato o meno"
+              invite_email:
+                type: string
+              role_id:
+                type: string
+
+paths:
+  "/organization":
+    get:
+      tags:
+        - Organization
+      summary: Ottenere la propria organizzazione
+      operationId: getOrganization
+      responses:
+        "200":
+          description: Dettagli dell'organizzazione recuperati con successo.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/organization"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/{id}/user":
+    post:
+      tags:
+        - Organization
+      summary: Invitare un utente
+      description: "Un utente può essere invitato più volte, purché non abbia ancora accettato l'invito. Viene inviata un'email per ogni invito"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: L'ID dell'organizzazione a cui si desidera invitare l'utente
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/organization_user_invite"
+      responses:
+        "200":
+          description: Invitato
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+    delete:
+      tags:
+        - Organization
+      summary: Rimuovere un utente da un'organizzazione
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: L'ID dell'organizzazione
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              anyOf:
+                - properties:
+                    user_uid:
+                      type: string
+                      description: L'UID dell'utente da rimuovere
+                  required: [user_uid]
+                - properties:
+                    invite_email:
+                      description: L'email dell'utente invitato da rimuovere
+                      type: string
+                  required: [invite_email]
+      responses:
+        "200":
+          description: Utente rimosso con successo
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/{organization_id}/role":
+    post:
+      tags:
+        - Organization
+      summary: Cambiare il ruolo di un utente
+      description: Cambiare il ruolo di un utente in un'organizzazione, utilizzando l'UID utente o l'email di invito.
+      parameters:
+        - name: organization_id
+          in: path
+          required: true
+          description: L'ID dell'organizzazione
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/organization_role_assign'
+      responses:
+        "200":
+          description: Ruolo aggiornato con successo
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/team-space/{id}/rename":
+    patch:
+      tags:
+        - Teamspace
+      summary: Rinominare un teamspace
+      description: Aggiornare il nome di un teamspace.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del teamspace da rinominare
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/teamspace_rename_request"
+      responses:
+        "201":
+          description: Teamspace rinominato con successo
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/team-space/{id}/members":
+    post:
+      tags:
+        - Teamspace
+      summary: Aggiungere membri a un teamspace
+      description: Aggiungere uno o più utenti a un teamspace per ID utente o email.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del teamspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/teamspace_member_add_request"
+      responses:
+        "201":
+          description: Membri aggiunti con successo
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/team-space/{id}/members/{memberId}":
+    delete:
+      tags:
+        - Teamspace
+      summary: Rimuovere un membro da un teamspace
+      description: Rimuovere un utente specifico da un teamspace.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del teamspace
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID del membro da rimuovere
+        - name: send_email
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+          description: Se inviare un'email di notifica. Il valore predefinito è true.
+      responses:
+        "204":
+          description: Membro rimosso con successo
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "500":
+          $ref: "#/components/responses/internal_server_error"

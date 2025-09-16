@@ -1,0 +1,437 @@
+openapi: "3.1.0"
+
+info:
+  title: Certifaction Admin API
+  description: |
+    Die Certifaction Admin API wird zur Verwaltung von Benutzern, Rollen und Teamspaces verwendet.
+  version: ""
+
+servers:
+  - url: https://api.certifaction.io
+
+security:
+  - api_key: [ ]
+
+tags:
+  - name: Organization
+    description: Ihre Organisation, Benutzer und Rollen verwalten.
+  - name: Teamspace
+    description: Teamspaces und ihre Mitglieder verwalten.
+components:
+
+  responses:
+    bad_request:
+      description: Die Anfrage ist nicht ordnungsgemäß formatiert. Beispielsweise konnte der Inhalt nicht gelesen werden.
+    unauthorized:
+      description: Sie sind nicht berechtigt, die Operation durchzuführen. Prüfen Sie, ob Ihr API-Schlüssel korrekt ist.
+    forbidden:
+      description: Sie haben keine Berechtigung, die Operation durchzuführen. Beispielsweise haben Sie möglicherweise nicht die erforderliche Rolle.
+    not_found:
+      description: Die angeforderte Ressource wurde nicht gefunden.
+    conflict:
+      description: Konflikt in der Anfrage erkannt. Beispielsweise könnte ein Benutzer bereits einer Organisation beigetreten sein.
+    internal_server_error:
+      description: Ein Fehler ist auf dem Server aufgetreten
+
+  securitySchemes:
+    api_key:
+      name: Authorization
+      in: header
+      type: apiKey
+
+  schemas:
+    teamspace_member_add_request:
+      type: object
+      properties:
+        member_user_ids:
+          type: array
+          items:
+            type: string
+          description: Liste der Benutzer-IDs, die dem Teamspace hinzugefügt werden sollen. Kann nur verwendet werden, wenn der Benutzer bereits beigetreten ist.
+        member_user_emails:
+          type: array
+          items:
+            type: string
+          description: Liste der Benutzer-E-Mails, die in den Teamspace eingeladen werden sollen. Muss verwendet werden, wenn der Benutzer noch nicht beigetreten ist.
+        send_email:
+          type: boolean
+          description: Ob eine E-Mail-Einladung gesendet werden soll. Standard ist true, wenn nicht angegeben.
+      not:
+        allOf:
+          - properties:
+              member_user_ids:
+                maxItems: 0
+          - properties:
+              member_user_emails:
+                maxItems: 0
+
+    teamspace_rename_request:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Der neue Name für den Teamspace
+      required:
+        - name
+
+    organization:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          minLength: 2
+          maxLength: 80
+        name_verified:
+          type: boolean
+        email:
+          type: string
+          format: email
+          nullable: true
+        organization_users:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_user'
+        quota:
+          type: integer
+          nullable: true
+        legacy_credits:
+          type: boolean
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_role'
+
+    organization_user:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+        role:
+          type: string
+          deprecated: true
+        status:
+          type: string
+        invite_email:
+          type: string
+          format: email
+          nullable: true
+        organization:
+          type: boolean
+        is_admin:
+          type: boolean
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/organization_role'
+        teamspaces:
+          type: array
+          items:
+            $ref: '#/components/schemas/team_space_description'
+          nullable: true
+
+    organization_role:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        default:
+          type: boolean
+        admin:
+          type: boolean
+
+    team_space_description:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+        uid:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+        quota:
+          type: integer
+        subscription_type:
+          type: string
+        theme:
+          type: object
+          properties:
+            name:
+              type: string
+          required:
+            - name
+        name_verified:
+          type: boolean
+
+  requestBodies:
+    organization_user_invite:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              role_id:
+                type: string
+              send_email:
+                type: boolean
+                description: "Ob eine E-Mail-Einladung gesendet werden soll. Standard ist true, wenn nicht angegeben."
+
+    organization_role_assign:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user_uid:
+                type: string
+                description: "Entweder user_uid ODER invite_email müssen gesetzt werden, abhängig davon, ob der Benutzer bereits beigetreten ist oder nicht"
+              invite_email:
+                type: string
+              role_id:
+                type: string
+
+paths:
+  "/organization":
+    get:
+      tags:
+        - Organization
+      summary: Ihre Organisation abrufen
+      operationId: getOrganization
+      responses:
+        "200":
+          description: Organisationsdetails erfolgreich abgerufen.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/organization"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/{id}/user":
+    post:
+      tags:
+        - Organization
+      summary: Benutzer einladen
+      description: "Ein Benutzer kann mehrmals eingeladen werden, vorausgesetzt, er hat die Einladung noch nicht angenommen. Für jede Einladung wird eine E-Mail versandt"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Die ID der Organisation, in die Sie den Benutzer einladen möchten
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/organization_user_invite"
+      responses:
+        "200":
+          description: Eingeladen
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+    delete:
+      tags:
+        - Organization
+      summary: Einen Benutzer aus einer Organisation entfernen
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Die ID der Organisation
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              anyOf:
+                - properties:
+                    user_uid:
+                      type: string
+                      description: Die UID des zu entfernenden Benutzers
+                  required: [user_uid]
+                - properties:
+                    invite_email:
+                      description: Die E-Mail des eingeladenen Benutzers, der entfernt werden soll
+                      type: string
+                  required: [invite_email]
+      responses:
+        "200":
+          description: Benutzer erfolgreich entfernt
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/organization/{organization_id}/role":
+    post:
+      tags:
+        - Organization
+      summary: Die Rolle eines Benutzers ändern
+      description: Die Rolle eines Benutzers in einer Organisation ändern, unter Verwendung der Benutzer-UID oder der Einladungs-E-Mail.
+      parameters:
+        - name: organization_id
+          in: path
+          required: true
+          description: Die ID der Organisation
+          schema:
+            type: string
+      requestBody:
+        $ref: '#/components/requestBodies/organization_role_assign'
+      responses:
+        "200":
+          description: Rolle erfolgreich aktualisiert
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "409":
+          $ref: "#/components/responses/conflict"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/team-space/{id}/rename":
+    patch:
+      tags:
+        - Teamspace
+      summary: Einen Teamspace umbenennen
+      description: Den Namen eines Teamspaces aktualisieren.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID des umzubenennenden Teamspaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/teamspace_rename_request"
+      responses:
+        "201":
+          description: Teamspace erfolgreich umbenannt
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/team-space/{id}/members":
+    post:
+      tags:
+        - Teamspace
+      summary: Mitglieder zu einem Teamspace hinzufügen
+      description: Einen oder mehrere Benutzer per Benutzer-ID oder E-Mail zu einem Teamspace hinzufügen.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID des Teamspaces
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/teamspace_member_add_request"
+      responses:
+        "201":
+          description: Mitglieder erfolgreich hinzugefügt
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
+
+  "/team-space/{id}/members/{memberId}":
+    delete:
+      tags:
+        - Teamspace
+      summary: Ein Mitglied aus einem Teamspace entfernen
+      description: Einen bestimmten Benutzer aus einem Teamspace entfernen.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID des Teamspaces
+        - name: memberId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID des zu entfernenden Mitglieds
+        - name: send_email
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+          description: Ob eine Benachrichtigungs-E-Mail gesendet werden soll. Standard ist true.
+      responses:
+        "204":
+          description: Mitglied erfolgreich entfernt
+        "400":
+          $ref: "#/components/responses/bad_request"
+        "401":
+          $ref: "#/components/responses/unauthorized"
+        "403":
+          $ref: "#/components/responses/forbidden"
+        "404":
+          $ref: "#/components/responses/not_found"
+        "500":
+          $ref: "#/components/responses/internal_server_error"
