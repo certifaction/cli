@@ -109,6 +109,10 @@ export const itNavigation = {
         text: "Riferimenti",
         items: [
           {
+            text: "Autenticazione",
+            link: "/it/references/authentication",
+          },
+          {
             text: "API locale",
             link: "/it/references/api",
           },
@@ -119,10 +123,6 @@ export const itNavigation = {
           {
             text: "Impostazioni proxy HTTP",
             link: "/it/references/http-proxy-settings",
-          },
-          {
-            text: "Autenticazione",
-            link: "/it/references/authentication",
           },
           {
             text: "Comandi CLI",

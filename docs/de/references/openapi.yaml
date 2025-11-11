@@ -7,7 +7,7 @@ info:
 
     ## Einrichtungsanforderungen
 
-    1. Ein API-Schlüssel ist erforderlich, um bestimmte Operationen durchzuführen. Sie können einen aus Ihren Certifaction-Kontoeinstellungen erhalten.
+    1. Authentifizierung ist erforderlich, um bestimmte Operationen durchzuführen. Bitte beziehen Sie sich auf den Abschnitt [Authentifizierung](https://developers.certifaction.com/de/references/authentication), um einen API-Schlüssel oder Token zu erhalten.
     2. Starten Sie den lokalen Server in der CLI mit dem Befehl `certifaction server`
 
     Schauen Sie sich [unseren Einrichtungsleitfaden](https://developers.certifaction.com/guides/getting-started-api#getting-started-with-the-local-api) an, um zu beginnen.

@@ -109,6 +109,10 @@ export const deNavigation = {
         text: "Referenzen",
         items: [
           {
+            text: "Authentifizierung",
+            link: "/de/references/authentication",
+          },
+          {
             text: "Lokale API",
             link: "/de/references/api",
           },
@@ -119,10 +123,6 @@ export const deNavigation = {
           {
             text: "HTTP Proxy-Einstellungen",
             link: "/de/references/http-proxy-settings",
-          },
-          {
-            text: "Authentifizierung",
-            link: "/de/references/authentication",
           },
           {
             text: "CLI-Befehle",
