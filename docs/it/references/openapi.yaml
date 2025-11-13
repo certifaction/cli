@@ -7,10 +7,10 @@ info:
 
     ## Requisiti di configurazione
 
-    1. È richiesta una chiave API per eseguire alcune operazioni. Può ottenerla dalle impostazioni del Suo account Certifaction.
+    1. L'autenticazione è richiesta per eseguire alcune operazioni. Si prega di fare riferimento alla sezione [Autenticazione](https://developers.certifaction.com/it/references/authentication) per ottenere una chiave API o un token.
     2. Avviare il server locale sulla CLI utilizzando il comando `certifaction server`
 
-    Consulti la [nostra guida di configurazione](https://developers.certifaction.com/guides/getting-started-api#getting-started-with-the-local-api) per iniziare.
+    Consulti la [nostra guida di configurazione](https://developers.certifaction.com/it/guides/getting-started-api#getting-started-with-the-local-api) per iniziare.
 
   version: ""
 

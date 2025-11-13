@@ -109,6 +109,10 @@ export const enNavigation = {
         text: "References",
         items: [
           {
+            text: "Authentication",
+            link: "/en/references/authentication",
+          },
+          {
             text: "Local API",
             link: "/en/references/api",
           },
@@ -119,10 +123,6 @@ export const enNavigation = {
           {
             text: "HTTP Proxy settings",
             link: "/en/references/http-proxy-settings",
-          },
-          {
-            text: "Authentication",
-            link: "/en/references/authentication",
           },
           {
             text: "CLI commands",

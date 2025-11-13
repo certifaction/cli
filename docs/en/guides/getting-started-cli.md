@@ -44,4 +44,4 @@ certifaction --api-key PERSONAL_API_KEY sign -o signed-document.pdf document.pdf
 
 ## What next?
 
-For further information about the CLI, please refer to the [CLI Reference](/references/cli).
+For further information about the CLI, please refer to the [CLI Reference](/en/references/cli).

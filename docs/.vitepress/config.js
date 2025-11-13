@@ -8,11 +8,6 @@ import { itConfig } from "./locales/it.js";
 export default defineConfig({
   ...sharedConfig,
   locales: {
-    root: {
-      label: 'Language Selector',
-      lang: 'en',
-      ...enConfig,
-    },
     en: enConfig,
     de: deConfig,
     fr: frConfig,

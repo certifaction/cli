@@ -4,6 +4,11 @@ info:
   title: Certifaction Admin API
   description: |
     Die Certifaction Admin API wird zur Verwaltung von Benutzern, Rollen und Teamspaces verwendet.
+
+    ## Einrichtungsanforderungen
+
+    Authentifizierung ist erforderlich, um bestimmte Operationen durchzuführen. Bitte beziehen Sie sich auf den Abschnitt [Authentifizierung](https://developers.certifaction.com/de/references/authentication), um einen API-Schlüssel oder Token zu erhalten.
+
   version: ""
 
 servers:

@@ -109,6 +109,10 @@ export const frNavigation = {
         text: "Références",
         items: [
           {
+            text: "Authentification",
+            link: "/fr/references/authentication",
+          },
+          {
             text: "API locale",
             link: "/fr/references/api",
           },
@@ -119,10 +123,6 @@ export const frNavigation = {
           {
             text: "Paramètres proxy HTTP",
             link: "/fr/references/http-proxy-settings",
-          },
-          {
-            text: "Authentification",
-            link: "/fr/references/authentication",
           },
           {
             text: "Commandes CLI",

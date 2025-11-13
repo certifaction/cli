@@ -4,6 +4,11 @@ info:
   title: API Admin Certifaction
   description: |
     L'API Admin Certifaction est utilisée pour gérer les utilisateurs, les rôles et les espaces d'équipe.
+
+    ## Exigences de configuration
+
+    L'authentification est requise pour effectuer certaines opérations. Veuillez vous référer à la section [Authentification](https://developers.certifaction.com/fr/references/authentication) pour obtenir une clé API ou un token.
+
   version: ""
 
 servers:
