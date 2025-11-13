@@ -10,7 +10,7 @@ info:
     1. L'authentification est requise pour effectuer certaines opérations. Veuillez vous référer à la section [Authentification](https://developers.certifaction.com/fr/references/authentication) pour obtenir une clé API ou un token.
     2. Démarrez le serveur local sur la CLI en utilisant la commande `certifaction server`
 
-    Référez-vous à [notre guide de configuration](https://developers.certifaction.com/guides/getting-started-api#getting-started-with-the-local-api) pour commencer.
+    Référez-vous à [notre guide de configuration](https://developers.certifaction.com/fr/guides/getting-started-api#getting-started-with-the-local-api) pour commencer.
 
   version: ""
 

@@ -65,4 +65,4 @@ curl -X POST -H 'authorization: PERSONAL_API_KEY' -F files=@INPUT_FILE.pdf 'http
 
 ## What next?
 
-For further information about the Local API, please refer to the [Local API Reference](/references/api) or check out the [HowTos](/guides/howto-sign-documents).
+For further information about the Local API, please refer to the [Local API Reference](/en/references/api) or check out the [HowTos](/en/guides/howto-sign-documents).
