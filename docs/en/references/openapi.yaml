@@ -424,10 +424,6 @@ components:
           type: string
           deprecated: true
           description: "Deprecated: use events.issuer instead"
-        contract:
-          type: string
-          deprecated: true
-          description: "Deprecated: use events.on_blockchain.contract_address instead"
 
 paths:
   /delete-access:
