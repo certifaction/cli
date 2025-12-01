@@ -427,6 +427,7 @@ components:
         contract:
           type: string
           deprecated: true
+          description: "Obsolète : utilisez events[].on_blockchain.contract_address à la place"
 
 paths:
   /delete-access:
