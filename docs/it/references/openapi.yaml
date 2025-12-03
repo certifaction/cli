@@ -298,6 +298,133 @@ components:
         name_verified:
           type: boolean
 
+    verified_by:
+      properties:
+        name:
+          type: string
+        image:
+          type: string
+
+    verification_issuer:
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        verified:
+          type: boolean
+        verified_by:
+          $ref: "#/components/schemas/verified_by"
+
+    blockchain_entry:
+      properties:
+        type:
+          type: string
+        contract_address:
+          type: string
+        tx_hash:
+          type: string
+        date:
+          type: string
+          format: date-time
+
+    verification_signature:
+      properties:
+        jurisdiction:
+          type: string
+        level:
+          type: string
+        pkcs7_data:
+          type: string
+
+    verification_event:
+      properties:
+        ref:
+          type: string
+        encrypted:
+          type: boolean
+        issuer:
+          $ref: "#/components/schemas/verification_issuer"
+        scope:
+          type: string
+        note:
+          type: string
+        signature:
+          $ref: "#/components/schemas/verification_signature"
+        date:
+          type: string
+          format: date-time
+        on_blockchain:
+          $ref: "#/components/schemas/blockchain_entry"
+
+    verification_file_info:
+      properties:
+        hash:
+          type: string
+        status:
+          type: string
+          enum:
+            - registering
+            - registered
+            - revoking
+            - revoked
+
+    verification_result:
+      properties:
+        verified:
+          type: boolean
+          description: Se il file è verificato
+        authentic:
+          type: boolean
+          description: Se il file è autentico
+        on_blockchain:
+          type: boolean
+          description: Se il file è sulla blockchain
+        encrypted:
+          type: boolean
+          description: Se il file è crittografato
+        revoked:
+          type: boolean
+          description: Se il file è stato revocato
+        file:
+          $ref: "#/components/schemas/verification_file_info"
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/verification_event"
+        claims:
+          type: array
+          items:
+            type: object
+        issuer_name:
+          type: string
+          deprecated: true
+          description: "Obsoleto: utilizzare events.issuer invece"
+        issuer_verifiedby:
+          type: string
+          deprecated: true
+          description: "Obsoleto: utilizzare events.issuer invece"
+        issuer_img:
+          type: string
+          deprecated: true
+          description: "Obsoleto: utilizzare events.issuer invece"
+        issuer_address:
+          type: string
+          deprecated: true
+          description: "Obsoleto: utilizzare events.issuer invece"
+        issuer_verified:
+          type: boolean
+          deprecated: true
+          description: "Obsoleto: utilizzare events.issuer invece"
+        issuer_title:
+          type: string
+          deprecated: true
+          description: "Obsoleto: utilizzare events.issuer invece"
+
 paths:
   /delete-access:
     post:
@@ -533,6 +660,35 @@ paths:
           $ref: "#/components/responses/bad_request"
         401:
           $ref: "#/components/responses/unauthorized"
+      tags:
+        - Certification
+
+  /verify:
+    post:
+      operationId: verify_document
+      summary: Verificare un documento
+      description: |
+        Verifica un documento e restituisce informazioni dettagliate sulla verifica, incluso
+        lo stato di registrazione della blockchain, i dettagli dell'emittente, gli eventi di firma e l'autenticità del documento.
+      requestBody:
+        description: Il documento da verificare.
+        required: true
+        content:
+          application/pdf: { }
+      responses:
+        200:
+          description: Il risultato della verifica.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/verification_result"
+        400:
+          $ref: "#/components/responses/bad_request"
+        404:
+          description: Nessuna registrazione trovata con l'hash del documento fornito.
+        500:
+          $ref: "#/components/responses/internal_server_error"
+      security: [ ]
       tags:
         - Certification
 
