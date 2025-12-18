@@ -532,6 +532,13 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
+        - name: placeholder
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: |
+            Activer le mode placeholder pour enregistrer les positions des placeholders et supprimer le texte placeholder du PDF.
       summary: Préparer un fichier pour la signature ou la certification
       requestBody:
         description: Le fichier à préparer.
@@ -624,6 +631,13 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID du champ placeholder de signature à utiliser pour le positionnement de la signature.
+            Si spécifié, les flags de position (position-x, position-y, height, page) sont ignorés.
+          in: query
+          schema:
+            type: string
       summary: Signer un fichier
       requestBody:
         description: Le fichier à signer.
@@ -769,6 +783,13 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID du champ placeholder de signature à utiliser pour le positionnement de la signature.
+            Si spécifié, les flags de position (position-x, position-y, height, page) sont ignorés.
+          in: query
+          schema:
+            type: string
       summary: Enregistrer un fichier
       requestBody:
         description: Le fichier à enregistrer.
@@ -931,6 +952,20 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID du champ placeholder de signature à utiliser pour le positionnement de la signature.
+            Si spécifié, les flags de position (position-x, position-y, height, page) sont ignorés.
+          in: query
+          schema:
+            type: string
+        - name: custom-password
+          description: |
+            Mot de passe personnalisé pour la demande de signature. Active automatiquement la protection par mot de passe.
+            Si ni celui-ci ni `with-password` n'est fourni, aucun mot de passe n'est utilisé.
+          in: query
+          schema:
+            type: string
       summary: Demander une signature
       requestBody:
         description: Les fichiers à signer
@@ -1126,6 +1161,40 @@ paths:
           description: Le fichier fourni n'a pas été trouvé. Vérifiez que le fichier a été traité et que vous l'avez utilisé dans une demande de signature.
       tags:
         - Signing
+
+  /request/remind:
+    post:
+      operationId: remind_signer
+      summary: Envoyer un email de rappel au signataire
+      description: |
+        Envoie un email de rappel au signataire pour une URL de demande de signature donnée.
+        Inclure optionnellement un message personnalisé avec la demande.
+      parameters:
+        - name: request_url
+          in: query
+          required: true
+          schema:
+            type: string
+            format: url
+          description: L'URL de la demande de signature pour laquelle envoyer le rappel.
+        - name: message
+          in: query
+          schema:
+            type: string
+            maxLength: 1000
+          description: Message personnalisé optionnel à inclure dans l'email de rappel (max 1000 caractères).
+      responses:
+        200:
+          description: L'email de rappel a été envoyé avec succès.
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+        404:
+          description: L'URL de la demande de signature n'a pas été trouvée ou est invalide.
+      tags:
+        - Signing
+
   /request/status:
     get:
       operationId: request_status

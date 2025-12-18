@@ -532,6 +532,13 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
+        - name: placeholder
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: |
+            Attivare la modalità placeholder per memorizzare le posizioni dei placeholder e rimuovere il testo placeholder dal PDF.
       summary: Preparare un file per la firma o certificazione
       requestBody:
         description: Il file da preparare.
@@ -624,6 +631,13 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID del campo placeholder di firma da utilizzare per il posizionamento della firma.
+            Se specificato, i flag di posizione (position-x, position-y, height, page) vengono ignorati.
+          in: query
+          schema:
+            type: string
       summary: Firmare un file
       requestBody:
         description: Il file da firmare.
@@ -769,6 +783,13 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID del campo placeholder di firma da utilizzare per il posizionamento della firma.
+            Se specificato, i flag di posizione (position-x, position-y, height, page) vengono ignorati.
+          in: query
+          schema:
+            type: string
       summary: Registrare un file
       requestBody:
         description: Il file da registrare.
@@ -931,6 +952,20 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID del campo placeholder di firma da utilizzare per il posizionamento della firma.
+            Se specificato, i flag di posizione (position-x, position-y, height, page) vengono ignorati.
+          in: query
+          schema:
+            type: string
+        - name: custom-password
+          description: |
+            Password personalizzata per la richiesta di firma. Abilita automaticamente la protezione con password.
+            Se né questo né `with-password` viene fornito, non viene utilizzata alcuna password.
+          in: query
+          schema:
+            type: string
       summary: Richiedere una firma
       requestBody:
         description: I file da firmare
@@ -1126,6 +1161,40 @@ paths:
           description: Il file fornito non è stato trovato. Verifichi che il file sia stato elaborato e che lo abbia utilizzato in una richiesta di firma.
       tags:
         - Signing
+
+  /request/remind:
+    post:
+      operationId: remind_signer
+      summary: Inviare email di promemoria al firmatario
+      description: |
+        Invia un'email di promemoria al firmatario per un dato URL di richiesta di firma.
+        Includere opzionalmente un messaggio personalizzato con la richiesta.
+      parameters:
+        - name: request_url
+          in: query
+          required: true
+          schema:
+            type: string
+            format: url
+          description: L'URL della richiesta di firma per il quale inviare il promemoria.
+        - name: message
+          in: query
+          schema:
+            type: string
+            maxLength: 1000
+          description: Messaggio personalizzato opzionale da includere nell'email di promemoria (max 1000 caratteri).
+      responses:
+        200:
+          description: L'email di promemoria è stata inviata con successo.
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+        404:
+          description: L'URL della richiesta di firma non è stato trovato o non è valido.
+      tags:
+        - Signing
+
   /request/status:
     get:
       operationId: request_status

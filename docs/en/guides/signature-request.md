@@ -21,4 +21,4 @@ During a signature request, the CLI will:
 The signature request URL can be shared with the invited person. A new URL must be created for each signer.
 Since the signature request URL contains a secret, access to it must be protected in the same way as the original document.
 
-To furhter increase the security, you can encrypt the URL secret with a cryptographically strong password.
+To further increase the security, you can encrypt the URL secret with a cryptographically strong password.

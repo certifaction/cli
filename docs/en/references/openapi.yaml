@@ -532,6 +532,13 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
+        - name: placeholder
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: |
+            Enable placeholder mode to store placeholder positions and remove placeholder text from PDF.
       summary: Prepare a file for signing or certification
       requestBody:
         description: The file to prepare.
@@ -624,6 +631,13 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID of the signature placeholder field to use for signature positioning.
+            If specified, position flags (position-x, position-y, height, page) are ignored.
+          in: query
+          schema:
+            type: string
       summary: Sign a file
       requestBody:
         description: The file to sign.
@@ -769,6 +783,13 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID of the signature placeholder field to use for signature positioning.
+            If specified, position flags (position-x, position-y, height, page) are ignored.
+          in: query
+          schema:
+            type: string
       summary: Register a file
       requestBody:
         description: The file to register.
@@ -931,6 +952,20 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID of the signature placeholder field to use for signature positioning.
+            If specified, position flags (position-x, position-y, height, page) are ignored.
+          in: query
+          schema:
+            type: string
+        - name: custom-password
+          description: |
+            Custom password for signature request. Automatically enables password protection.
+            If neither this nor `with-password` is provided, no password is used.
+          in: query
+          schema:
+            type: string
       summary: Request a signature
       requestBody:
         description: The files to sign
@@ -1126,6 +1161,40 @@ paths:
           description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
       tags:
         - Signing
+
+  /request/remind:
+    post:
+      operationId: remind_signer
+      summary: Send reminder email to signer
+      description: |
+        Send a reminder email to the signer for a given signature request URL.
+        Optionally include a custom message with the request.
+      parameters:
+        - name: request_url
+          in: query
+          required: true
+          schema:
+            type: string
+            format: url
+          description: The signature request URL for which to send the reminder.
+        - name: message
+          in: query
+          schema:
+            type: string
+            maxLength: 1000
+          description: Optional custom message to include in the reminder email (max 1000 characters).
+      responses:
+        200:
+          description: The reminder email was sent successfully.
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+        404:
+          description: The signature request URL was not found or is invalid.
+      tags:
+        - Signing
+
   /request/status:
     get:
       operationId: request_status
