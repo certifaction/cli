@@ -952,42 +952,6 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: signature-positions
-          description: |
-            Mehrere Signaturpositionen als JSON-Zeichenketten. Jede Position unterstützt alle verfügbaren Felder für präzise Kontrolle über die Signaturplatzierung und den rechtlichen Kontext.
-
-            Verfügbare Felder:
-            - pageNo (int): Seitennummer für die Signaturplatzierung (1-basiert)
-            - llx (float): Untere linke X-Koordinate
-            - lly (float): Untere linke Y-Koordinate
-            - height (float): Höhe des Signaturfelds
-            - rotate (int): Rotationswinkel in Grad (0, 90, 180, 270)
-            - positioning (string): "relative" für relative Positionierung, leer für absolute
-            - legalWeight (string): Rechtliches Gewicht - "QES", "AES", "PES", "SES"
-            - jurisdiction (string): Rechtsgebiet - "eIDAS", "ZertES"
-
-            Example: `signature-positions={"pageNo":2,"llx":200,"lly":200,"height":60,"rotate":45,"positioning":"relative","legalWeight":"AES","jurisdiction":"ZertES"}`
-
-            Example Server-Mode:
-            ```
-            curl -X POST 'http://localhost:8084/request/create?email=signer%40example.com&signature-positions=%7B%22pageNo%22%3A1%2C%22llx%22%3A100%2C%22lly%22%3A200%2C%22height%22%3A50%2C%22legalWeight%22%3A%22AES%22%2C%22jurisdiction%22%3A%22ZertES%22%7D&signature-positions=%7B%22pageNo%22%3A1%2C%22llx%22%3A100%2C%22lly%22%3A200%2C%22height%22%3A50%2C%22legalWeight%22%3A%22QES%22%2C%22jurisdiction%22%3A%22ZertES%22%7D' -H "Content-Type: application/pdf" --data-binary @example.pdf
-            ```
-
-            Example CLI-Mode:
-            ```
-            ./certifaction --env=dev --api-key "your-key" request create example.pdf --email "signer@example.com" --signature-positions "{\"pageNo\":1,\"llx\":100,\"lly\":200,\"height\":50,\"legalWeight\":\"QES\",\"jurisdiction\":\"eIDAS\"}" --signature-positions "{\"pageNo\":2,\"llx\":150,\"lly\":250,\"height\":60,\"legalWeight\":\"AES\",\"jurisdiction\":\"ZertES\"}"
-            ```
-
-            Example Response:
-            ```json
-            {"request_url":"https://app.certifaction.io/sign?s&signerToken=gB9xW91Mz4aALoPP&signatureRequestID=9Gd9fka8JVA#Lkj6sHtv0pA4PI53R2-couTd1m_3Q6S7C8B5lrR82xm="}
-            ```
-          in: query
-          schema:
-            type: array
-            items:
-              type: string
-              format: json
         - name: placeholder-id
           description: |
             ID des Signaturplatzhalterfelds, das für die Signaturpositionierung verwendet werden soll.
@@ -1195,39 +1159,6 @@ paths:
           description: Sie können die Signaturanfragen für diese Datei nicht auflisten.
         404:
           description: Die bereitgestellte Datei wurde nicht gefunden. Prüfen Sie, dass die Datei verarbeitet wurde und dass Sie sie in einer Signaturanfrage verwendet haben.
-      tags:
-        - Signing
-
-  /request/remind:
-    post:
-      operationId: remind_signer
-      summary: Erinnerungs-E-Mail an Unterzeichner senden
-      description: |
-        Sendet eine Erinnerungs-E-Mail an den Unterzeichner für eine gegebene Signaturanfrage-URL.
-        Optional kann eine benutzerdefinierte Nachricht mit der Anfrage eingefügt werden.
-      parameters:
-        - name: request_url
-          in: query
-          required: true
-          schema:
-            type: string
-            format: url
-          description: Die Signaturanfrage-URL, für die die Erinnerung gesendet werden soll.
-        - name: message
-          in: query
-          schema:
-            type: string
-            maxLength: 1000
-          description: Optionale benutzerdefinierte Nachricht, die in die Erinnerungs-E-Mail eingefügt werden soll (max. 1000 Zeichen).
-      responses:
-        200:
-          description: Die Erinnerungs-E-Mail wurde erfolgreich gesendet.
-        400:
-          $ref: "#/components/responses/bad_request"
-        401:
-          $ref: "#/components/responses/unauthorized"
-        404:
-          description: Die Signaturanfrage-URL wurde nicht gefunden oder ist ungültig.
       tags:
         - Signing
 
