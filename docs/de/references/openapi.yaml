@@ -534,7 +534,7 @@ paths:
         - $ref: "#/components/parameters/password_encryption"
       summary: Eine Datei für die Signierung oder Zertifizierung vorbereiten
       description: |
-        Bereitet ein PDF-Dokument für die Signierung oder Zertifizierung vor, indem Signatur-Platzhalter verarbeitet und Sicherheitsfunktionen hinzugefügt werden.
+        Bereitet ein PDF-Dokument für die Signierung vor, indem Signatur-Platzhalter verarbeitet und Sicherheitsfunktionen hinzugefügt werden.
 
         ## Signatur-Platzhalter
 

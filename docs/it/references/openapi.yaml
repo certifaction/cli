@@ -534,7 +534,7 @@ paths:
         - $ref: "#/components/parameters/password_encryption"
       summary: Preparare un file per la firma o certificazione
       description: |
-        Prepara un documento PDF per la firma o la certificazione elaborando i segnaposto di firma e aggiungendo funzionalità di sicurezza.
+        Prepara un documento PDF per la firma elaborando i segnaposto di firma e aggiungendo funzionalità di sicurezza.
 
         ## Segnaposto di Firma
 

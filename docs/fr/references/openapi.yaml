@@ -534,7 +534,7 @@ paths:
         - $ref: "#/components/parameters/password_encryption"
       summary: Préparer un fichier pour la signature ou la certification
       description: |
-        Prépare un document PDF pour la signature ou la certification en traitant les espaces réservés de signature et en ajoutant des fonctionnalités de sécurité.
+        Prépare un document PDF pour la signature en traitant les espaces réservés de signature et en ajoutant des fonctionnalités de sécurité.
 
         ## Espaces Réservés de Signature
 

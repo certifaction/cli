@@ -534,7 +534,7 @@ paths:
         - $ref: "#/components/parameters/password_encryption"
       summary: Prepare a file for signing or certification
       description: |
-        Prepares a PDF document for signing or certification by processing signature placeholders and adding security features.
+        Prepares a PDF document for signing by processing signature placeholders and adding security features.
 
         ## Signature Placeholders
 
