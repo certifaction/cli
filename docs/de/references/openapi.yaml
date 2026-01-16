@@ -532,6 +532,13 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
+        - name: placeholder
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: |
+            Platzhalter-Modus aktivieren, um Platzhalter-Positionen zu speichern und Platzhaltertext aus dem PDF zu entfernen.
       summary: Eine Datei für die Signierung oder Zertifizierung vorbereiten
       requestBody:
         description: Die vorzubereitende Datei.
@@ -624,6 +631,13 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID des Signaturplatzhalterfelds, das für die Signaturpositionierung verwendet werden soll.
+            Falls angegeben, werden die Positionsflags (position-x, position-y, height, page) ignoriert.
+          in: query
+          schema:
+            type: string
       summary: Eine Datei signieren
       requestBody:
         description: Die zu signierende Datei.
@@ -769,6 +783,13 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID des Signaturplatzhalterfelds, das für die Signaturpositionierung verwendet werden soll.
+            Falls angegeben, werden die Positionsflags (position-x, position-y, height, page) ignoriert.
+          in: query
+          schema:
+            type: string
       summary: Eine Datei registrieren
       requestBody:
         description: Die zu registrierende Datei.
@@ -931,6 +952,20 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - name: placeholder-id
+          description: |
+            ID des Signaturplatzhalterfelds, das für die Signaturpositionierung verwendet werden soll.
+            Falls angegeben, werden die Positionsflags (position-x, position-y, height, page) ignoriert.
+          in: query
+          schema:
+            type: string
+        - name: custom-password
+          description: |
+            Benutzerdefiniertes Passwort für Signaturanfrage. Aktiviert automatisch den Passwortschutz.
+            Falls weder dies noch `with-password` angegeben ist, wird kein Passwort verwendet.
+          in: query
+          schema:
+            type: string
       summary: Eine Signatur anfordern
       requestBody:
         description: Die zu signierenden Dateien
@@ -1126,6 +1161,7 @@ paths:
           description: Die bereitgestellte Datei wurde nicht gefunden. Prüfen Sie, dass die Datei verarbeitet wurde und dass Sie sie in einer Signaturanfrage verwendet haben.
       tags:
         - Signing
+
   /request/status:
     get:
       operationId: request_status
