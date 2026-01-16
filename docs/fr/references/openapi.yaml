@@ -1003,6 +1003,13 @@ paths:
             type: integer
             minimum: 1
         - $ref: "#/components/parameters/placeholder_id"
+        - name: custom-password
+          description: |
+            Mot de passe personnalisé pour la demande de signature. Active automatiquement la protection par mot de passe.
+            Si ni celui-ci ni `with-password` n'est fourni, aucun mot de passe n'est utilisé.
+          in: query
+          schema:
+            type: string
       summary: Demander une signature
       requestBody:
         description: Les fichiers à signer
@@ -1198,6 +1205,7 @@ paths:
           description: Le fichier fourni n'a pas été trouvé. Vérifiez que le fichier a été traité et que vous l'avez utilisé dans une demande de signature.
       tags:
         - Signing
+
   /request/status:
     get:
       operationId: request_status

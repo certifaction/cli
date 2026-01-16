@@ -840,6 +840,13 @@ paths:
             type: integer
             minimum: 1
         - $ref: "#/components/parameters/placeholder_id"
+        - name: placeholder-id
+          description: |
+            ID of the signature placeholder field to use for signature positioning.
+            If specified, position flags (position-x, position-y, height, page) are ignored.
+          in: query
+          schema:
+            type: string
       summary: Register a file
       requestBody:
         description: The file to register.
@@ -1003,6 +1010,13 @@ paths:
             type: integer
             minimum: 1
         - $ref: "#/components/parameters/placeholder_id"
+        - name: custom-password
+          description: |
+            Custom password for signature request. Automatically enables password protection.
+            If neither this nor `with-password` is provided, no password is used.
+          in: query
+          schema:
+            type: string
       summary: Request a signature
       requestBody:
         description: The files to sign
@@ -1198,6 +1212,7 @@ paths:
           description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
       tags:
         - Signing
+
   /request/status:
     get:
       operationId: request_status

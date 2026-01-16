@@ -1003,6 +1003,13 @@ paths:
             type: integer
             minimum: 1
         - $ref: "#/components/parameters/placeholder_id"
+        - name: custom-password
+          description: |
+            Benutzerdefiniertes Passwort für Signaturanfrage. Aktiviert automatisch den Passwortschutz.
+            Falls weder dies noch `with-password` angegeben ist, wird kein Passwort verwendet.
+          in: query
+          schema:
+            type: string
       summary: Eine Signatur anfordern
       requestBody:
         description: Die zu signierenden Dateien
@@ -1198,6 +1205,7 @@ paths:
           description: Die bereitgestellte Datei wurde nicht gefunden. Prüfen Sie, dass die Datei verarbeitet wurde und dass Sie sie in einer Signaturanfrage verwendet haben.
       tags:
         - Signing
+
   /request/status:
     get:
       operationId: request_status

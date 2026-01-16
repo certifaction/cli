@@ -1003,6 +1003,13 @@ paths:
             type: integer
             minimum: 1
         - $ref: "#/components/parameters/placeholder_id"
+        - name: custom-password
+          description: |
+            Password personalizzata per la richiesta di firma. Abilita automaticamente la protezione con password.
+            Se né questo né `with-password` viene fornito, non viene utilizzata alcuna password.
+          in: query
+          schema:
+            type: string
       summary: Richiedere una firma
       requestBody:
         description: I file da firmare
@@ -1198,6 +1205,7 @@ paths:
           description: Il file fornito non è stato trovato. Verifichi che il file sia stato elaborato e che lo abbia utilizzato in una richiesta di firma.
       tags:
         - Signing
+
   /request/status:
     get:
       operationId: request_status
