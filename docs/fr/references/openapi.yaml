@@ -533,6 +533,56 @@ paths:
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
       summary: Préparer un fichier pour la signature ou la certification
+      description: |
+        Prépare un document PDF pour la signature ou la certification en traitant les espaces réservés de signature et en ajoutant des fonctionnalités de sécurité.
+
+        ## Espaces Réservés de Signature
+
+        Vous pouvez contrôler l'emplacement des signatures dans votre document en ajoutant des espaces réservés de texte au format `##SIG{...}`.
+
+        ### Format des Espaces Réservés de Texte
+
+        Ajoutez des espaces réservés de texte directement dans votre document PDF en utilisant ce format JSON :
+
+        ```
+        ##SIG{"id":"signer1","w":"9cm","x":"2cm","y":"1cm"}
+        ```
+
+        ### Description des Champs
+
+        - **id** (requis) : Le nom/identifiant du champ pour l'espace réservé de signature
+          - Note : `role` peut être utilisé à la place de `id` pour la rétrocompatibilité
+        - **w** (optionnel) : Largeur de la zone de signature
+          - Unités supportées : `cm`, `mm`, `in`, `pt`
+          - Si spécifié, la hauteur est calculée automatiquement pour maintenir le rapport d'aspect
+          - Exemples : `"w":"9cm"`, `"w":"100pt"`, `"w":"2in"`
+        - **h** (optionnel) : Hauteur de la zone de signature
+          - Unités supportées : `cm`, `mm`, `in`, `pt`
+          - Utilisé uniquement si la largeur (`w`) n'est pas spécifiée
+          - Exemples : `"h":"3cm"`
+        - **x** (optionnel) : Décalage horizontal par rapport à la position du texte
+          - Unités supportées : `cm`, `mm`, `in`, `pt`
+          - Les valeurs positives déplacent la signature vers la droite
+          - Exemples : `"x":"2cm"`
+        - **y** (optionnel) : Décalage vertical par rapport à la position du texte
+          - Unités supportées : `cm`, `mm`, `in`, `pt`
+          - Les valeurs positives déplacent la signature vers le bas
+          - Exemples : `"y":"1cm"`
+
+        ### Exemples
+
+        ```
+        ##SIG{"id":"manager","w":"8cm"}
+        ##SIG{"id":"director","w":"100pt","x":"1cm","y":"0.5cm"}
+        ##SIG{"id":"witness","h":"2cm","x":"3cm"}
+        ```
+
+        ### Remarques
+
+        - Si ni `w` ni `h` n'est spécifié, la signature utilise la largeur de base par défaut
+        - La largeur (`w`) prend la priorité sur la hauteur (`h`) pour maintenir le rapport d'aspect approprié
+        - Le texte de l'espace réservé est supprimé du document pendant la préparation
+        - Les décalages de position (`x`, `y`) sont relatifs à l'endroit où le texte `##SIG{...}` apparaît dans le document
       requestBody:
         description: Le fichier à préparer.
         required: true
