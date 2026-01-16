@@ -114,6 +114,74 @@ components:
         type: string
         enum:
           - xor-b58
+    placeholder:
+      name: placeholder
+      description: |
+        Enable placeholder mode to detect and process signature placeholders in the PDF document.
+
+        When enabled, the prepare endpoint will:
+        - Detect `##SIG{...}` text placeholders in the document
+        - Store their positions for later signature placement
+        - Remove the placeholder text from the document
+
+        ## Text Placeholder Format
+
+        Add text placeholders directly in your PDF document using this JSON-based format:
+
+        ```
+        ##SIG{"id":"signer1","w":"9cm","x":"2cm","y":"1cm"}
+        ```
+
+        ### Field Descriptions
+
+        - **id** (required): The field name/identifier for the signature placeholder
+          - Note: `role` can be used instead of `id` for backwards compatibility
+        - **w** (optional): Width of the signature box
+          - Supports units: `cm`, `mm`, `in`, `pt`
+          - If specified, height is calculated automatically to maintain aspect ratio
+          - Examples: `"w":"9cm"`, `"w":"100pt"`, `"w":"2in"`
+        - **h** (optional): Height of the signature box
+          - Supports units: `cm`, `mm`, `in`, `pt`
+          - Only used if width (`w`) is not specified
+          - Examples: `"h":"3cm"`
+        - **x** (optional): Horizontal offset from the text position
+          - Supports units: `cm`, `mm`, `in`, `pt`
+          - Positive values move the signature to the right
+          - Examples: `"x":"2cm"`
+        - **y** (optional): Vertical offset from the text position
+          - Supports units: `cm`, `mm`, `in`, `pt`
+          - Positive values move the signature down
+          - Examples: `"y":"1cm"`
+
+        ### Examples
+
+        ```
+        ##SIG{"id":"manager","w":"8cm"}
+        ##SIG{"id":"director","w":"100pt","x":"1cm","y":"0.5cm"}
+        ##SIG{"id":"witness","h":"2cm","x":"3cm"}
+        ```
+
+        ### Notes
+
+        - If neither `w` nor `h` is specified, the signature uses the default base width
+        - Width (`w`) takes precedence over height (`h`) to maintain proper aspect ratio
+        - Position offsets (`x`, `y`) are relative to where the `##SIG{...}` text appears in the document
+      in: query
+      schema:
+        type: boolean
+        default: false
+    placeholder_id:
+      name: placeholder-id
+      description: |
+        ID of the signature placeholder field to use for signature placement.
+        If specified, the signature will be placed at the position of the placeholder with this ID.
+
+        This parameter references the `id` field in a `##SIG{...}` placeholder (e.g., for `##SIG{"id":"manager"}`, use `placeholder-id=manager`).
+
+        When using this parameter, position-related flags (position-x, position-y, height, page) are ignored.
+      in: query
+      schema:
+        type: string
 
   responses:
     bad_request:
@@ -532,13 +600,7 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
-        - name: placeholder
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: |
-            Enable placeholder mode to store placeholder positions and remove placeholder text from PDF.
+        - $ref: "#/components/parameters/placeholder"
       summary: Prepare a file for signing or certification
       requestBody:
         description: The file to prepare.
@@ -631,13 +693,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID of the signature placeholder field to use for signature positioning.
-            If specified, position flags (position-x, position-y, height, page) are ignored.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
       summary: Sign a file
       requestBody:
         description: The file to sign.
@@ -783,6 +839,7 @@ paths:
           schema:
             type: integer
             minimum: 1
+        - $ref: "#/components/parameters/placeholder_id"
         - name: placeholder-id
           description: |
             ID of the signature placeholder field to use for signature positioning.
@@ -952,13 +1009,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID of the signature placeholder field to use for signature positioning.
-            If specified, position flags (position-x, position-y, height, page) are ignored.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
         - name: custom-password
           description: |
             Custom password for signature request. Automatically enables password protection.

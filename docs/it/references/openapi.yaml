@@ -114,6 +114,74 @@ components:
         type: string
         enum:
           - xor-b58
+    placeholder:
+      name: placeholder
+      description: |
+        Abilita la modalità segnaposto per rilevare ed elaborare i segnaposto di firma nel documento PDF.
+
+        Quando abilitato, l'endpoint prepare:
+        - Rileverà i segnaposto di testo `##SIG{...}` nel documento
+        - Memorizzerà le loro posizioni per il posizionamento successivo della firma
+        - Rimuoverà il testo del segnaposto dal documento
+
+        ## Formato del Segnaposto di Testo
+
+        Aggiungi segnaposto di testo direttamente nel tuo documento PDF utilizzando questo formato basato su JSON:
+
+        ```
+        ##SIG{"id":"signer1","w":"9cm","x":"2cm","y":"1cm"}
+        ```
+
+        ### Descrizione dei Campi
+
+        - **id** (obbligatorio): Il nome/identificatore del campo per il segnaposto di firma
+          - Nota: `role` può essere utilizzato al posto di `id` per retrocompatibilità
+        - **w** (opzionale): Larghezza del riquadro della firma
+          - Unità supportate: `cm`, `mm`, `in`, `pt`
+          - Se specificato, l'altezza viene calcolata automaticamente per mantenere le proporzioni
+          - Esempi: `"w":"9cm"`, `"w":"100pt"`, `"w":"2in"`
+        - **h** (opzionale): Altezza del riquadro della firma
+          - Unità supportate: `cm`, `mm`, `in`, `pt`
+          - Utilizzato solo se la larghezza (`w`) non è specificata
+          - Esempi: `"h":"3cm"`
+        - **x** (opzionale): Offset orizzontale dalla posizione del testo
+          - Unità supportate: `cm`, `mm`, `in`, `pt`
+          - I valori positivi spostano la firma verso destra
+          - Esempi: `"x":"2cm"`
+        - **y** (opzionale): Offset verticale dalla posizione del testo
+          - Unità supportate: `cm`, `mm`, `in`, `pt`
+          - I valori positivi spostano la firma verso il basso
+          - Esempi: `"y":"1cm"`
+
+        ### Esempi
+
+        ```
+        ##SIG{"id":"manager","w":"8cm"}
+        ##SIG{"id":"director","w":"100pt","x":"1cm","y":"0.5cm"}
+        ##SIG{"id":"witness","h":"2cm","x":"3cm"}
+        ```
+
+        ### Note
+
+        - Se né `w` né `h` sono specificati, la firma utilizza la larghezza di base predefinita
+        - La larghezza (`w`) ha la precedenza sull'altezza (`h`) per mantenere le proporzioni corrette
+        - Gli offset di posizione (`x`, `y`) sono relativi al punto in cui appare il testo `##SIG{...}` nel documento
+      in: query
+      schema:
+        type: boolean
+        default: false
+    placeholder_id:
+      name: placeholder-id
+      description: |
+        ID del campo segnaposto di firma da utilizzare per il posizionamento della firma.
+        Se specificato, la firma sarà posizionata nella posizione del segnaposto con questo ID.
+
+        Questo parametro fa riferimento al campo `id` in un segnaposto `##SIG{...}` (ad esempio, per `##SIG{"id":"manager"}`, utilizzare `placeholder-id=manager`).
+
+        Quando si utilizza questo parametro, i flag relativi alla posizione (position-x, position-y, height, page) vengono ignorati.
+      in: query
+      schema:
+        type: string
 
   responses:
     bad_request:
@@ -532,13 +600,7 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
-        - name: placeholder
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: |
-            Attivare la modalità placeholder per memorizzare le posizioni dei placeholder e rimuovere il testo placeholder dal PDF.
+        - $ref: "#/components/parameters/placeholder"
       summary: Preparare un file per la firma o certificazione
       requestBody:
         description: Il file da preparare.
@@ -631,13 +693,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID del campo placeholder di firma da utilizzare per il posizionamento della firma.
-            Se specificato, i flag di posizione (position-x, position-y, height, page) vengono ignorati.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
       summary: Firmare un file
       requestBody:
         description: Il file da firmare.
@@ -783,13 +839,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID del campo placeholder di firma da utilizzare per il posizionamento della firma.
-            Se specificato, i flag di posizione (position-x, position-y, height, page) vengono ignorati.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
       summary: Registrare un file
       requestBody:
         description: Il file da registrare.
@@ -952,13 +1002,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID del campo placeholder di firma da utilizzare per il posizionamento della firma.
-            Se specificato, i flag di posizione (position-x, position-y, height, page) vengono ignorati.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
         - name: custom-password
           description: |
             Password personalizzata per la richiesta di firma. Abilita automaticamente la protezione con password.

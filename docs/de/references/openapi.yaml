@@ -114,6 +114,74 @@ components:
         type: string
         enum:
           - xor-b58
+    placeholder:
+      name: placeholder
+      description: |
+        Aktivieren Sie den Platzhalter-Modus, um Signatur-Platzhalter im PDF-Dokument zu erkennen und zu verarbeiten.
+
+        Wenn aktiviert, wird der prepare-Endpunkt:
+        - Text-Platzhalter `##SIG{...}` im Dokument erkennen
+        - Ihre Positionen für die spätere Signaturplatzierung speichern
+        - Den Platzhaltertext aus dem Dokument entfernen
+
+        ## Text-Platzhalter-Format
+
+        Fügen Sie Text-Platzhalter direkt in Ihr PDF-Dokument ein, indem Sie dieses JSON-basierte Format verwenden:
+
+        ```
+        ##SIG{"id":"signer1","w":"9cm","x":"2cm","y":"1cm"}
+        ```
+
+        ### Feldbeschreibungen
+
+        - **id** (erforderlich): Der Feldname/Bezeichner für den Signatur-Platzhalter
+          - Hinweis: `role` kann anstelle von `id` für Rückwärtskompatibilität verwendet werden
+        - **w** (optional): Breite des Signaturfelds
+          - Unterstützte Einheiten: `cm`, `mm`, `in`, `pt`
+          - Wenn angegeben, wird die Höhe automatisch berechnet, um das Seitenverhältnis beizubehalten
+          - Beispiele: `"w":"9cm"`, `"w":"100pt"`, `"w":"2in"`
+        - **h** (optional): Höhe des Signaturfelds
+          - Unterstützte Einheiten: `cm`, `mm`, `in`, `pt`
+          - Wird nur verwendet, wenn die Breite (`w`) nicht angegeben ist
+          - Beispiele: `"h":"3cm"`
+        - **x** (optional): Horizontaler Versatz von der Textposition
+          - Unterstützte Einheiten: `cm`, `mm`, `in`, `pt`
+          - Positive Werte verschieben die Signatur nach rechts
+          - Beispiele: `"x":"2cm"`
+        - **y** (optional): Vertikaler Versatz von der Textposition
+          - Unterstützte Einheiten: `cm`, `mm`, `in`, `pt`
+          - Positive Werte verschieben die Signatur nach unten
+          - Beispiele: `"y":"1cm"`
+
+        ### Beispiele
+
+        ```
+        ##SIG{"id":"manager","w":"8cm"}
+        ##SIG{"id":"director","w":"100pt","x":"1cm","y":"0.5cm"}
+        ##SIG{"id":"witness","h":"2cm","x":"3cm"}
+        ```
+
+        ### Hinweise
+
+        - Wenn weder `w` noch `h` angegeben ist, verwendet die Signatur die standardmäßige Basisbreite
+        - Die Breite (`w`) hat Vorrang vor der Höhe (`h`), um das richtige Seitenverhältnis beizubehalten
+        - Positionsversätze (`x`, `y`) sind relativ zu der Stelle, an der der Text `##SIG{...}` im Dokument erscheint
+      in: query
+      schema:
+        type: boolean
+        default: false
+    placeholder_id:
+      name: placeholder-id
+      description: |
+        ID des Signatur-Platzhalterfelds, das für die Signaturplatzierung verwendet werden soll.
+        Wenn angegeben, wird die Signatur an der Position des Platzhalters mit dieser ID platziert.
+
+        Dieser Parameter verweist auf das `id`-Feld in einem `##SIG{...}`-Platzhalter (z.B. für `##SIG{"id":"manager"}` verwenden Sie `placeholder-id=manager`).
+
+        Bei Verwendung dieses Parameters werden positionsbezogene Flags (position-x, position-y, height, page) ignoriert.
+      in: query
+      schema:
+        type: string
 
   responses:
     bad_request:
@@ -532,13 +600,7 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
-        - name: placeholder
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: |
-            Platzhalter-Modus aktivieren, um Platzhalter-Positionen zu speichern und Platzhaltertext aus dem PDF zu entfernen.
+        - $ref: "#/components/parameters/placeholder"
       summary: Eine Datei für die Signierung oder Zertifizierung vorbereiten
       requestBody:
         description: Die vorzubereitende Datei.
@@ -631,13 +693,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID des Signaturplatzhalterfelds, das für die Signaturpositionierung verwendet werden soll.
-            Falls angegeben, werden die Positionsflags (position-x, position-y, height, page) ignoriert.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
       summary: Eine Datei signieren
       requestBody:
         description: Die zu signierende Datei.
@@ -783,13 +839,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID des Signaturplatzhalterfelds, das für die Signaturpositionierung verwendet werden soll.
-            Falls angegeben, werden die Positionsflags (position-x, position-y, height, page) ignoriert.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
       summary: Eine Datei registrieren
       requestBody:
         description: Die zu registrierende Datei.
@@ -952,13 +1002,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID des Signaturplatzhalterfelds, das für die Signaturpositionierung verwendet werden soll.
-            Falls angegeben, werden die Positionsflags (position-x, position-y, height, page) ignoriert.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
         - name: custom-password
           description: |
             Benutzerdefiniertes Passwort für Signaturanfrage. Aktiviert automatisch den Passwortschutz.

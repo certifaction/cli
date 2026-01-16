@@ -114,6 +114,74 @@ components:
         type: string
         enum:
           - xor-b58
+    placeholder:
+      name: placeholder
+      description: |
+        Activer le mode espace réservé pour détecter et traiter les espaces réservés de signature dans le document PDF.
+
+        Lorsqu'il est activé, l'endpoint prepare va :
+        - Détecter les espaces réservés de texte `##SIG{...}` dans le document
+        - Stocker leurs positions pour le placement de signature ultérieur
+        - Supprimer le texte d'espace réservé du document
+
+        ## Format des Espaces Réservés de Texte
+
+        Ajoutez des espaces réservés de texte directement dans votre document PDF en utilisant ce format JSON :
+
+        ```
+        ##SIG{"id":"signer1","w":"9cm","x":"2cm","y":"1cm"}
+        ```
+
+        ### Description des Champs
+
+        - **id** (requis) : Le nom/identifiant du champ pour l'espace réservé de signature
+          - Note : `role` peut être utilisé à la place de `id` pour la rétrocompatibilité
+        - **w** (optionnel) : Largeur de la zone de signature
+          - Unités supportées : `cm`, `mm`, `in`, `pt`
+          - Si spécifié, la hauteur est calculée automatiquement pour maintenir le rapport d'aspect
+          - Exemples : `"w":"9cm"`, `"w":"100pt"`, `"w":"2in"`
+        - **h** (optionnel) : Hauteur de la zone de signature
+          - Unités supportées : `cm`, `mm`, `in`, `pt`
+          - Utilisé uniquement si la largeur (`w`) n'est pas spécifiée
+          - Exemples : `"h":"3cm"`
+        - **x** (optionnel) : Décalage horizontal par rapport à la position du texte
+          - Unités supportées : `cm`, `mm`, `in`, `pt`
+          - Les valeurs positives déplacent la signature vers la droite
+          - Exemples : `"x":"2cm"`
+        - **y** (optionnel) : Décalage vertical par rapport à la position du texte
+          - Unités supportées : `cm`, `mm`, `in`, `pt`
+          - Les valeurs positives déplacent la signature vers le bas
+          - Exemples : `"y":"1cm"`
+
+        ### Exemples
+
+        ```
+        ##SIG{"id":"manager","w":"8cm"}
+        ##SIG{"id":"director","w":"100pt","x":"1cm","y":"0.5cm"}
+        ##SIG{"id":"witness","h":"2cm","x":"3cm"}
+        ```
+
+        ### Remarques
+
+        - Si ni `w` ni `h` n'est spécifié, la signature utilise la largeur de base par défaut
+        - La largeur (`w`) prend la priorité sur la hauteur (`h`) pour maintenir le rapport d'aspect approprié
+        - Les décalages de position (`x`, `y`) sont relatifs à l'endroit où le texte `##SIG{...}` apparaît dans le document
+      in: query
+      schema:
+        type: boolean
+        default: false
+    placeholder_id:
+      name: placeholder-id
+      description: |
+        ID du champ d'espace réservé de signature à utiliser pour le placement de la signature.
+        Si spécifié, la signature sera placée à la position de l'espace réservé avec cet ID.
+
+        Ce paramètre fait référence au champ `id` dans un espace réservé `##SIG{...}` (par exemple, pour `##SIG{"id":"manager"}`, utilisez `placeholder-id=manager`).
+
+        Lors de l'utilisation de ce paramètre, les indicateurs liés à la position (position-x, position-y, height, page) sont ignorés.
+      in: query
+      schema:
+        type: string
 
   responses:
     bad_request:
@@ -532,13 +600,7 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
-        - name: placeholder
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: |
-            Activer le mode placeholder pour enregistrer les positions des placeholders et supprimer le texte placeholder du PDF.
+        - $ref: "#/components/parameters/placeholder"
       summary: Préparer un fichier pour la signature ou la certification
       requestBody:
         description: Le fichier à préparer.
@@ -631,13 +693,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID du champ placeholder de signature à utiliser pour le positionnement de la signature.
-            Si spécifié, les flags de position (position-x, position-y, height, page) sont ignorés.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
       summary: Signer un fichier
       requestBody:
         description: Le fichier à signer.
@@ -783,13 +839,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID du champ placeholder de signature à utiliser pour le positionnement de la signature.
-            Si spécifié, les flags de position (position-x, position-y, height, page) sont ignorés.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
       summary: Enregistrer un fichier
       requestBody:
         description: Le fichier à enregistrer.
@@ -952,13 +1002,7 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - name: placeholder-id
-          description: |
-            ID du champ placeholder de signature à utiliser pour le positionnement de la signature.
-            Si spécifié, les flags de position (position-x, position-y, height, page) sont ignorés.
-          in: query
-          schema:
-            type: string
+        - $ref: "#/components/parameters/placeholder_id"
         - name: custom-password
           description: |
             Mot de passe personnalisé pour la demande de signature. Active automatiquement la protection par mot de passe.
