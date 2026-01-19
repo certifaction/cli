@@ -7,7 +7,7 @@ export const enNavigation = {
     },
     {
       text: "Reference",
-      link: "/en/references/api",
+      link: "/en/references/authentication",
       activeMatch: "/en/references/",
     },
     {
