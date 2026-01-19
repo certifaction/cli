@@ -11,5 +11,5 @@ L'autenticazione viene effettuata passando un token di autenticazione o una chia
 - I token di accesso possono essere emessi da voi o da un provider OIDC esterno. In entrambi i casi, Certifaction dovrà registrare il provider di identità.
 - Le chiavi API sono gestite dall'applicazione web Certifaction. Possono essere utilizzate solo per l'integrazione API lato server.
 - Per l'autenticazione HIN Sign, seguire le istruzioni:
-  - [Tedesco](https://download.hin.ch/documentation/oAuth2_Dokumentation_de.pdf)
-  - [Francese](https://download.hin.ch/documentation/oAuth2_Dokumentation_fr.pdf)
+  - [Tedesco](https://cdn.hin.ch/oauth2/manual/DE/index.html)
+  - [Inglese](https://cdn.hin.ch/oauth2/manual/EN/index.html)
