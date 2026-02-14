@@ -47,10 +47,12 @@ export function useTheme() {
   function applyThemeClass() {
     if (!inBrowser) return;
     const html = document.documentElement;
-    // Remove all theme classes
-    html.classList.remove('theme-certifaction', 'theme-mss');
-    // Add active theme class
-    html.classList.add(theme.value.cssClass);
+    const targetClass = theme.value.cssClass;
+    // Only modify DOM if the class isn't already set (prevents MutationObserver loops)
+    if (!html.classList.contains(targetClass)) {
+      html.classList.remove('theme-certifaction', 'theme-mss');
+      html.classList.add(targetClass);
+    }
   }
 
   return {

@@ -2,69 +2,75 @@
 import DefaultTheme from 'vitepress/theme';
 import { onMounted, watch, nextTick } from 'vue';
 import { useTheme } from './useTheme.js';
-import { inBrowser } from 'vitepress';
+import { useRouter, inBrowser } from 'vitepress';
 
 const { theme, applyThemeClass } = useTheme();
+const router = useRouter();
+
+let updating = false;
 
 function updateBranding() {
-  if (!inBrowser) return;
+  if (!inBrowser || updating) return;
+  updating = true;
 
-  const t = theme.value;
+  try {
+    const t = theme.value;
 
-  // Apply CSS class
-  applyThemeClass();
+    // Apply CSS class
+    applyThemeClass();
 
-  // Swap favicon
-  let faviconLink = document.querySelector('link[rel="icon"]');
-  if (!faviconLink) {
-    faviconLink = document.createElement('link');
-    faviconLink.rel = 'icon';
-    document.head.appendChild(faviconLink);
-  }
-  faviconLink.type = t.faviconType;
-  faviconLink.href = t.favicon;
-
-  // Swap navbar logo
-  const logoImgs = document.querySelectorAll('.VPNavBarTitle img.logo, .VPNavBar img.logo');
-  logoImgs.forEach(img => {
-    // Detect if dark mode
-    const isDark = document.documentElement.classList.contains('dark');
-    img.src = isDark ? t.logo.dark : t.logo.light;
-  });
-
-  // Swap sidebar logo
-  const sidebarLogoImgs = document.querySelectorAll('.VPSidebar img.logo');
-  sidebarLogoImgs.forEach(img => {
-    const isDark = document.documentElement.classList.contains('dark');
-    img.src = isDark ? t.logo.dark : t.logo.light;
-  });
-
-  // Update footer copyright
-  const footerCopyright = document.querySelector('.VPFooter .copyright');
-  if (footerCopyright) {
-    footerCopyright.textContent = t.footer;
-  }
-
-  // Swap hero name and image
-  const heroName = document.querySelector('.VPHero .name');
-  if (heroName) {
-    heroName.textContent = t.productName;
-  }
-
-  const heroImg = document.querySelector('.VPHero .VPImage');
-  if (heroImg) {
-    heroImg.src = t.heroImage;
-    heroImg.alt = `${t.productName} CLI`;
-  }
-
-  // Update social links
-  const socialLinksContainer = document.querySelector('.VPSocialLinks');
-  if (socialLinksContainer) {
-    if (t.socialLinks.length === 0) {
-      socialLinksContainer.style.display = 'none';
-    } else {
-      socialLinksContainer.style.display = '';
+    // Swap favicon
+    let faviconLink = document.querySelector('link[rel="icon"]');
+    if (!faviconLink) {
+      faviconLink = document.createElement('link');
+      faviconLink.rel = 'icon';
+      document.head.appendChild(faviconLink);
     }
+    faviconLink.type = t.faviconType;
+    faviconLink.href = t.favicon;
+
+    // Swap navbar logo
+    const isDark = document.documentElement.classList.contains('dark');
+    const logoImgs = document.querySelectorAll('.VPNavBarTitle img.logo, .VPNavBar img.logo');
+    logoImgs.forEach(img => {
+      img.src = isDark ? t.logo.dark : t.logo.light;
+    });
+
+    // Swap sidebar logo
+    const sidebarLogoImgs = document.querySelectorAll('.VPSidebar img.logo');
+    sidebarLogoImgs.forEach(img => {
+      img.src = isDark ? t.logo.dark : t.logo.light;
+    });
+
+    // Update footer copyright
+    const footerCopyright = document.querySelector('.VPFooter .copyright');
+    if (footerCopyright) {
+      footerCopyright.textContent = t.footer;
+    }
+
+    // Swap hero name and image
+    const heroName = document.querySelector('.VPHero .name');
+    if (heroName) {
+      heroName.textContent = t.productName;
+    }
+
+    const heroImg = document.querySelector('.VPHero .VPImage');
+    if (heroImg) {
+      heroImg.src = t.heroImage;
+      heroImg.alt = `${t.productName} CLI`;
+    }
+
+    // Update social links
+    const socialLinksContainer = document.querySelector('.VPSocialLinks');
+    if (socialLinksContainer) {
+      if (t.socialLinks.length === 0) {
+        socialLinksContainer.style.display = 'none';
+      } else {
+        socialLinksContainer.style.display = '';
+      }
+    }
+  } finally {
+    updating = false;
   }
 }
 
@@ -72,16 +78,20 @@ onMounted(async () => {
   await nextTick();
   updateBranding();
 
-  // Watch for route changes (SPA navigation)
   if (inBrowser) {
-    const observer = new MutationObserver(() => {
-      updateBranding();
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Use VitePress router for SPA navigation
+    router.onAfterRouteChanged = () => {
+      nextTick(() => updateBranding());
+    };
 
-    // Also update on dark mode toggle
+    // Watch for dark mode toggle — track state to avoid loops from theme class changes
+    let lastDarkState = document.documentElement.classList.contains('dark');
     const darkObserver = new MutationObserver(() => {
-      updateBranding();
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark !== lastDarkState) {
+        lastDarkState = isDark;
+        updateBranding();
+      }
     });
     darkObserver.observe(document.documentElement, {
       attributes: true,
