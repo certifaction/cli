@@ -7,7 +7,7 @@ export const itNavigation = {
     },
     {
       text: "Riferimento",
-      link: "/it/references/api",
+      link: "/it/references/authentication",
       activeMatch: "/it/references/",
     },
     {

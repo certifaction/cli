@@ -7,7 +7,7 @@ export const deNavigation = {
     },
     {
       text: "Referenz",
-      link: "/de/references/api",
+      link: "/de/references/authentication",
       activeMatch: "/de/references/",
     },
     {
