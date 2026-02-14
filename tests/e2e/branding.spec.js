@@ -95,6 +95,18 @@ for (const themeConfig of themeConfigs) {
       });
     }
 
+    test('footer visible on guide pages with sidebar', async ({ page }) => {
+      await page.goto(`/en/guides/about?theme=${themeConfig.key}`);
+
+      await page.waitForTimeout(500);
+
+      const footer = page.locator('.VPFooter');
+      await expect(footer).toBeVisible();
+
+      const footerText = await footer.textContent();
+      expect(footerText).toContain(themeConfig.footer);
+    });
+
     test('no cross-theme branding leaks', async ({ page }) => {
       await page.goto(`/en/?theme=${themeConfig.key}`);
 

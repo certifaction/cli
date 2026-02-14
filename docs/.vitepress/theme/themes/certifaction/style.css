@@ -14,6 +14,11 @@
   --vp-code-link-hover-color: #0551BB;
 }
 
+/* Show footer on all pages including those with sidebar */
+.VPFooter.has-sidebar {
+  display: flex !important;
+}
+
 .theme-certifaction {
   --vp-c-brand: #0669F2;
   --vp-c-brand-1: #0669F2;

@@ -46,6 +46,11 @@
        url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-ultra.woff') format('woff');
 }
 
+/* Show footer on all pages including those with sidebar */
+.VPFooter.has-sidebar {
+  display: flex !important;
+}
+
 /* MSS color variables — scoped under .theme-mss */
 .theme-mss {
   --vp-c-brand: #e20074;
