@@ -10,6 +10,7 @@ export default {
   assetBase: '/themes/mss/assets',
   binaryPrefix: 'mss',
   cssClass: 'theme-mss',
+  defaultLanguage: 'de',
   primaryColor: '#e20074',
   socialLinks: [],
 };

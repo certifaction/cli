@@ -6,18 +6,21 @@ editLink: true
 
 <script setup>
 import { onMounted } from 'vue'
+import { useTheme } from './.vitepress/theme/useTheme.js'
 
 onMounted(() => {
+  const { theme } = useTheme()
+
   // Get browser language preferences
   const browserLang = navigator.language || navigator.userLanguage
   const langCode = browserLang.split('-')[0] // Get primary language code
 
   // Supported languages
   const supportedLanguages = ['en', 'de', 'fr', 'it']
-  const defaultLang = 'en'
+  const defaultLanguage = theme.value.defaultLanguage || 'en'
 
-  // Determine target language
-  let targetLang = defaultLang
+  // Determine target language: browser language if supported, else theme default
+  let targetLang = defaultLanguage
   if (supportedLanguages.includes(langCode)) {
     targetLang = langCode
   }

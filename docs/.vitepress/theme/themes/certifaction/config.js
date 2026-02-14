@@ -10,6 +10,7 @@ export default {
   assetBase: '/themes/certifaction/assets',
   binaryPrefix: 'certifaction-cli',
   cssClass: 'theme-certifaction',
+  defaultLanguage: 'en',
   primaryColor: '#0669F2',
   socialLinks: [
     { icon: 'github', link: 'https://github.com/certifaction/cli' },

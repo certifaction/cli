@@ -10,6 +10,7 @@ const themeConfigs = [
     faviconPath: '/themes/certifaction/favicon',
     hasSocialLinks: true,
     hasCustomFont: false,
+    defaultLanguage: 'en',
   },
   {
     key: 'mss',
@@ -21,6 +22,7 @@ const themeConfigs = [
     hasSocialLinks: false,
     hasCustomFont: true,
     fontFamily: 'TeleGroteskNext',
+    defaultLanguage: 'de',
   },
 ];
 
@@ -105,6 +107,21 @@ for (const themeConfig of themeConfigs) {
 
       const footerText = await footer.textContent();
       expect(footerText).toContain(themeConfig.footer);
+    });
+
+    test('default language redirect for unsupported browser locale', async ({ browser }) => {
+      // Use Japanese locale (unsupported) to force fallback to theme default
+      const context = await browser.newContext({ locale: 'ja' });
+      const page = await context.newPage();
+
+      await page.goto(`/?theme=${themeConfig.key}`);
+
+      // Wait for redirect to the expected default language
+      await page.waitForURL(`**/${themeConfig.defaultLanguage}/**`, { timeout: 10000 });
+
+      expect(page.url()).toContain(`/${themeConfig.defaultLanguage}/`);
+
+      await context.close();
     });
 
     test('no cross-theme branding leaks', async ({ page }) => {
