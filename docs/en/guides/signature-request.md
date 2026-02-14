@@ -5,9 +5,9 @@ description: Use Magenta Security Sign to request digital signature for highly c
 
 # Signature Request
 
-Users can invite other people to sign documents by providing them with secure signature request URLs, which contain a secret key. The secret key will decrypt the document before signing, ensuring that no third-party (not even Magenta Security Sign) has access to the document in clear text.
+Users can invite other people to sign documents by providing them with secure signature request URLs, which contain a secret key. The secret key will decrypt the document before signing, ensuring that no third-party (not even <ProductName/>) has access to the document in clear text.
 
-Magenta Security Sign document signature requests rely on the Magenta Security Sign Digital Archive to store end-to-end encrypted
+<ProductName/> document signature requests rely on the <ProductName/> Digital Archive to store end-to-end encrypted
 documents.
 
 During a signature request, the CLI will:
@@ -15,7 +15,7 @@ During a signature request, the CLI will:
 1.  Receive the PDF document to sign and the signer information.
 2.  Process the document, adding security features including a secure Digital Archive URL.
 3.  Encrypt the document using either the secret key contained in the Digital Archive URL, or a manually provided key.
-4.  Store the document in the Magenta Security Sign Digital Archive for later retrieval.
+4.  Store the document in the <ProductName/> Digital Archive for later retrieval.
 5.  Return the signature request URL.
 
 The signature request URL can be shared with the invited person. A new URL must be created for each signer.

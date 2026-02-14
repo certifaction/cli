@@ -5,9 +5,9 @@ description: Verwenden Sie Magenta Security Sign, um digitale Signaturen für ho
 
 # Signaturanfrage
 
-Benutzer können andere Personen einladen, Dokumente zu signieren, indem sie ihnen sichere Signaturanfrage-URLs bereitstellen, die einen geheimen Schlüssel enthalten. Der geheime Schlüssel entschlüsselt das Dokument vor der Signierung und stellt sicher, dass kein Dritter (nicht einmal Magenta Security Sign) Zugriff auf das Dokument im Klartext hat.
+Benutzer können andere Personen einladen, Dokumente zu signieren, indem sie ihnen sichere Signaturanfrage-URLs bereitstellen, die einen geheimen Schlüssel enthalten. Der geheime Schlüssel entschlüsselt das Dokument vor der Signierung und stellt sicher, dass kein Dritter (nicht einmal <ProductName/>) Zugriff auf das Dokument im Klartext hat.
 
-Magenta Security Sign-Dokumentsignaturanfragen basieren auf dem Magenta Security Sign Digital Archive zur Speicherung von Ende-zu-Ende-verschlüsselten
+<ProductName/>-Dokumentsignaturanfragen basieren auf dem <ProductName/> Digital Archive zur Speicherung von Ende-zu-Ende-verschlüsselten
 Dokumenten.
 
 Während einer Signaturanfrage wird die CLI:
@@ -15,7 +15,7 @@ Während einer Signaturanfrage wird die CLI:
 1.  Das zu signierende PDF-Dokument und die Unterzeichnerinformationen erhalten.
 2.  Das Dokument verarbeiten und Sicherheitsfeatures hinzufügen, einschließlich einer sicheren Digital Archive-URL.
 3.  Das Dokument mit entweder dem geheimen Schlüssel verschlüsseln, der in der Digital Archive-URL enthalten ist, oder einem manuell bereitgestellten Schlüssel.
-4.  Das Dokument im Magenta Security Sign Digital Archive für späteren Abruf speichern.
+4.  Das Dokument im <ProductName/> Digital Archive für späteren Abruf speichern.
 5.  Die Signaturanfrage-URL zurückgeben.
 
 Die Signaturanfrage-URL kann mit der eingeladenen Person geteilt werden. Für jeden Unterzeichner muss eine neue URL erstellt werden.

@@ -5,9 +5,9 @@ description: Eine grundlegende Schritt-für-Schritt-Anleitung zur Integration
 
 # Integrationsleitfaden
 
-1. Laden Sie den [neuesten Magenta Security Sign-Client](/downloads/latest/) herunter
+1. Laden Sie den [neuesten <ProductName/>-Client](/downloads/latest/) herunter
 
-2. Führen Sie den Magenta Security Sign-Client aus - Optionen:
+2. Führen Sie den <ProductName/>-Client aus - Optionen:
 
    1. Server-Modus über Kommandozeile starten: `./mss server`
 

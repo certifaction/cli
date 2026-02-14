@@ -5,9 +5,9 @@ description: A basic step by step integration guide
 
 # Integration guide
 
-1. Download the [latest Magenta Security Sign Client](/downloads/latest/)
+1. Download the [latest <ProductName/> Client](/downloads/latest/)
 
-2. Run the Magenta Security Sign Client - Options:
+2. Run the <ProductName/> Client - Options:
 
    1. Start server-mode via command line: `./mss server`
    

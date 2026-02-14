@@ -7,7 +7,7 @@ description: Die Magenta Security Sign Client-Kommandozeilenschnittstelle verwen
 
 [[toc]]
 
-Die Magenta Security Sign-Kommandozeilenschnittstelle (CLI) ist ein praktisches Tool zum Signieren von Dokumenten und
+Die <ProductName/>-Kommandozeilenschnittstelle (CLI) ist ein praktisches Tool zum Signieren von Dokumenten und
 zum Anfordern von Signaturen von anderen.
 
 ## Allgemeine Verwendung

@@ -7,7 +7,7 @@ description: L'interface en ligne de commande du Client Magenta Security Sign ut
 
 [[toc]]
 
-L'interface en ligne de commande (CLI) Magenta Security Sign est un outil pratique pour signer des documents et
+L'interface en ligne de commande (CLI) <ProductName/> est un outil pratique pour signer des documents et
 demander des signatures d'autres personnes.
 
 ## Utilisation générale

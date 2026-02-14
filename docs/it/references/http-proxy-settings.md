@@ -5,7 +5,7 @@ description: Come configurare le impostazioni del Proxy HTTP per l'integrazione 
 
 # Impostazioni Proxy HTTP
 
-Il client Magenta Security Sign si integra con l'API Magenta Security Sign utilizzando HTTPS.
+Il client <ProductName/> si integra con l'API <ProductName/> utilizzando HTTPS.
 Se la distribuzione è dietro un proxy dovete configurare il
 proxy utilizzando variabili d'ambiente.
 

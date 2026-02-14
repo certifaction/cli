@@ -7,7 +7,7 @@ description: L'interfaccia a riga di comando del Client Magenta Security Sign ut
 
 [[toc]]
 
-L'interfaccia a riga di comando (CLI) di Magenta Security Sign è un strumento conveniente per firmare documenti e
+L'interfaccia a riga di comando (CLI) di <ProductName/> è un strumento conveniente per firmare documenti e
 richiedere firme da altri.
 
 ## Utilizzo generale

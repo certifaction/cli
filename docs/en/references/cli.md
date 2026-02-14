@@ -7,7 +7,7 @@ description: Magenta Security Sign Client command line interface uses local proc
 
 [[toc]]
 
-Magenta Security Sign command line interface (CLI) is a convenient tool to sign documents and
+<ProductName/> command line interface (CLI) is a convenient tool to sign documents and
 request signatures from others.
 
 ## General usage

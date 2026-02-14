@@ -5,9 +5,9 @@ description: Un guide d'intégration étape par étape de base
 
 # Guide d'intégration
 
-1. Téléchargez le [dernier Client Magenta Security Sign](/downloads/latest/)
+1. Téléchargez le [dernier Client <ProductName/>](/downloads/latest/)
 
-2. Exécutez le Client Magenta Security Sign - Options :
+2. Exécutez le Client <ProductName/> - Options :
 
    1. Démarrez le mode serveur via la ligne de commande : `./mss server`
 

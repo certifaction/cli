@@ -60,6 +60,25 @@ function updateBranding() {
       heroImg.alt = `${t.productName} CLI`;
     }
 
+    // Swap product names in feature cards (frontmatter-generated, can't use Vue components)
+    const allProductNames = ['Magenta Security Sign', 'Certifaction'];
+    document.querySelectorAll('.VPFeature .title, .VPFeature .details').forEach(el => {
+      for (const name of allProductNames) {
+        if (name !== t.productName && el.textContent.includes(name)) {
+          el.textContent = el.textContent.replaceAll(name, t.productName);
+        }
+      }
+    });
+
+    // Update document title
+    if (document.title) {
+      for (const name of allProductNames) {
+        if (name !== t.productName && document.title.includes(name)) {
+          document.title = document.title.replaceAll(name, t.productName);
+        }
+      }
+    }
+
     // Update social links
     const socialLinksContainer = document.querySelector('.VPSocialLinks');
     if (socialLinksContainer) {

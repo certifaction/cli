@@ -5,7 +5,7 @@ description: How to configure your HTTP Proxy Settings for Magenta Security Sign
 
 # HTTP Proxy Settings
 
-Magenta Security Sign client integrates with Magenta Security Sign API using HTTPS.
+<ProductName/> client integrates with <ProductName/> API using HTTPS.
 If the deployment is behind a proxy you must configure the
 proxy using environment variables.
 
