@@ -109,6 +109,22 @@ for (const themeConfig of themeConfigs) {
       expect(footerText).toContain(themeConfig.footer);
     });
 
+    test('root redirect preserves theme query parameter', async ({ browser }) => {
+      const context = await browser.newContext({ locale: 'en' });
+      const page = await context.newPage();
+
+      await page.goto(`/?theme=${themeConfig.key}`);
+
+      // Wait for redirect to a localized path
+      await page.waitForURL('**/en/**', { timeout: 10000 });
+
+      // The theme query parameter must survive the redirect
+      const url = new URL(page.url());
+      expect(url.searchParams.get('theme')).toBe(themeConfig.key);
+
+      await context.close();
+    });
+
     test('default language redirect for unsupported browser locale', async ({ browser }) => {
       // Use Japanese locale (unsupported) to force fallback to theme default
       const context = await browser.newContext({ locale: 'ja' });

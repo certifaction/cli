@@ -27,7 +27,7 @@ onMounted(() => {
 
   // Only redirect if not already on a localized path
   if (!window.location.pathname.match(/^\/(en|de|fr|it)\//)) {
-    window.location.replace(`/${targetLang}/`)
+    window.location.replace(`/${targetLang}/${window.location.search}`)
   }
 })
 </script>
