@@ -19,6 +19,10 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: make prepare-ci
+      - name: Download releases
+        run: make download-releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
         run: make build
 
@@ -40,6 +44,10 @@ jobs:
           node-version: '19'
           cache: npm
       - run: make prepare-ci
+      - name: Download releases
+        run: make download-releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
         run: make build
       - uses: actions/configure-pages@v4

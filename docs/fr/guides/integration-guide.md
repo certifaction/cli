@@ -5,17 +5,17 @@ description: Un guide d'intégration étape par étape de base
 
 # Guide d'intégration
 
-1. Téléchargez le [dernier Client Certifaction](https://github.com/certifaction/cli/releases)
+1. Téléchargez le [dernier Client Magenta Security Sign](/downloads/latest/)
 
-2. Exécutez le Client Certifaction - Options :
+2. Exécutez le Client Magenta Security Sign - Options :
 
-   1. Démarrez le mode serveur via la ligne de commande : `./certifaction server`
+   1. Démarrez le mode serveur via la ligne de commande : `./mss server`
 
-   2. Démarrez le mode serveur via un conteneur docker : `docker run -p 8082:8082 certifaction/server:v.X.Y.Z`
+   2. Démarrez le mode serveur via un conteneur docker : `docker run -p 8082:8082 mss/server:v.X.Y.Z`
 
 3. Préparez les documents :
 
-   1. Point de terminaison : `POST` [/prepare](https://developers.certifaction.com/fr/references/api#post-/prepare)
+   1. Point de terminaison : `POST` [/prepare](https://developers.telesec.de/fr/references/api#post-/prepare)
 
    2. Exemple de requête :
 
@@ -31,7 +31,7 @@ description: Un guide d'intégration étape par étape de base
 
 4. Créez une demande de signature :
 
-   1. Point de terminaison : `POST` [/request/create](https://developers.certifaction.com/fr/references/api#post-/request/create)
+   1. Point de terminaison : `POST` [/request/create](https://developers.telesec.de/fr/references/api#post-/request/create)
 
    2. Exemple de requête (pour le type de signature `SES` sans signature sélective) :
 
@@ -61,7 +61,7 @@ description: Un guide d'intégration étape par étape de base
 
 6. (Vérifiez le statut de la demande de signature :)
 
-   1. Point de terminaison : `GET` [/request/status](https://developers.certifaction.com/fr/references/api#post-/request/status)
+   1. Point de terminaison : `GET` [/request/status](https://developers.telesec.de/fr/references/api#post-/request/status)
 
    2. Exemple de requête :
 
@@ -74,7 +74,7 @@ description: Un guide d'intégration étape par étape de base
 
 7. Téléchargez le document signé :
 
-   1. Point de terminaison : `GET` [/download](https://developers.certifaction.com/fr/references/api#get-/download)
+   1. Point de terminaison : `GET` [/download](https://developers.telesec.de/fr/references/api#get-/download)
 
    2. Exemple de requête :
 

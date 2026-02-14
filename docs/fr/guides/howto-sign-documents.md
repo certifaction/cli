@@ -1,6 +1,6 @@
 ---
 title: Signer des Documents
-description: Comment signer numériquement des documents confidentiels avec Certifaction
+description: Comment signer numériquement des documents confidentiels avec Magenta Security Sign
 ---
 
 # Signer des Documents

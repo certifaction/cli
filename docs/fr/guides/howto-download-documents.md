@@ -1,6 +1,6 @@
 ---
 title: Télécharger des Documents
-description: Comment télécharger des documents hautement confidentiels signés numériquement avec Certifaction
+description: Comment télécharger des documents hautement confidentiels signés numériquement avec Magenta Security Sign
 ---
 
 # Télécharger des Documents

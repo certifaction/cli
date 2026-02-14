@@ -1,6 +1,6 @@
 ---
 title: Verificare lo Stato del Documento
-description: Come verificare lo stato della firma digitale Certifaction di documenti altamente confidenziali
+description: Come verificare lo stato della firma digitale Magenta Security Sign di documenti altamente confidenziali
 ---
 
 # Verificare lo Stato del Documento

@@ -1,6 +1,6 @@
 ---
 title: Request one signature
-description: How to request the digital signature of a highly confidential document using Certifaction
+description: How to request the digital signature of a highly confidential document using Magenta Security Sign
 ---
 
 # Request a Signature

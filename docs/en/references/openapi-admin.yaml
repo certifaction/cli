@@ -7,12 +7,12 @@ info:
 
     ## Setup requirements
 
-    Authentication is required to perform some operations. Please refer to the [Authentication](https://developers.certifaction.com/en/references/authentication) section to obtain an API Key or token.
+    Authentication is required to perform some operations. Please refer to the [Authentication](https://developers.telesec.de/en/references/authentication) section to obtain an API Key or token.
 
   version: ""
 
 servers:
-  - url: https://api.certifaction.io
+  - url: https://api.magenta-security-sign.com
 
 security:
   - api_key: [ ]

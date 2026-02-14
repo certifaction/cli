@@ -1,6 +1,6 @@
 ---
-title: Admin-API Certifaction
-description: L'Admin-API Certifaction è il sistema di gestione centrale per la nostra piattaforma di firma digitale, consentendo la gestione sicura di utenti, organizzazioni, ruoli e altro.
+title: Admin-API Magenta Security Sign
+description: L'Admin-API Magenta Security Sign è il sistema di gestione centrale per la nostra piattaforma di firma digitale, consentendo la gestione sicura di utenti, organizzazioni, ruoli e altro.
 aside: false
 ---
 

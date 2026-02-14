@@ -1,6 +1,6 @@
 ---
 title: Richiedere Più Firme
-description: Come richiedere diverse firme digitali di documenti altamente confidenziali utilizzando Certifaction
+description: Come richiedere diverse firme digitali di documenti altamente confidenziali utilizzando Magenta Security Sign
 ---
 
 # Richiedere Più Firme

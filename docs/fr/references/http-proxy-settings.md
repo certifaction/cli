@@ -1,11 +1,11 @@
 ---
 title: Paramètres de Proxy HTTP
-description: Comment configurer vos paramètres de proxy HTTP pour l'intégration API Certifaction
+description: Comment configurer vos paramètres de proxy HTTP pour l'intégration API Magenta Security Sign
 ---
 
 # Paramètres de Proxy HTTP
 
-Le client Certifaction s'intègre avec l'API Certifaction en utilisant HTTPS.
+Le client Magenta Security Sign s'intègre avec l'API Magenta Security Sign en utilisant HTTPS.
 Si le déploiement est derrière un proxy, vous devez configurer le
 proxy en utilisant des variables d'environnement.
 

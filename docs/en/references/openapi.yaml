@@ -7,10 +7,10 @@ info:
 
     ## Setup requirements
 
-    1. Authentication is required to perform some operations. Please refer to the [Authentication](https://developers.certifaction.com/en/references/authentication) section to obtain an API Key or token.
-    2. Start the local server on the CLI using the command `certifaction server`
+    1. Authentication is required to perform some operations. Please refer to the [Authentication](https://developers.telesec.de/en/references/authentication) section to obtain an API Key or token.
+    2. Start the local server on the CLI using the command `mss server`
 
-    Refer to [our setup guide](https://developers.certifaction.com/en/guides/getting-started-api#getting-started-with-the-local-api) to get started.
+    Refer to [our setup guide](https://developers.telesec.de/en/guides/getting-started-api#getting-started-with-the-local-api) to get started.
 
   version: ""
 
@@ -32,8 +32,6 @@ tags:
     description: Access your user account data
   - name: Server
     description: Check the server's status
-  - name: Certification
-    description: Blockchain certification
 
 components:
   parameters:
@@ -46,7 +44,7 @@ components:
         default: true
     digital_twin:
       name: digital-twin
-      description: Enable [Digital Twin](https://certifaction.com/digital-twin/) for the document.
+      description: Enable [Digital Twin](https://telesec.de/digital-twin/) for the document.
       in: query
       schema:
         type: boolean
@@ -114,74 +112,6 @@ components:
         type: string
         enum:
           - xor-b58
-    placeholder:
-      name: placeholder
-      description: |
-        Enable placeholder mode to detect and process signature placeholders in the PDF document.
-
-        When enabled, the prepare endpoint will:
-        - Detect `##SIG{...}` text placeholders in the document
-        - Store their positions for later signature placement
-        - Remove the placeholder text from the document
-
-        ## Text Placeholder Format
-
-        Add text placeholders directly in your PDF document using this JSON-based format:
-
-        ```
-        ##SIG{"id":"signer1","w":"9cm","x":"2cm","y":"1cm"}
-        ```
-
-        ### Field Descriptions
-
-        - **id** (required): The field name/identifier for the signature placeholder
-          - Note: `role` can be used instead of `id` for backwards compatibility
-        - **w** (optional): Width of the signature box
-          - Supports units: `cm`, `mm`, `in`, `pt`
-          - If specified, height is calculated automatically to maintain aspect ratio
-          - Examples: `"w":"9cm"`, `"w":"100pt"`, `"w":"2in"`
-        - **h** (optional): Height of the signature box
-          - Supports units: `cm`, `mm`, `in`, `pt`
-          - Only used if width (`w`) is not specified
-          - Examples: `"h":"3cm"`
-        - **x** (optional): Horizontal offset from the text position
-          - Supports units: `cm`, `mm`, `in`, `pt`
-          - Positive values move the signature to the right
-          - Examples: `"x":"2cm"`
-        - **y** (optional): Vertical offset from the text position
-          - Supports units: `cm`, `mm`, `in`, `pt`
-          - Positive values move the signature down
-          - Examples: `"y":"1cm"`
-
-        ### Examples
-
-        ```
-        ##SIG{"id":"manager","w":"8cm"}
-        ##SIG{"id":"director","w":"100pt","x":"1cm","y":"0.5cm"}
-        ##SIG{"id":"witness","h":"2cm","x":"3cm"}
-        ```
-
-        ### Notes
-
-        - If neither `w` nor `h` is specified, the signature uses the default base width
-        - Width (`w`) takes precedence over height (`h`) to maintain proper aspect ratio
-        - Position offsets (`x`, `y`) are relative to where the `##SIG{...}` text appears in the document
-      in: query
-      schema:
-        type: boolean
-        default: false
-    placeholder_id:
-      name: placeholder-id
-      description: |
-        ID of the signature placeholder field to use for signature placement.
-        If specified, the signature will be placed at the position of the placeholder with this ID.
-
-        This parameter references the `id` field in a `##SIG{...}` placeholder (e.g., for `##SIG{"id":"manager"}`, use `placeholder-id=manager`).
-
-        When using this parameter, position-related flags (position-x, position-y, height, page) are ignored.
-      in: query
-      schema:
-        type: string
 
   responses:
     bad_request:
@@ -232,14 +162,12 @@ components:
       enum:
         - register
         - sign
-        - certify
         - revoke
         - retract
     prepare_scope:
       type: string
       enum:
         - sign
-        - certify
         - attachment
 
     identity:
@@ -388,18 +316,6 @@ components:
         verified_by:
           $ref: "#/components/schemas/verified_by"
 
-    blockchain_entry:
-      properties:
-        type:
-          type: string
-        contract_address:
-          type: string
-        tx_hash:
-          type: string
-        date:
-          type: string
-          format: date-time
-
     verification_signature:
       properties:
         jurisdiction:
@@ -426,8 +342,6 @@ components:
         date:
           type: string
           format: date-time
-        on_blockchain:
-          $ref: "#/components/schemas/blockchain_entry"
 
     verification_file_info:
       properties:
@@ -449,9 +363,6 @@ components:
         authentic:
           type: boolean
           description: Whether the file is authentic
-        on_blockchain:
-          type: boolean
-          description: Whether the file is on blockchain
         encrypted:
           type: boolean
           description: Whether the file is encrypted
@@ -600,8 +511,7 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
-        - $ref: "#/components/parameters/placeholder"
-      summary: Prepare a file for signing or certification
+      summary: Prepare a file for signing
       requestBody:
         description: The file to prepare.
         required: true
@@ -619,7 +529,6 @@ paths:
         401:
           $ref: "#/components/responses/unauthorized"
       tags:
-        - Certification
         - Signing
 
   /sign:
@@ -693,7 +602,6 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - $ref: "#/components/parameters/placeholder_id"
       summary: Sign a file
       requestBody:
         description: The file to sign.
@@ -713,159 +621,6 @@ paths:
           $ref: "#/components/responses/unauthorized"
       tags:
         - Signing
-
-  /revoke:
-    post:
-      operationId: revoke_document
-      summary: Revoke a document
-      requestBody:
-        description: The document to revoke.
-        required: true
-        content:
-          application/pdf: { }
-      responses:
-        200:
-          description: The revocation was successful.
-        400:
-          $ref: "#/components/responses/bad_request"
-        401:
-          $ref: "#/components/responses/unauthorized"
-      tags:
-        - Certification
-
-  /verify:
-    post:
-      operationId: verify_document
-      summary: Verify a document
-      description: |
-        Verifies a document and returns detailed verification information including blockchain
-        registration status, issuer details, signature events, and document authenticity.
-      requestBody:
-        description: The document to verify.
-        required: true
-        content:
-          application/pdf: { }
-      responses:
-        200:
-          description: The verification result.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/verification_result"
-        400:
-          $ref: "#/components/responses/bad_request"
-        404:
-          description: No registration found with the given document hash.
-        500:
-          $ref: "#/components/responses/internal_server_error"
-      security: [ ]
-      tags:
-        - Certification
-
-  /register:
-    post:
-      operationId: register_file
-      parameters:
-        - $ref: "#/components/parameters/digital_twin"
-        - $ref: "#/components/parameters/pdf-a"
-        - $ref: "#/components/parameters/accept_language"
-        - name: scope
-          in: query
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/scope"
-              - default: register
-        - $ref: "#/components/parameters/additional_page"
-        - $ref: "#/components/parameters/qr_llx"
-        - $ref: "#/components/parameters/qr_lly"
-        - $ref: "#/components/parameters/qr_height"
-        - $ref: "#/components/parameters/qr_page"
-        - $ref: "#/components/parameters/encryption_key"
-        - $ref: "#/components/parameters/password_encryption"
-        - name: hash
-          in: query
-          schema:
-            type: string
-        - name: note
-          in: query
-          schema:
-            type: string
-            maxLength: 255
-        - name: legal-weight
-          in: query
-          schema:
-            type: string
-            enum:
-              - AES
-              - QES
-              - SES
-        - name: jurisdiction
-          in: query
-          schema:
-            type: string
-            enum:
-              - eIDAS
-              - ZertES
-        - name: filename
-          in: query
-          schema:
-            type: string
-        - name: no-prepare
-          in: query
-          schema:
-            type: boolean
-        - name: position-x
-          description: |
-            The x-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: position-y
-          description: |
-            The y-coordinate of the signature from the bottom-left of the page.
-            This is required when `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: height
-          description: The height of the signature card. This is required when `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: page
-          description: The page to place the signature on. This is required when `additional-page=false`.
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-        - $ref: "#/components/parameters/placeholder_id"
-        - name: placeholder-id
-          description: |
-            ID of the signature placeholder field to use for signature positioning.
-            If specified, position flags (position-x, position-y, height, page) are ignored.
-          in: query
-          schema:
-            type: string
-      summary: Register a file
-      requestBody:
-        description: The file to register.
-        required: true
-        content:
-          application/pdf: { }
-      responses:
-        200:
-          description: The registered file content. There is no response body if `scope` was `revoke`.
-          content:
-            application/pdf:
-              schema:
-                type: string
-        400:
-          $ref: "#/components/responses/bad_request"
-        401:
-          $ref: "#/components/responses/unauthorized"
-      tags:
-        - Certification
 
   /request/create:
     post:
@@ -1009,14 +764,6 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - $ref: "#/components/parameters/placeholder_id"
-        - name: custom-password
-          description: |
-            Custom password for signature request. Automatically enables password protection.
-            If neither this nor `with-password` is provided, no password is used.
-          in: query
-          schema:
-            type: string
       summary: Request a signature
       requestBody:
         description: The files to sign
@@ -1212,7 +959,6 @@ paths:
           description: The file provided was not found. Check that the file was processed and that you used it in a signature request.
       tags:
         - Signing
-
   /request/status:
     get:
       operationId: request_status

@@ -1,6 +1,6 @@
 ---
 title: Demander une signature
-description: Comment demander la signature numérique d'un document hautement confidentiel en utilisant Certifaction
+description: Comment demander la signature numérique d'un document hautement confidentiel en utilisant Magenta Security Sign
 ---
 
 # Demander une Signature

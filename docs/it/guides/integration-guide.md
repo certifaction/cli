@@ -5,17 +5,17 @@ description: Una guida base di integrazione passo dopo passo
 
 # Guida all'integrazione
 
-1. Scaricate l'[ultimo Client Certifaction](https://github.com/certifaction/cli/releases)
+1. Scaricate l'[ultimo Client Magenta Security Sign](/downloads/latest/)
 
-2. Eseguite il Client Certifaction - Opzioni:
+2. Eseguite il Client Magenta Security Sign - Opzioni:
 
-   1. Avviate la modalità server tramite riga di comando: `./certifaction server`
+   1. Avviate la modalità server tramite riga di comando: `./mss server`
 
-   2. Avviate la modalità server tramite container docker: `docker run -p 8082:8082 certifaction/server:v.X.Y.Z`
+   2. Avviate la modalità server tramite container docker: `docker run -p 8082:8082 mss/server:v.X.Y.Z`
 
 3. Preparate i documenti:
 
-   1. Endpoint: `POST` [/prepare](https://developers.certifaction.com/references/api#post-/prepare)
+   1. Endpoint: `POST` [/prepare](https://developers.telesec.de/references/api#post-/prepare)
 
    2. Richiesta di esempio:
 
@@ -31,7 +31,7 @@ description: Una guida base di integrazione passo dopo passo
 
 4. Create una richiesta di firma:
 
-   1. Endpoint: `POST` [/request/create](https://developers.certifaction.com/references/api#post-/request/create)
+   1. Endpoint: `POST` [/request/create](https://developers.telesec.de/references/api#post-/request/create)
 
    2. Richiesta di esempio (per il tipo di firma `SES` senza firma selettiva):
 
@@ -61,7 +61,7 @@ description: Una guida base di integrazione passo dopo passo
 
 6. (Verificate lo stato della richiesta di firma:)
 
-   1. Endpoint: `GET` [/request/status](https://developers.certifaction.com/references/api#post-/request/status)
+   1. Endpoint: `GET` [/request/status](https://developers.telesec.de/references/api#post-/request/status)
 
    2. Richiesta di esempio:
 
@@ -74,7 +74,7 @@ description: Una guida base di integrazione passo dopo passo
 
 7. Scaricate il documento firmato:
 
-   1. Endpoint: `GET` [/download](https://developers.certifaction.com/references/api#get-/download)
+   1. Endpoint: `GET` [/download](https://developers.telesec.de/references/api#get-/download)
 
    2. Richiesta di esempio:
 

@@ -1,6 +1,6 @@
 ---
 title: Mehrere Signaturen anfordern
-description: So fordern Sie mehrere digitale Signaturen für hochvertrauliche Dokumente mit Certifaction an
+description: So fordern Sie mehrere digitale Signaturen für hochvertrauliche Dokumente mit Magenta Security Sign an
 ---
 
 # Mehrere Signaturen anfordern

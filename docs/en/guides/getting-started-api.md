@@ -1,34 +1,31 @@
 ---
-title: Getting Started with Certifaction Local API
-description: How to use Certifaction Client to digitally sign highly confidential documents
+title: Getting Started with Magenta Security Sign Local API
+description: How to use Magenta Security Sign Client to digitally sign highly confidential documents
 ---
 
 # Getting Started with the Local API
 
 In this section, you sign your first document in a few steps
-using the Certifaction Local API:
+using the <ProductName/> Local API:
 
 [[toc]]
 
 ## Step 1: Generate a personal API key
 
-If you have not created a Certifaction account yet, please create one in the
-[Certifaction web application](https://app.certifaction.io).
+If you have not created a <ProductName/> account yet, please create one in the
+[<ProductName/> web application](https://app.magenta-security-sign.com).
 
 To create a personal API key, please navigate
-to the [API key settings page](https://app.certifaction.io/settings/api-keys)
+to the [API key settings page](https://app.magenta-security-sign.com/settings/api-keys)
 and follow the instructions.
 
 Please ensure that you copy the key and
 store it safely. The key will give any holder the same account rights
 as yours. The key is shown only once.
 
-## Step 2: Download the Certifaction Client
+## Step 2: Download the <ProductName/> Client
 
-Please download and install the latest Certifaction Client from our [Github repository](https://github.com/certifaction/cli/releases/latest).
-
-Do not hesitate to create an [Issue](https://github.com/certifaction/cli/issues) if you do
-not find an executable for your platform.
+Please download and install the latest <ProductName/> Client from our [Downloads Page](/downloads/latest/).
 
 ## Step 3: Start the Local API
 
@@ -37,18 +34,18 @@ Start the Local API using one of the following methods.
 ::: code-group
 
 ```shell
-certifaction server
+mss server
 
 ```
 
 ```docker
-docker run -p 8082:8082 certifaction/server:v.X.Y.Z
+docker run -p 8082:8082 mss/server:v.X.Y.Z
 
 ```
 
 :::
 
-Certifaction API will be exposed on the the default `http://localhost:8082` HTTP server.
+<ProductName/> API will be exposed on the the default `http://localhost:8082` HTTP server.
 
 ## Step 4: Sign your first document
 

@@ -1,6 +1,6 @@
 ---
 title: Demander Plusieurs Signatures
-description: Comment demander plusieurs signatures numériques de documents hautement confidentiels en utilisant Certifaction
+description: Comment demander plusieurs signatures numériques de documents hautement confidentiels en utilisant Magenta Security Sign
 ---
 
 # Demander Plusieurs Signatures

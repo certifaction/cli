@@ -1,6 +1,6 @@
 ---
-title: Certifaction Admin-API
-description: Certifaction Admin-API is the central management system for our digital signing platform, enabling secure handling of users, organizations, roles and others.
+title: Magenta Security Sign Admin-API
+description: Magenta Security Sign Admin-API is the central management system for our digital signing platform, enabling secure handling of users, organizations, roles and others.
 aside: false
 ---
 

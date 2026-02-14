@@ -5,17 +5,17 @@ description: A basic step by step integration guide
 
 # Integration guide
 
-1. Download the [latest Certifaction Client](https://github.com/certifaction/cli/releases)
+1. Download the [latest Magenta Security Sign Client](/downloads/latest/)
 
-2. Run the Certifaction Client - Options:
+2. Run the Magenta Security Sign Client - Options:
 
-   1. Start server-mode via command line: `./certifaction server`
+   1. Start server-mode via command line: `./mss server`
    
-   2. Start server-mode via docker container: `docker run -p 8082:8082 certifaction/server:v.X.Y.Z`
+   2. Start server-mode via docker container: `docker run -p 8082:8082 mss/server:v.X.Y.Z`
 
 3. Prepare documents:
 
-   1. Endpoint: `POST` [/prepare](https://developers.certifaction.com/references/api#post-/prepare)
+   1. Endpoint: `POST` [/prepare](https://developers.telesec.de/references/api#post-/prepare)
 
    2. Example request:
 
@@ -31,7 +31,7 @@ description: A basic step by step integration guide
 
 4. Create a signature request:
 
-   1. Endpoint: `POST` [/request/create](https://developers.certifaction.com/references/api#post-/request/create)
+   1. Endpoint: `POST` [/request/create](https://developers.telesec.de/references/api#post-/request/create)
 
    2. Example request (for the signature type `SES` without selective signing):
 
@@ -61,7 +61,7 @@ description: A basic step by step integration guide
 
 6. (Check the status of the signature request:)
 
-   1. Endpoint: `GET` [/request/status](https://developers.certifaction.com/references/api#post-/request/status)
+   1. Endpoint: `GET` [/request/status](https://developers.telesec.de/references/api#post-/request/status)
 
    2. Example request:
 
@@ -74,7 +74,7 @@ description: A basic step by step integration guide
 
 7. Download the signed document:
 
-   1. Endpoint: `GET` [/download](https://developers.certifaction.com/references/api#get-/download)
+   1. Endpoint: `GET` [/download](https://developers.telesec.de/references/api#get-/download)
 
    2. Example request:
 

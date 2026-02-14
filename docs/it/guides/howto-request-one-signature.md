@@ -1,6 +1,6 @@
 ---
 title: Richiedere una firma
-description: Come richiedere la firma digitale di un documento altamente confidenziale utilizzando Certifaction
+description: Come richiedere la firma digitale di un documento altamente confidenziale utilizzando Magenta Security Sign
 ---
 
 # Richiedere una Firma

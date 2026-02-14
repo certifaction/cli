@@ -1,6 +1,6 @@
 ---
 title: Vérifier le Statut d'un Document
-description: Comment vérifier le statut de la signature numérique Certifaction de documents hautement confidentiels
+description: Comment vérifier le statut de la signature numérique Magenta Security Sign de documents hautement confidentiels
 ---
 
 # Vérifier le Statut d'un Document

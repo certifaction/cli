@@ -1,6 +1,6 @@
 ---
 title: Check Document Status
-description: How to check the status of Certifaction digital signature of highly confidential documents
+description: How to check the status of Magenta Security Sign digital signature of highly confidential documents
 ---
 
 # Check Document Status

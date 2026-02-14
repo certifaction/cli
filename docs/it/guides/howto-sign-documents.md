@@ -1,6 +1,6 @@
 ---
 title: Firmare Documenti
-description: Come firmare digitalmente documenti confidenziali con Certifaction
+description: Come firmare digitalmente documenti confidenziali con Magenta Security Sign
 ---
 
 # Firmare Documenti

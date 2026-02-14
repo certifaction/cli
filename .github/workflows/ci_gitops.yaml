@@ -1,0 +1,315 @@
+name: CI for GitOps
+
+on:
+    push:
+        branches:
+            - '**'
+    release:
+        types: [edited, published]
+
+env:
+    CONTAINER_BASE_IMAGE: ghcr.io/certifaction/developers-website
+    BASE_DIR_PATH: k8s-resources/applications/certifaction/services/developers-website
+
+jobs:
+    test:
+        name: Test
+        if: ${{ !github.event.release }}
+        runs-on: ubuntu-24.04
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Extract Node version
+              run: |
+                  NODE_VERSION=$(node -p "require('./package.json').volta.node")
+                  echo "NODE_VERSION=$NODE_VERSION" >> $GITHUB_ENV
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'npm'
+
+            - name: Install dependencies and browsers
+              run: make prepare-ci
+
+            - name: Download releases
+              run: make download-releases
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Build
+              run: make build
+
+            - name: Run E2E tests
+              run: make test
+
+    build:
+        name: Build
+        if: ${{ !github.event.release && github.ref == 'refs/heads/main' }}
+        needs: [test]
+        runs-on: ubuntu-24.04
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Inject slug/short variables
+              uses: rlespinasse/github-slug-action@v5
+
+            - name: Extract Node version
+              run: |
+                  NODE_VERSION=$(node -p "require('./package.json').volta.node")
+                  echo "NODE_VERSION=$NODE_VERSION" >> $GITHUB_ENV
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: 'npm'
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Download releases
+              run: make download-releases
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Build
+              run: make build
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: dist-artifact
+                  path: docs/.vitepress/dist/
+
+    deploy-dev:
+        name: Deploy for the Dev environment
+        if: ${{ !github.event.release && github.ref == 'refs/heads/main' }}
+        needs: [build]
+        runs-on: ubuntu-24.04
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Inject slug/short variables
+              uses: rlespinasse/github-slug-action@v5
+
+            - name: Add global environment variables
+              run: |
+                  CONTAINER_IMAGE_TAG=${{ github.head_ref || github.ref_name }}-${{env.GITHUB_SHA_SHORT}}
+                  echo "CONTAINER_IMAGE_TAG=$CONTAINER_IMAGE_TAG" >> $GITHUB_ENV
+                  echo "CONTAINER_IMAGE_NAME=${{env.CONTAINER_BASE_IMAGE}}:$CONTAINER_IMAGE_TAG" >> $GITHUB_ENV
+
+            - name: Docker login
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                  name: dist-artifact
+                  path: docs/.vitepress/dist/
+
+            - name: Build container image
+              run: |
+                  docker build -f Dockerfile -t ${{env.CONTAINER_IMAGE_NAME}} .
+
+            - name: Run Trivy vulnerability scanner
+              uses: aquasecurity/trivy-action@master
+              env:
+                  TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db:2
+              with:
+                  image-ref: '${{env.CONTAINER_IMAGE_NAME}}'
+                  format: 'table'
+                  exit-code: '0'
+                  ignore-unfixed: true
+                  vuln-type: 'os,library'
+                  severity: 'CRITICAL,HIGH'
+
+            - name: Push container image to registry
+              run: docker push ${{env.CONTAINER_IMAGE_NAME}}
+
+            - name: Clone GitOps repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.SVC_GH_TOKEN }}
+                  repository: certifaction/gitops-apps
+                  path: gitops-apps
+
+            - name: Update the GitOps repository
+              run: |
+                  env_path="gitops-apps/${{env.BASE_DIR_PATH}}/variants/dev"
+                  if [ -d $env_path ]; then
+                    cd $env_path
+                    sed -i "s~image: ${{env.CONTAINER_BASE_IMAGE}}.*~image: ${{env.CONTAINER_IMAGE_NAME}}~g" version.yaml
+                    git add version.yaml
+                    git config user.name "svc-github-huff"
+                    git config user.email "svc.github.huff@certifaction.com"
+                    git commit -m "update developers-website for dev env - c:(${{env.GITHUB_SHA_SHORT}})" -m "image-tag: ${{env.CONTAINER_IMAGE_TAG}} - commit: ${{env.GITHUB_SHA_SHORT}}"
+                    git push origin main
+                  fi
+
+    promote-staging:
+        name: Promote for the Staging and Testing environments
+        if: ${{ github.event.release.prerelease }}
+        runs-on: ubuntu-24.04
+        steps:
+            - name: Inject slug/short variables
+              uses: rlespinasse/github-slug-action@v5
+
+            - name: Clone GitOps repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.SVC_GH_TOKEN }}
+                  repository: certifaction/gitops-apps
+                  path: gitops-apps
+
+            - name: Add global environment variables
+              run: |
+                  CONTAINER_IMAGE_TAG=main-${{env.GITHUB_SHA_SHORT}}
+                  echo "CONTAINER_IMAGE_TAG=$CONTAINER_IMAGE_TAG" >> $GITHUB_ENV
+                  echo "CONTAINER_IMAGE_NAME=${{env.CONTAINER_BASE_IMAGE}}:$CONTAINER_IMAGE_TAG" >> $GITHUB_ENV
+                  CONTAINER_NEW_IMAGE_TAG=${GITHUB_REF_SLUG:1}-${{env.GITHUB_SHA_SHORT}}
+                  echo "CONTAINER_NEW_IMAGE_TAG=$CONTAINER_NEW_IMAGE_TAG" >> $GITHUB_ENV
+                  echo "CONTAINER_NEW_IMAGE_NAME=${{env.CONTAINER_BASE_IMAGE}}:$CONTAINER_NEW_IMAGE_TAG" >> $GITHUB_ENV
+
+            - name: Docker login
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Pull the latest commit container image
+              run: docker pull "${{env.CONTAINER_IMAGE_NAME}}"
+
+            - name: Retag the container image
+              run: docker tag "${{env.CONTAINER_IMAGE_NAME}}" "${{env.CONTAINER_NEW_IMAGE_NAME}}"
+
+            - name: Push the container image
+              run: docker push "${{env.CONTAINER_NEW_IMAGE_NAME}}"
+
+            - name: Update the Staging GitOps repository
+              run: |
+                  env_path="gitops-apps/${{env.BASE_DIR_PATH}}/variants/staging"
+                  if [ -d $env_path ]; then
+                    cd $env_path
+                    sed -i "s~image: ${{env.CONTAINER_BASE_IMAGE}}.*~image: ${{env.CONTAINER_NEW_IMAGE_NAME}}~g" version.yaml
+                    git config user.name "svc-github-huff"
+                    git config user.email "svc.github.huff@certifaction.com"
+                    git add version.yaml
+                    git commit -m "update developers-website for staging env - c:(${{env.GITHUB_SHA_SHORT}})" -m "image-tag: ${{env.CONTAINER_NEW_IMAGE_TAG}} - commit: ${{env.GITHUB_SHA_SHORT}}"
+                    git push origin main
+                  fi
+
+            - name: Update the Testing GitOps repository
+              run: |
+                  env_path="gitops-apps/${{env.BASE_DIR_PATH}}/variants/testing"
+                  if [ -d $env_path ]; then
+                    cd $env_path
+                    sed -i "s~image: ${{env.CONTAINER_BASE_IMAGE}}.*~image: ${{env.CONTAINER_NEW_IMAGE_NAME}}~g" version.yaml
+                    git config user.name "svc-github-huff"
+                    git config user.email "svc.github.huff@certifaction.com"
+                    git add version.yaml
+                    git commit -m "update developers-website for testing env - c:(${{env.GITHUB_SHA_SHORT}})" -m "image-tag: ${{env.CONTAINER_NEW_IMAGE_TAG}} - commit: ${{env.GITHUB_SHA_SHORT}}"
+                    git push origin main
+                  fi
+
+            - name: Clone OTC GitOps repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.SVC_GH_TOKEN }}
+                  repository: certifaction/gitops-otc
+                  path: gitops-otc
+
+            - name: Update OTC DT Stage GitOps repository
+              run: |
+                  env_path="gitops-otc/apps/${{env.BASE_DIR_PATH}}/variants/otc-dt-stage"
+                  if [ -d $env_path ]; then
+                    cd $env_path
+                    sed -i "s~image: ${{env.CONTAINER_BASE_IMAGE}}.*~image: ${{env.CONTAINER_NEW_IMAGE_NAME}}~g" version.yaml
+                    git config user.name "svc-github-huff"
+                    git config user.email "svc.github.huff@certifaction.com"
+                    git add version.yaml
+                    git commit -m "update developers-website for otc-dt-stage env - c:(${{env.GITHUB_SHA_SHORT}})" -m "image-tag: ${{env.CONTAINER_NEW_IMAGE_TAG}} - commit: ${{env.GITHUB_SHA_SHORT}}"
+                    git push origin main
+                  fi
+
+    promote-production:
+        name: Promote for the Prod environment
+        if: ${{ github.event.release && !github.event.release.prerelease }}
+        runs-on: ubuntu-24.04
+        steps:
+            - name: Inject slug/short variables
+              uses: rlespinasse/github-slug-action@v5
+
+            - name: Clone GitOps repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.SVC_GH_TOKEN }}
+                  repository: certifaction/gitops-apps
+                  path: gitops-apps
+
+            - name: Add global environment variables
+              run: |
+                  CONTAINER_IMAGE_TAG=main-${{env.GITHUB_SHA_SHORT}}
+                  echo "CONTAINER_IMAGE_TAG=$CONTAINER_IMAGE_TAG" >> $GITHUB_ENV
+                  echo "CONTAINER_IMAGE_NAME=${{env.CONTAINER_BASE_IMAGE}}:$CONTAINER_IMAGE_TAG" >> $GITHUB_ENV
+                  CONTAINER_NEW_IMAGE_TAG=${GITHUB_REF_SLUG:1}
+                  echo "CONTAINER_NEW_IMAGE_TAG=$CONTAINER_NEW_IMAGE_TAG" >> $GITHUB_ENV
+                  echo "CONTAINER_NEW_IMAGE_NAME=${{env.CONTAINER_BASE_IMAGE}}:$CONTAINER_NEW_IMAGE_TAG" >> $GITHUB_ENV
+
+            - name: Docker login
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Pull the latest commit container image
+              run: docker pull "${{env.CONTAINER_IMAGE_NAME}}"
+
+            - name: Retag the container image
+              run: docker tag "${{env.CONTAINER_IMAGE_NAME}}" "${{env.CONTAINER_NEW_IMAGE_NAME}}"
+
+            - name: Push the container image
+              run: docker push "${{env.CONTAINER_NEW_IMAGE_NAME}}"
+
+            - name: Update the GitOps repository
+              run: |
+                  env_path="gitops-apps/${{env.BASE_DIR_PATH}}/variants/prod"
+                  if [ -d $env_path ]; then
+                    cd $env_path
+                    sed -i "s~image: ${{env.CONTAINER_BASE_IMAGE}}.*~image: ${{env.CONTAINER_NEW_IMAGE_NAME}}~g" version.yaml
+                    git config user.name "svc-github-huff"
+                    git config user.email "svc.github.huff@certifaction.com"
+                    git add version.yaml
+                    git commit -m "update developers-website for prod env - c:(${{env.GITHUB_SHA_SHORT}})" -m "image-tag: ${{env.CONTAINER_NEW_IMAGE_TAG}} - commit: ${{env.GITHUB_SHA_SHORT}}"
+                    git push origin main
+                  fi
+
+            - name: Clone OTC GitOps repository
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.SVC_GH_TOKEN }}
+                  repository: certifaction/gitops-otc
+                  path: gitops-otc
+
+            - name: Update the OTC testing GitOps repository
+              run: |
+                  env_path="gitops-otc/apps/${{env.BASE_DIR_PATH}}/variants/otc-testing"
+                  if [ -d $env_path ]; then
+                    cd $env_path
+                    sed -i "s~image: ${{env.CONTAINER_BASE_IMAGE}}.*~image: ${{env.CONTAINER_NEW_IMAGE_NAME}}~g" version.yaml
+                    git config user.name "svc-github-huff"
+                    git config user.email "svc.github.huff@certifaction.com"
+                    git add version.yaml
+                    git commit -m "update developers-website for otc-testing env - c:(${{env.GITHUB_SHA_SHORT}})" -m "image-tag: ${{env.CONTAINER_NEW_IMAGE_TAG}} - commit: ${{env.GITHUB_SHA_SHORT}}"
+                    git push origin main
+                  fi

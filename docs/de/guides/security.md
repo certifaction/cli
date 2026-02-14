@@ -1,6 +1,6 @@
 ---
-title: Certifaction Sicherheit und Datenschutz
-description: Sicherheits- und Datenschutzfunktionen der digitalen Certifaction-Signatur schützen hochvertrauliche Dokumente
+title: Magenta Security Sign Sicherheit und Datenschutz
+description: Sicherheits- und Datenschutzfunktionen der digitalen Magenta Security Sign-Signatur schützen hochvertrauliche Dokumente
 ---
 
 # Sicherheit und Datenschutz
@@ -15,23 +15,23 @@ Clientseitige Verschlüsselung ist eine Methode zur Verschlüsselung von Daten, 
 
 Durch die Nutzung clientseitiger Verschlüsselung stellen wir sicher, dass alle von unseren Kunden hochgeladenen Dokumente verschlüsselt werden, bevor sie ihr Gerät verlassen. Dies reduziert das Risiko von Datenverletzungen und unbefugtem Zugriff auf sensible Informationen. Da die Verschlüsselungsschlüssel außerdem auf der Clientseite generiert und gespeichert werden, hat die Organisation keinen Zugriff auf den Inhalt der verschlüsselten Dokumente, was eine zusätzliche Ebene von Datenschutz und Sicherheit bietet.
 
-Zusätzlich zur Verschlüsselung haben wir uns auch dafür entschieden, unsere Dokumente auf Schweizer Servern zu speichern, die nach ISO 27001 zertifiziert sind. Diese Zertifizierung ist ein weithin anerkannter Standard für Informationssicherheitsmanagement und bietet uns eine unabhängige Bestätigung, dass unsere Server strenge Sicherheitsanforderungen erfüllen. Diese Anforderungen umfassen physische Sicherheitsmaßnahmen, Zugangskontrollen, Netzwerksicherheit und andere Maßnahmen, die zum Schutz unserer Daten vor Bedrohungen beitragen.
+Zusätzlich zur Verschlüsselung haben wir uns auch dafür entschieden, unsere Dokumente auf deutschen Servern zu speichern, die nach ISO 27001 zertifiziert sind. Diese Zertifizierung ist ein weithin anerkannter Standard für Informationssicherheitsmanagement und bietet uns eine unabhängige Bestätigung, dass unsere Server strenge Sicherheitsanforderungen erfüllen. Diese Anforderungen umfassen physische Sicherheitsmaßnahmen, Zugangskontrollen, Netzwerksicherheit und andere Maßnahmen, die zum Schutz unserer Daten vor Bedrohungen beitragen.
 
-> Obwohl Azure unser Cloud-Anbieter ist, können Kunden ihre eigene Dokumentspeicher-Instanz bereitstellen.
+> Obwohl Open Telekom Cloud (OTC) unser Cloud-Anbieter ist, können Kunden ihre eigene Dokumentspeicher-Instanz bereitstellen.
 
-## Schweizer Datenresidenz
+## Deutsche Datenresidenz
 
-Wir sind verpflichtet, die Vertraulichkeit und den Datenschutz der Daten unserer Kunden zu schützen. Im Rahmen dieser Verpflichtung haben wir eine strikte Richtlinie für die Speicherung von Dokumenten implementiert, die erfordert, dass alle Dokumente ausschließlich auf Servern mit Standort in der Schweiz gespeichert werden. Die Schweizer Datenresidenz ist für unsere Richtlinie von entscheidender Bedeutung, da sie robuste Datenschutz- und Datenschutzmaßnahmen bietet.
+Wir sind verpflichtet, die Vertraulichkeit und den Datenschutz der Daten unserer Kunden zu schützen. Im Rahmen dieser Verpflichtung haben wir eine strikte Richtlinie für die Speicherung von Dokumenten implementiert, die erfordert, dass alle Dokumente ausschließlich auf Servern mit Standort in Deutschland gespeichert werden. Die deutsche Datenresidenz ist für unsere Richtlinie von entscheidender Bedeutung, da sie robuste Datenschutz- und Datenschutzmaßnahmen bietet.
 
-Die Speicherung unserer Dokumente auf Servern mit Standort in der Schweiz bietet mehrere wichtige Vorteile. Erstens ist die Schweiz für ihre starken Datenschutzgesetze und -vorschriften bekannt, die rigorose Datenschutz- und Sicherheitsschutz für die Daten unserer Kunden bieten. Zweitens können wir durch die Speicherung unserer Daten innerhalb der Schweizer Datenresidenz sicherstellen, dass sie den strengen Kontrollen und der Aufsicht der Schweizer Behörden unterliegt, was die Sicherheit und den Datenschutz der Daten unserer Kunden weiter verbessert.
+Die Speicherung unserer Dokumente auf Servern mit Standort in Deutschland bietet mehrere wichtige Vorteile. Erstens ist Deutschland für seine starken Datenschutzgesetze und -vorschriften bekannt, die rigorose Datenschutz- und Sicherheitsschutz für die Daten unserer Kunden bieten. Zweitens können wir durch die Speicherung unserer Daten innerhalb der deutschen Datenresidenz sicherstellen, dass sie den strengen Kontrollen und der Aufsicht der deutschen Behörden unterliegt, was die Sicherheit und den Datenschutz der Daten unserer Kunden weiter verbessert.
 
-Unsere Richtlinie, Dokumente nur auf Servern mit Standort in der Schweiz zu speichern, stellt sicher, dass die Daten unserer Kunden an einem Ort verbleiben, der das höchste Schutzniveau bietet. Wir nehmen unsere Verantwortung zum Schutz der Daten unserer Kunden ernst und verpflichten uns zur Einhaltung aller geltenden Gesetze und Vorschriften bezüglich Datenschutz und Datenschutz.
+Unsere Richtlinie, Dokumente nur auf Servern mit Standort in Deutschland zu speichern, stellt sicher, dass die Daten unserer Kunden an einem Ort verbleiben, der das höchste Schutzniveau bietet. Wir nehmen unsere Verantwortung zum Schutz der Daten unserer Kunden ernst und verpflichten uns zur Einhaltung aller geltenden Gesetze und Vorschriften bezüglich Datenschutz und Datenschutz.
 
 ## Hochverfügbarkeitsserver
 
 Wir setzen Hochverfügbarkeitsserver innerhalb unserer Cloud-Computing-Plattform ein und unterhalten einen umfassenden Disaster-Recovery-Plan. Unser Einsatz von Hochverfügbarkeitsservern stellt sicher, dass unsere Systeme betriebsbereit und für Benutzer zugänglich bleiben, auch bei Hardware- oder Softwarefehlern, während unser Disaster-Recovery-Plan die Schritte umreißt, die wir im Falle einer größeren Störung oder eines Ausfalls unternehmen werden.
 
-> Obwohl Azure unser Cloud-Anbieter ist, können Kunden ihre eigene Dokumentspeicher-Instanz bereitstellen.
+> Obwohl Open Telekom Cloud (OTC) unser Cloud-Anbieter ist, können Kunden ihre eigene Dokumentspeicher-Instanz bereitstellen.
 
 ## Zwei-Faktor-Authentifizierung
 

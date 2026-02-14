@@ -1,34 +1,31 @@
 ---
-title: Erste Schritte mit der Certifaction Lokalen API
-description: Wie Sie den Certifaction-Client verwenden, um hochvertrauliche Dokumente digital zu signieren
+title: Erste Schritte mit der Magenta Security Sign Lokalen API
+description: Wie Sie den Magenta Security Sign-Client verwenden, um hochvertrauliche Dokumente digital zu signieren
 ---
 
 # Erste Schritte mit der Lokalen API
 
 In diesem Abschnitt signieren Sie Ihr erstes Dokument in wenigen Schritten
-mit der Certifaction Lokalen API:
+mit der <ProductName/> Lokalen API:
 
 [[toc]]
 
 ## Schritt 1: Einen persönlichen API-Schlüssel generieren
 
-Falls Sie noch kein Certifaction-Konto erstellt haben, erstellen Sie bitte eines in der
-[Certifaction-Webanwendung](https://app.certifaction.io).
+Falls Sie noch kein <ProductName/>-Konto erstellt haben, erstellen Sie bitte eines in der
+[<ProductName/>-Webanwendung](https://app.magenta-security-sign.com).
 
 Um einen persönlichen API-Schlüssel zu erstellen, navigieren Sie bitte
-zur [API-Schlüssel-Einstellungsseite](https://app.certifaction.io/settings/api-keys)
+zur [API-Schlüssel-Einstellungsseite](https://app.magenta-security-sign.com/settings/api-keys)
 und folgen Sie den Anweisungen.
 
 Stellen Sie bitte sicher, dass Sie den Schlüssel kopieren und
 sicher aufbewahren. Der Schlüssel gibt jedem Inhaber dieselben Kontoberechtigung
 wie Ihnen. Der Schlüssel wird nur einmal angezeigt.
 
-## Schritt 2: Den Certifaction-Client herunterladen
+## Schritt 2: Den <ProductName/>-Client herunterladen
 
-Bitte laden Sie den neuesten Certifaction-Client von unserem [Github-Repository](https://github.com/certifaction/cli/releases/latest) herunter und installieren Sie ihn.
-
-Zögern Sie nicht, ein [Issue](https://github.com/certifaction/cli/issues) zu erstellen, wenn Sie
-keine ausführbare Datei für Ihre Plattform finden.
+Bitte laden Sie den neuesten <ProductName/>-Client von unserer [Downloads-Seite](/downloads/latest/) herunter und installieren Sie ihn.
 
 ## Schritt 3: Die Lokale API starten
 
@@ -37,18 +34,18 @@ Starten Sie die Lokale API mit einer der folgenden Methoden.
 ::: code-group
 
 ```shell
-certifaction server
+mss server
 
 ```
 
 ```docker
-docker run -p 8082:8082 certifaction/server:v.X.Y.Z
+docker run -p 8082:8082 mss/server:v.X.Y.Z
 
 ```
 
 :::
 
-Die Certifaction-API wird auf dem Standard-HTTP-Server `http://localhost:8082` bereitgestellt.
+Die <ProductName/>-API wird auf dem Standard-HTTP-Server `http://localhost:8082` bereitgestellt.
 
 ## Schritt 4: Ihr erstes Dokument signieren
 

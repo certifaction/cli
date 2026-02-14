@@ -1,6 +1,6 @@
 ---
-title: Certifaction Security and Privacy
-description: Certifaction digital signature security and privacy features protects highly confidential documents
+title: Magenta Security Sign Security and Privacy
+description: Magenta Security Sign digital signature security and privacy features protects highly confidential documents
 ---
 
 # Security and Privacy
@@ -15,23 +15,23 @@ Client-side encryption is a method of encrypting data before it is transmitted o
 
 By utilizing client-side encryption, we ensure that all documents uploaded by our customers are encrypted before leaving their device. This reduces the risk of data breaches and unauthorized access to sensitive information. Furthermore, since the encryption keys are generated and stored on the client-side, the organization has no access to the contents of the encrypted documents, providing an extra layer of data privacy and security.
 
-In addition to encryption, we have also chosen to store our documents on Swiss servers that are certified by ISO 27001. This certification is a widely recognized standard for information security management, and it provides us with independent verification that our servers meet strict security requirements. These requirements include physical security measures, access controls, network security, and other measures that help to safeguard our data against threats.
+In addition to encryption, we have also chosen to store our documents on German servers that are certified by ISO 27001. This certification is a widely recognized standard for information security management, and it provides us with independent verification that our servers meet strict security requirements. These requirements include physical security measures, access controls, network security, and other measures that help to safeguard our data against threats.
 
-> Although Azure is our cloud provider, customers are free to deploy their own document store instance.
+> Although Open Telekom Cloud (OTC) is our cloud provider, customers are free to deploy their own document store instance.
 
-## Swiss data residency
+## German data residency
 
-We are committed to protecting the confidentiality and privacy of our customers' data. As part of this commitment, we have implemented a strict policy for the storage of documents that requires all documents to be stored exclusively on servers based in Switzerland. The Swiss data residency is critical to our policy, as it offers robust data protection and privacy measures.
+We are committed to protecting the confidentiality and privacy of our customers' data. As part of this commitment, we have implemented a strict policy for the storage of documents that requires all documents to be stored exclusively on servers based in Germany. The German data residency is critical to our policy, as it offers robust data protection and privacy measures.
 
-Storing our documents on servers based in Switzerland provides several key benefits. First, Switzerland is known for its strong data protection laws and regulations, which provide rigorous privacy and security protections for our customers' data. Second, by storing our data within the Swiss data residency, we can ensure that it is subject to the strict controls and oversight of the Swiss authorities, further enhancing the security and privacy of our customers' data.
+Storing our documents on servers based in Germany provides several key benefits. First, Germany is known for its strong data protection laws and regulations, which provide rigorous privacy and security protections for our customers' data. Second, by storing our data within the German data residency, we can ensure that it is subject to the strict controls and oversight of the German authorities, further enhancing the security and privacy of our customers' data.
 
-Our policy of storing documents only on servers based in Switzerland ensures that our customers' data remains in a location that offers the highest level of protection. We take our responsibility to safeguard our customers' data seriously and are committed to complying with all applicable laws and regulations governing data protection and privacy.
+Our policy of storing documents only on servers based in Germany ensures that our customers' data remains in a location that offers the highest level of protection. We take our responsibility to safeguard our customers' data seriously and are committed to complying with all applicable laws and regulations governing data protection and privacy.
 
 ## High availability servers
 
 We employ high availability servers within our cloud computing platform and maintain a comprehensive disaster recovery plan. Our use of high availability servers ensures that our systems remain operational and accessible to users, even in the event of hardware or software failures, while our disaster recovery plan outlines the steps we will take in the event of a major disruption or outage.
 
-> Although Azure is our cloud provider, customers are free to deploy their own document store instance.
+> Although Open Telekom Cloud (OTC) is our cloud provider, customers are free to deploy their own document store instance.
 
 ## Two-factor authentication
 

@@ -1,6 +1,6 @@
 ---
-title: API Admin Certifaction
-description: L'API Admin Certifaction est le système de gestion central pour notre plateforme de signature numérique, permettant la gestion sécurisée des utilisateurs, organisations, rôles et autres.
+title: API Admin Magenta Security Sign
+description: L'API Admin Magenta Security Sign est le système de gestion central pour notre plateforme de signature numérique, permettant la gestion sécurisée des utilisateurs, organisations, rôles et autres.
 aside: false
 ---
 
