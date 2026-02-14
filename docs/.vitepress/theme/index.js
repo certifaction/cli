@@ -5,6 +5,7 @@ import './themes/mss/style.css';
 import ProductName from '../../components/ProductName.vue';
 import ProductNameShort from '../../components/ProductNameShort.vue';
 import ThemeImage from '../../components/ThemeImage.vue';
+import ThemeOnly from '../../components/ThemeOnly.vue';
 
 export default {
   extends: DefaultTheme,
@@ -13,5 +14,6 @@ export default {
     app.component('ProductName', ProductName);
     app.component('ProductNameShort', ProductNameShort);
     app.component('ThemeImage', ThemeImage);
+    app.component('ThemeOnly', ThemeOnly);
   },
 };

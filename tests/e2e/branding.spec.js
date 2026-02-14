@@ -140,6 +140,21 @@ for (const themeConfig of themeConfigs) {
       await context.close();
     });
 
+    test('HIN Sign content visibility per theme', async ({ page }) => {
+      await page.goto(`/en/references/authentication?theme=${themeConfig.key}`);
+
+      const content = page.locator('.vp-doc');
+      await expect(content).toBeVisible();
+
+      if (themeConfig.key === 'certifaction') {
+        await expect(content).toContainText('HIN Sign');
+        await expect(page.locator('a[href="https://cdn.hin.ch/oauth2/manual/EN/index.html"]')).toBeVisible();
+      } else {
+        await expect(content).not.toContainText('HIN Sign');
+        await expect(page.locator('a[href="https://cdn.hin.ch/oauth2/manual/EN/index.html"]')).toHaveCount(0);
+      }
+    });
+
     test('no cross-theme branding leaks', async ({ page }) => {
       await page.goto(`/en/?theme=${themeConfig.key}`);
 

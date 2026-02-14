@@ -10,3 +10,11 @@ L'autenticazione viene effettuata passando un token di autenticazione o una chia
 
 - I token di accesso possono essere emessi da voi o da un provider OIDC esterno. In entrambi i casi, <ProductName/> dovrà registrare il provider di identità.
 - Le chiavi API sono gestite dall'applicazione web <ProductName/>. Possono essere utilizzate solo per l'integrazione API lato server.
+
+<ThemeOnly themes="certifaction">
+
+- Per l'autenticazione HIN Sign, seguire le istruzioni:
+  - [Tedesco](https://cdn.hin.ch/oauth2/manual/DE/index.html)
+  - [Inglese](https://cdn.hin.ch/oauth2/manual/EN/index.html)
+
+</ThemeOnly>
