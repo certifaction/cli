@@ -7,7 +7,7 @@ info:
 
     ## Requisiti di configurazione
 
-    L'autenticazione è richiesta per eseguire alcune operazioni. Si prega di fare riferimento alla sezione [Autenticazione](https://developers.telesec.de/it/references/authentication) per ottenere una chiave API o un token.
+    L'autenticazione è richiesta per eseguire alcune operazioni. Si prega di fare riferimento alla sezione [Autenticazione](https://developers.certifaction.com/it/references/authentication) per ottenere una chiave API o un token.
 
   version: ""
 

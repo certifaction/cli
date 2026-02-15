@@ -20,7 +20,7 @@ const { commandName } = useTheme()
 
 3. Prepare documents:
 
-   1. Endpoint: `POST` [/prepare](https://developers.telesec.de/references/api#post-/prepare)
+   1. Endpoint: `POST` [/prepare](/en/references/api#post-/prepare)
 
    2. Example request:
 
@@ -36,7 +36,7 @@ const { commandName } = useTheme()
 
 4. Create a signature request:
 
-   1. Endpoint: `POST` [/request/create](https://developers.telesec.de/references/api#post-/request/create)
+   1. Endpoint: `POST` [/request/create](/en/references/api#post-/request/create)
 
    2. Example request (for the signature type `SES` without selective signing):
 
@@ -66,7 +66,7 @@ const { commandName } = useTheme()
 
 6. (Check the status of the signature request:)
 
-   1. Endpoint: `GET` [/request/status](https://developers.telesec.de/references/api#post-/request/status)
+   1. Endpoint: `GET` [/request/status](/en/references/api#post-/request/status)
 
    2. Example request:
 
@@ -79,7 +79,7 @@ const { commandName } = useTheme()
 
 7. Download the signed document:
 
-   1. Endpoint: `GET` [/download](https://developers.telesec.de/references/api#get-/download)
+   1. Endpoint: `GET` [/download](/en/references/api#get-/download)
 
    2. Example request:
 

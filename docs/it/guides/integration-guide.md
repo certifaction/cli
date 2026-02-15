@@ -20,7 +20,7 @@ const { commandName } = useTheme()
 
 3. Preparate i documenti:
 
-   1. Endpoint: `POST` [/prepare](https://developers.telesec.de/references/api#post-/prepare)
+   1. Endpoint: `POST` [/prepare](/it/references/api#post-/prepare)
 
    2. Richiesta di esempio:
 
@@ -36,7 +36,7 @@ const { commandName } = useTheme()
 
 4. Create una richiesta di firma:
 
-   1. Endpoint: `POST` [/request/create](https://developers.telesec.de/references/api#post-/request/create)
+   1. Endpoint: `POST` [/request/create](/it/references/api#post-/request/create)
 
    2. Richiesta di esempio (per il tipo di firma `SES` senza firma selettiva):
 
@@ -66,7 +66,7 @@ const { commandName } = useTheme()
 
 6. (Verificate lo stato della richiesta di firma:)
 
-   1. Endpoint: `GET` [/request/status](https://developers.telesec.de/references/api#post-/request/status)
+   1. Endpoint: `GET` [/request/status](/it/references/api#post-/request/status)
 
    2. Richiesta di esempio:
 
@@ -79,7 +79,7 @@ const { commandName } = useTheme()
 
 7. Scaricate il documento firmato:
 
-   1. Endpoint: `GET` [/download](https://developers.telesec.de/references/api#get-/download)
+   1. Endpoint: `GET` [/download](/it/references/api#get-/download)
 
    2. Richiesta di esempio:
 
