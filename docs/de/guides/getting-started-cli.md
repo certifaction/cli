@@ -3,6 +3,11 @@ title: Erste Schritte mit der Magenta Security Sign CLI
 description: Wie Sie die Magenta Security Sign-Kommandozeilenschnittstelle verwenden, um hochvertrauliche Dokumente digital zu signieren
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # Erste Schritte mit der CLI
 
 In diesem Abschnitt signieren Sie Ihr erstes Dokument in wenigen Schritten mit der <ProductName/> CLI:
@@ -30,14 +35,7 @@ Bitte laden Sie den neuesten <ProductName/>-Client von unserer [Downloads-Seite]
 
 Signieren Sie Ihr erstes PDF-Dokument mit dem folgenden Befehl:
 
-::: code-group
-
-```bash
-mss --api-key PERSONAL_API_KEY sign -o signed-document.pdf document.pdf
-
-```
-
-:::
+<div class="language-bash"><pre><code>{{ commandName }} --api-key PERSONAL_API_KEY sign -o signed-document.pdf document.pdf</code></pre></div>
 
 ## Wie geht es weiter?
 

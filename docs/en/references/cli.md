@@ -3,6 +3,11 @@ title: Magenta Security Sign CLI Reference
 description: Magenta Security Sign Client command line interface uses local processing and E2E encryption to digitally sign highly confidential documents.
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # CLI Reference
 
 [[toc]]
@@ -12,16 +17,13 @@ request signatures from others.
 
 ## General usage
 
-```shell
-mss [mss flags] <command> [arguments]
-```
+<div class="language-shell"><pre><code>{{ commandName }} [{{ commandName }} flags] &lt;command&gt; [arguments]</code></pre></div>
 
 ## Getting help
 
-Use `mss --help` to get the list of available commands:
+Use <code>{{ commandName }} --help</code> to get the list of available commands:
 
-```shell
-mss --help
+<pre class="code-block"><code>{{ commandName }} --help
 The Magenta Security Sign CLI can be used in two modes:
  * Interactive to execute commands on the shell, as part of a script or from a third party application.
  * Server mode that exposes HTTP endpoints.
@@ -31,13 +33,13 @@ In both cases, the CLI sits between the third party application and Magenta Secu
 The two main functions of the CLI are document signature and verification.
 
 Usage:
-  mss [command]
+  {{ commandName }} [command]
 
 Available Commands:
   delete-access Remove Magenta Security Sign access to the file
   download      Download and decrypt document from digital archive
   export        Export data
-  generate-keys Generate encryption keys & a possible password
+  generate-keys Generate encryption keys &amp; a possible password
   health        Return the health of the Magenta Security Sign API
   help          Help about any command
   info          Return the metadata of provided file
@@ -57,21 +59,20 @@ Flags:
       --api string       Overrides the default Magenta Security Sign API URL
       --api-key string   The api key used for authentication
       --env string       Optional environment name. Defaults to prod. Will automatically setup the API URL for a Given Magenta Security Sign environment.
-  -h, --help             help for mss
+  -h, --help             help for {{ commandName }}
   -t, --token string     The authentication token
   -v, --verbose count    Increase logs verbosity. Can be repeated multiple times to increase it even more.
-      --version          version for mss
-```
+      --version          version for {{ commandName }}
+</code></pre>
 
-Then use `mss help <command>` to get more detailed help for a given command, like for example:
+Then use <code>{{ commandName }} help &lt;command&gt;</code> to get more detailed help for a given command, like for example:
 
-```shell
-mss help help
+<pre class="code-block"><code>{{ commandName }} help help
 Help provides help for any command in the application.
-Simply type mss help [path to command] for full details.
+Simply type {{ commandName }} help [path to command] for full details.
 
 Usage:
-  mss help [command] [flags]
+  {{ commandName }} help [command] [flags]
 
 Flags:
   -h, --help   help for help
@@ -82,4 +83,4 @@ Global Flags:
       --env string       Optional environment name. Defaults to prod. Will automatically setup the API URL for a Given Magenta Security Sign environment.
   -t, --token string     The authentication token
   -v, --verbose count    Increase logs verbosity. Can be repeated multiple times to increase it even more.
-```
+</code></pre>

@@ -8,7 +8,7 @@ export default {
   faviconType: 'image/x-icon',
   heroImage: '/themes/certifaction/cli_integration.png',
   assetBase: '/themes/certifaction/assets',
-  binaryPrefix: 'certifaction-cli',
+  commandName: 'certifaction',
   cssClass: 'theme-certifaction',
   defaultLanguage: 'en',
   primaryColor: '#0669F2',

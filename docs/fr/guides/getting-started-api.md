@@ -3,6 +3,11 @@ title: Premiers Pas avec l'API Locale Magenta Security Sign
 description: Comment utiliser le Client Magenta Security Sign pour signer numériquement des documents hautement confidentiels
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # Premiers Pas avec l'API Locale
 
 Dans cette section, vous signerez votre premier document en quelques étapes
@@ -31,19 +36,9 @@ Veuillez télécharger et installer le dernier Client <ProductName/> depuis notr
 
 Démarrez l'API Locale en utilisant une des méthodes suivantes.
 
-::: code-group
+<div class="language-shell"><pre><code>{{ commandName }} server</code></pre></div>
 
-```shell
-mss server
-
-```
-
-```docker
-docker run -p 8082:8082 mss/server:v.X.Y.Z
-
-```
-
-:::
+<div class="language-docker"><pre><code>docker run -p 8082:8082 {{ commandName }}/server:v.X.Y.Z</code></pre></div>
 
 L'API <ProductName/> sera exposée sur le serveur HTTP par défaut `http://localhost:8082`.
 

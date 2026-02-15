@@ -5,11 +5,13 @@ description: Téléchargez les binaires CLI Magenta Security Sign pour votre pla
 
 <script setup>
 import DownloadsPage from '../../components/DownloadsPage.vue'
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
 </script>
 
 # Téléchargements
 
-Téléchargez la CLI <ProductName/> (mss) pour votre système d'exploitation.
+Téléchargez la CLI <ProductName/> (<CommandName/>) pour votre système d'exploitation.
 
 <DownloadsPage />
 
@@ -17,40 +19,32 @@ Téléchargez la CLI <ProductName/> (mss) pour votre système d'exploitation.
 
 Après le téléchargement :
 
-1. **Extraire l'archive** (pour les fichiers .tar.gz) :
-   ```bash
-   tar -xzf mss_<version>_<os>_<arch>.tar.gz
-   ```
+### Extraire l'archive (pour les fichiers .tar.gz)
 
-2. **Installer le paquet** (pour .deb/.rpm) :
-   ```bash
-   # Debian/Ubuntu
-   sudo dpkg -i mss_<version>_linux_amd64.deb
+<div class="language-bash"><pre><code>tar -xzf {{ commandName }}_&lt;version&gt;_&lt;os&gt;_&lt;arch&gt;.tar.gz</code></pre></div>
 
-   # RHEL/Fedora
-   sudo rpm -i mss_<version>_linux_amd64.rpm
-   ```
+### Installer le paquet (pour .deb/.rpm)
 
-3. **Rendre exécutable et déplacer vers PATH** (pour les tarballs) :
-   ```bash
-   chmod +x mss
-   sudo mv mss /usr/local/bin/
-   ```
+<div class="language-bash"><pre><code># Debian/Ubuntu
+sudo dpkg -i {{ commandName }}_&lt;version&gt;_linux_amd64.deb
+# RHEL/Fedora
+sudo rpm -i {{ commandName }}_&lt;version&gt;_linux_amd64.rpm</code></pre></div>
+
+### Rendre exécutable et déplacer vers PATH (pour les tarballs)
+
+<div class="language-bash"><pre><code>chmod +x {{ commandName }}
+sudo mv {{ commandName }} /usr/local/bin/</code></pre></div>
 
 Pour des instructions d'installation détaillées, consultez le [Guide d'installation](/fr/guides/installation).
 
 ## Démarrage rapide
 
-```bash
-# Signer un document
-mss sign document.pdf
-
+<div class="language-bash"><pre><code># Signer un document
+{{ commandName }} sign document.pdf
 # Demander une signature
-mss request-signature document.pdf
-
+{{ commandName }} request-signature document.pdf
 # Afficher l'aide
-mss --help
-```
+{{ commandName }} --help</code></pre></div>
 
 Pour la documentation complète de la CLI, consultez la [Référence CLI](/fr/references/cli).
 
@@ -60,4 +54,3 @@ Pour la documentation complète de la CLI, consultez la [Référence CLI](/fr/re
 - **Linux** : Ubuntu 20.04+, Debian 10+, RHEL 8+ ou compatible
 - **Windows** : Windows 10 ou ultérieur
 - **FreeBSD** : FreeBSD 12 ou ultérieur
-

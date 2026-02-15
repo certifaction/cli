@@ -3,6 +3,11 @@ title: Riferimento CLI Magenta Security Sign
 description: L'interfaccia a riga di comando del Client Magenta Security Sign utilizza l'elaborazione locale e la crittografia E2E per firmare digitalmente documenti altamente confidenziali.
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # Riferimento CLI
 
 [[toc]]
@@ -12,16 +17,13 @@ richiedere firme da altri.
 
 ## Utilizzo generale
 
-```shell
-mss [flag mss] <comando> [argomenti]
-```
+<div class="language-shell"><pre><code>{{ commandName }} [flag {{ commandName }}] &lt;comando&gt; [argomenti]</code></pre></div>
 
 ## Ottenere aiuto
 
-Utilizzate `mss --help` per ottenere l'elenco dei comandi disponibili:
+Utilizzate <code>{{ commandName }} --help</code> per ottenere l'elenco dei comandi disponibili:
 
-```shell
-mss --help
+<pre class="code-block"><code>{{ commandName }} --help
 Il CLI Magenta Security Sign può essere utilizzato in due modalità:
  * Interattiva per eseguire comandi sulla shell, come parte di uno script o da un'applicazione di terze parti.
  * Modalità server che espone endpoint HTTP.
@@ -31,7 +33,7 @@ In entrambi i casi, il CLI si posiziona tra l'applicazione di terze parti e l'AP
 Le due funzioni principali del CLI sono la firma e verifica dei documenti.
 
 Utilizzo:
-  mss [comando]
+  {{ commandName }} [comando]
 
 Comandi Disponibili:
   certify       Certifica un documento
@@ -58,21 +60,20 @@ Flag:
       --api string       Sostituisce l'URL API Magenta Security Sign predefinito
       --api-key string   La chiave api utilizzata per l'autenticazione
       --env string       Nome ambiente opzionale. Predefinito prod. Configurerà automaticamente l'URL API e gli indirizzi dei contratti Ethereum per un ambiente Magenta Security Sign dato.
-  -h, --help             aiuto per mss
+  -h, --help             aiuto per {{ commandName }}
   -t, --token string     Il token di autenticazione
   -v, --verbose count    Aumenta la verbosità dei log. Può essere ripetuto più volte per aumentarla ancora di più.
-      --version          versione per mss
-```
+      --version          versione per {{ commandName }}
+</code></pre>
 
-Poi utilizzate `mss help <comando>` per ottenere un aiuto più dettagliato per un dato comando, come ad esempio:
+Poi utilizzate <code>{{ commandName }} help &lt;comando&gt;</code> per ottenere un aiuto più dettagliato per un dato comando, come ad esempio:
 
-```shell
-mss help help
+<pre class="code-block"><code>{{ commandName }} help help
 L'aiuto fornisce aiuto per qualsiasi comando nell'applicazione.
-Digitate semplicemente mss help [percorso del comando] per i dettagli completi.
+Digitate semplicemente {{ commandName }} help [percorso del comando] per i dettagli completi.
 
 Utilizzo:
-  mss help [comando] [flag]
+  {{ commandName }} help [comando] [flag]
 
 Flag:
   -h, --help   aiuto per help
@@ -83,4 +84,4 @@ Flag Globali:
       --env string       Nome ambiente opzionale. Predefinito prod. Configurerà automaticamente l'URL API e gli indirizzi dei contratti Ethereum per un ambiente Magenta Security Sign dato.
   -t, --token string     Il token di autenticazione
   -v, --verbose count    Aumenta la verbosità dei log. Può essere ripetuto più volte per aumentarla ancora di più.
-```
+</code></pre>

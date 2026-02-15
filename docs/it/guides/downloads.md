@@ -5,11 +5,13 @@ description: Scarica i binari CLI Magenta Security Sign per la tua piattaforma
 
 <script setup>
 import DownloadsPage from '../../components/DownloadsPage.vue'
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
 </script>
 
 # Scarica
 
-Scarica la CLI <ProductName/> (mss) per il tuo sistema operativo.
+Scarica la CLI <ProductName/> (<CommandName/>) per il tuo sistema operativo.
 
 <DownloadsPage />
 
@@ -17,40 +19,32 @@ Scarica la CLI <ProductName/> (mss) per il tuo sistema operativo.
 
 Dopo il download:
 
-1. **Estrarre l'archivio** (per file .tar.gz):
-   ```bash
-   tar -xzf mss_<version>_<os>_<arch>.tar.gz
-   ```
+### Estrarre l'archivio (per file .tar.gz)
 
-2. **Installare il pacchetto** (per .deb/.rpm):
-   ```bash
-   # Debian/Ubuntu
-   sudo dpkg -i mss_<version>_linux_amd64.deb
+<div class="language-bash"><pre><code>tar -xzf {{ commandName }}_&lt;version&gt;_&lt;os&gt;_&lt;arch&gt;.tar.gz</code></pre></div>
 
-   # RHEL/Fedora
-   sudo rpm -i mss_<version>_linux_amd64.rpm
-   ```
+### Installare il pacchetto (per .deb/.rpm)
 
-3. **Rendere eseguibile e spostare nel PATH** (per tarball):
-   ```bash
-   chmod +x mss
-   sudo mv mss /usr/local/bin/
-   ```
+<div class="language-bash"><pre><code># Debian/Ubuntu
+sudo dpkg -i {{ commandName }}_&lt;version&gt;_linux_amd64.deb
+# RHEL/Fedora
+sudo rpm -i {{ commandName }}_&lt;version&gt;_linux_amd64.rpm</code></pre></div>
+
+### Rendere eseguibile e spostare nel PATH (per tarball)
+
+<div class="language-bash"><pre><code>chmod +x {{ commandName }}
+sudo mv {{ commandName }} /usr/local/bin/</code></pre></div>
 
 Per istruzioni dettagliate sull'installazione, consulta la [Guida all'installazione](/it/guides/installation).
 
 ## Avvio rapido
 
-```bash
-# Firmare un documento
-mss sign document.pdf
-
+<div class="language-bash"><pre><code># Firmare un documento
+{{ commandName }} sign document.pdf
 # Richiedere una firma
-mss request-signature document.pdf
-
+{{ commandName }} request-signature document.pdf
 # Visualizzare la guida
-mss --help
-```
+{{ commandName }} --help</code></pre></div>
 
 Per la documentazione completa della CLI, consulta il [Riferimento CLI](/it/references/cli).
 
@@ -60,4 +54,3 @@ Per la documentazione completa della CLI, consulta il [Riferimento CLI](/it/refe
 - **Linux**: Ubuntu 20.04+, Debian 10+, RHEL 8+ o compatibile
 - **Windows**: Windows 10 o successivo
 - **FreeBSD**: FreeBSD 12 o successivo
-

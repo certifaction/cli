@@ -1,12 +1,18 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { data } from '../downloads.data.js'
 import { useTheme } from '../.vitepress/theme/useTheme.js'
 
 const { latest, previousVersions, platformOrder } = data
 const { theme } = useTheme()
 
-const binaryPrefix = computed(() => theme.value.binaryPrefix)
+const commandName = computed(() => theme.value.commandName)
+
+// After hydration, Vue may not patch all attribute mismatches in production.
+// Use a post-mount prefix that triggers a normal reactive update (not hydration recovery).
+const hydrated = ref(false)
+onMounted(() => { hydrated.value = true })
+const downloadPrefix = computed(() => hydrated.value ? commandName.value : 'certifaction')
 
 const platformNames = {
   macos: 'macOS',
@@ -16,7 +22,7 @@ const platformNames = {
 }
 
 function displayFileName(download) {
-  return `${binaryPrefix.value}_${download.fileSuffix}`
+  return `${downloadPrefix.value}_${download.fileSuffix}`
 }
 </script>
 
@@ -57,7 +63,7 @@ function displayFileName(download) {
 sha256sum -c checksums.txt
 
 # Or verify a single file
-sha256sum {{ binaryPrefix }}_{{ latest.version }}_darwin_amd64.tar.gz</code></pre>
+sha256sum {{ downloadPrefix }}_{{ latest.version }}_darwin_amd64.tar.gz</code></pre>
       </div>
     </template>
 

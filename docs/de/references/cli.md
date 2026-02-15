@@ -3,6 +3,11 @@ title: Magenta Security Sign CLI-Referenz
 description: Die Magenta Security Sign Client-Kommandozeilenschnittstelle verwendet lokale Verarbeitung und E2E-Verschlüsselung, um hochvertrauliche Dokumente digital zu signieren.
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # CLI-Referenz
 
 [[toc]]
@@ -12,16 +17,13 @@ zum Anfordern von Signaturen von anderen.
 
 ## Allgemeine Verwendung
 
-```shell
-mss [mss flags] <command> [arguments]
-```
+<div class="language-shell"><pre><code>{{ commandName }} [{{ commandName }} flags] &lt;command&gt; [arguments]</code></pre></div>
 
 ## Hilfe erhalten
 
-Verwenden Sie `mss --help`, um die Liste der verfügbaren Befehle zu erhalten:
+Verwenden Sie <code>{{ commandName }} --help</code>, um die Liste der verfügbaren Befehle zu erhalten:
 
-```shell
-mss --help
+<pre class="code-block"><code>{{ commandName }} --help
 Die Magenta Security Sign CLI kann in zwei Modi verwendet werden:
  * Interaktiv zur Ausführung von Befehlen in der Shell, als Teil eines Skripts oder von einer Drittanbieteranwendung aus.
  * Server-Modus, der HTTP-Endpunkte bereitstellt.
@@ -31,14 +33,14 @@ In beiden Fällen sitzt die CLI zwischen der Drittanbieteranwendung und der Mage
 Die beiden Hauptfunktionen der CLI sind Dokumentsignierung und Verifizierung.
 
 Verwendung:
-  mss [command]
+  {{ commandName }} [command]
 
 Verfügbare Befehle:
   certify       Ein Dokument zertifizieren
   delete-access Magenta Security Sign-Zugriff auf die Datei entfernen
   download      Dokument aus dem digitalen Archiv herunterladen und entschlüsseln
   export        Daten exportieren
-  generate-keys Verschlüsselungsschlüssel & ein mögliches Passwort generieren
+  generate-keys Verschlüsselungsschlüssel &amp; ein mögliches Passwort generieren
   health        Die Gesundheit der Magenta Security Sign-API zurückgeben
   help          Hilfe zu jedem Befehl
   info          Die Metadaten der bereitgestellten Datei zurückgeben
@@ -58,21 +60,20 @@ Flags:
       --api string       Überschreibt die Standard-Magenta Security Sign-API-URL
       --api-key string   Der für die Authentifizierung verwendete API-Schlüssel
       --env string       Optionaler Umgebungsname. Standardmäßig prod. Richtet automatisch die API-URL und Ethereum-Vertragsadressen für eine gegebene Magenta Security Sign-Umgebung ein.
-  -h, --help             Hilfe für mss
+  -h, --help             Hilfe für {{ commandName }}
   -t, --token string     Das Authentifizierungstoken
   -v, --verbose count    Protokollverbosität erhöhen. Kann mehrmals wiederholt werden, um sie noch weiter zu erhöhen.
-      --version          Version für mss
-```
+      --version          Version für {{ commandName }}
+</code></pre>
 
-Verwenden Sie dann `mss help <command>`, um detailliertere Hilfe für einen bestimmten Befehl zu erhalten, wie zum Beispiel:
+Verwenden Sie dann <code>{{ commandName }} help &lt;command&gt;</code>, um detailliertere Hilfe für einen bestimmten Befehl zu erhalten, wie zum Beispiel:
 
-```shell
-mss help help
+<pre class="code-block"><code>{{ commandName }} help help
 Help bietet Hilfe für jeden Befehl in der Anwendung.
-Geben Sie einfach mss help [Pfad zum Befehl] für vollständige Details ein.
+Geben Sie einfach {{ commandName }} help [Pfad zum Befehl] für vollständige Details ein.
 
 Verwendung:
-  mss help [command] [flags]
+  {{ commandName }} help [command] [flags]
 
 Flags:
   -h, --help   Hilfe für help
@@ -83,4 +84,4 @@ Globale Flags:
       --env string       Optionaler Umgebungsname. Standardmäßig prod. Richtet automatisch die API-URL und Ethereum-Vertragsadressen für eine gegebene Magenta Security Sign-Umgebung ein.
   -t, --token string     Das Authentifizierungstoken
   -v, --verbose count    Protokollverbosität erhöhen. Kann mehrmals wiederholt werden, um sie noch weiter zu erhöhen.
-```
+</code></pre>

@@ -3,15 +3,20 @@ title: Integration guide
 description: A basic step by step integration guide
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # Integration guide
 
 1. Download the [latest <ProductName/> Client](/downloads/latest/)
 
 2. Run the <ProductName/> Client - Options:
 
-   1. Start server-mode via command line: `./mss server`
-   
-   2. Start server-mode via docker container: `docker run -p 8082:8082 mss/server:v.X.Y.Z`
+   1. Start server-mode via command line: <code>./{{ commandName }} server</code>
+
+   2. Start server-mode via docker container: <code>docker run -p 8082:8082 {{ commandName }}/server:v.X.Y.Z</code>
 
 3. Prepare documents:
 

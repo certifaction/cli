@@ -39,6 +39,7 @@ export function useTheme() {
   const theme = computed(() => themes[themeKey.value] || themes.certifaction);
   const productName = computed(() => theme.value.productName);
   const productNameShort = computed(() => theme.value.productNameShort);
+  const commandName = computed(() => theme.value.commandName);
 
   function assetPath(filename) {
     return `${theme.value.assetBase}/${filename}`;
@@ -60,6 +61,7 @@ export function useTheme() {
     themeKey: readonly(themeKey),
     productName,
     productNameShort,
+    commandName,
     assetPath,
     applyThemeClass,
   };

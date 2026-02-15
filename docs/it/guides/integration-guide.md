@@ -3,15 +3,20 @@ title: Guida all'integrazione
 description: Una guida base di integrazione passo dopo passo
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # Guida all'integrazione
 
 1. Scaricate l'[ultimo Client <ProductName/>](/downloads/latest/)
 
 2. Eseguite il Client <ProductName/> - Opzioni:
 
-   1. Avviate la modalità server tramite riga di comando: `./mss server`
+   1. Avviate la modalità server tramite riga di comando: <code>./{{ commandName }} server</code>
 
-   2. Avviate la modalità server tramite container docker: `docker run -p 8082:8082 mss/server:v.X.Y.Z`
+   2. Avviate la modalità server tramite container docker: <code>docker run -p 8082:8082 {{ commandName }}/server:v.X.Y.Z</code>
 
 3. Preparate i documenti:
 

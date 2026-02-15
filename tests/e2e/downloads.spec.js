@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 const themes = [
-  { key: 'certifaction', binaryPrefix: 'certifaction-cli' },
-  { key: 'mss', binaryPrefix: 'mss' },
+  { key: 'certifaction', commandName: 'certifaction' },
+  { key: 'mss', commandName: 'mss' },
 ];
 
 test.describe('CLI Downloads', () => {
@@ -24,40 +24,38 @@ test.describe('CLI Downloads', () => {
   // Parameterized for both themes
   for (const themeConfig of themes) {
     test.describe(`${themeConfig.key} theme`, () => {
-      test('displayed file names use correct binary prefix', async ({ page }) => {
+      test('displayed file names use correct command name', async ({ page }) => {
         await page.goto(`/en/guides/downloads?theme=${themeConfig.key}`);
 
-        // Wait for theme to apply
-        await page.waitForTimeout(500);
+        // Wait for theme to apply via client-side hydration
+        await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeConfig.key}`), { timeout: 5000 });
 
-        // Check that download links show the theme-appropriate prefix
+        // Check that download links show the theme-appropriate command name
         const downloadLinks = page.locator('.downloads-page a[download]');
         const count = await downloadLinks.count();
 
         if (count > 0) {
-          const firstDownloadAttr = await downloadLinks.first().getAttribute('download');
-          expect(firstDownloadAttr).toContain(themeConfig.binaryPrefix);
+          await expect(downloadLinks.first()).toHaveAttribute('download', new RegExp(`^${themeConfig.commandName}_`), { timeout: 5000 });
         }
       });
 
       test('download attribute contains theme-appropriate filename', async ({ page }) => {
         await page.goto(`/en/guides/downloads?theme=${themeConfig.key}`);
-        await page.waitForTimeout(500);
+        await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeConfig.key}`), { timeout: 5000 });
 
         const downloadLinks = page.locator('.downloads-page a[download]');
         const count = await downloadLinks.count();
 
         if (count > 0) {
           for (let i = 0; i < Math.min(count, 3); i++) {
-            const downloadAttr = await downloadLinks.nth(i).getAttribute('download');
-            expect(downloadAttr).toContain(`${themeConfig.binaryPrefix}_`);
+            await expect(downloadLinks.nth(i)).toHaveAttribute('download', new RegExp(`^${themeConfig.commandName}_`), { timeout: 5000 });
           }
         }
       });
 
       test('actual href links point to shared /downloads/ path', async ({ page }) => {
         await page.goto(`/en/guides/downloads?theme=${themeConfig.key}`);
-        await page.waitForTimeout(500);
+        await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeConfig.key}`), { timeout: 5000 });
 
         const downloadLinks = page.locator('.downloads-page a[download]');
         const count = await downloadLinks.count();
@@ -69,6 +67,19 @@ test.describe('CLI Downloads', () => {
             expect(href).toContain('/downloads/');
             expect(href).toContain('certifaction-cli_');
           }
+        }
+      });
+
+      test('download page shows correct command name in examples', async ({ page }) => {
+        await page.goto(`/en/guides/downloads?theme=${themeConfig.key}`);
+        await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeConfig.key}`), { timeout: 5000 });
+
+        // Check that code examples on the page use the correct command name
+        const codeBlocks = page.locator('pre code');
+        const count = await codeBlocks.count();
+
+        if (count > 0) {
+          await expect(codeBlocks.first()).toContainText(themeConfig.commandName, { timeout: 5000 });
         }
       });
     });

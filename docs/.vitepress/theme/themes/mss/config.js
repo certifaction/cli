@@ -8,7 +8,7 @@ export default {
   faviconType: 'image/png',
   heroImage: '/themes/mss/cli_integration.svg',
   assetBase: '/themes/mss/assets',
-  binaryPrefix: 'mss',
+  commandName: 'mss',
   cssClass: 'theme-mss',
   defaultLanguage: 'de',
   primaryColor: '#e20074',

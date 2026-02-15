@@ -3,15 +3,20 @@ title: Integrationsleitfaden
 description: Eine grundlegende Schritt-für-Schritt-Anleitung zur Integration
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # Integrationsleitfaden
 
 1. Laden Sie den [neuesten <ProductName/>-Client](/downloads/latest/) herunter
 
 2. Führen Sie den <ProductName/>-Client aus - Optionen:
 
-   1. Server-Modus über Kommandozeile starten: `./mss server`
+   1. Server-Modus über Kommandozeile starten: <code>./{{ commandName }} server</code>
 
-   2. Server-Modus über Docker-Container starten: `docker run -p 8082:8082 mss/server:v.X.Y.Z`
+   2. Server-Modus über Docker-Container starten: <code>docker run -p 8082:8082 {{ commandName }}/server:v.X.Y.Z</code>
 
 3. Dokumente vorbereiten:
 
