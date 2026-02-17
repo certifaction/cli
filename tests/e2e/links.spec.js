@@ -113,54 +113,55 @@ test.describe('Link Validation', () => {
     });
   });
 
-  // Content Links - sample pages
+  // Content Links - all pages, all languages
   test.describe('Content Links', () => {
-    const pagesToCrawl = [
-      { type: 'guides', page: 'about' },
-      { type: 'guides', page: 'digital-signature' },
-      { type: 'guides', page: 'getting-started-api' },
-      { type: 'references', page: 'authentication' },
-      { type: 'references', page: 'cli' },
+    const allPages = [
+      ...guidePages.map(p => ({ type: 'guides', page: p })),
+      ...referencePages.map(p => ({ type: 'references', page: p })),
     ];
 
-    test('en content links resolve correctly', async ({ page }) => {
-      const brokenLinks = [];
+    for (const lang of languages) {
+      test(`${lang} content links resolve correctly`, async ({ page }) => {
+        const brokenLinks = [];
 
-      for (const { type, page: pageName } of pagesToCrawl) {
-        const pageUrl = `/en/${type}/${pageName}`;
-        await page.goto(pageUrl);
+        for (const { type, page: pageName } of allPages) {
+          const pageUrl = `/${lang}/${type}/${pageName}`;
+          await page.goto(pageUrl);
 
-        const contentLinks = await page.locator('.vp-doc a[href]').all();
+          const contentLinks = await page.locator('.vp-doc a[href]').all();
 
-        for (const link of contentLinks) {
-          const href = await link.getAttribute('href');
-          if (!href) continue;
+          for (const link of contentLinks) {
+            const href = await link.getAttribute('href');
+            if (!href) continue;
 
-          if (href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) continue;
-          if (href.match(/\.(rpm|deb|pkg|exe|msi|tar\.gz|zip)$/i)) continue;
-          if (href.includes('/downloads/latest/')) continue;
+            if (href.startsWith('http') || href.startsWith('#') || href.startsWith('mailto:')) continue;
+            if (href.match(/\.(rpm|deb|pkg|exe|msi|tar\.gz|zip)$/i)) continue;
+            if (href.includes('/downloads/latest/')) continue;
 
-          const fullUrl = new URL(href, `http://localhost:4173${pageUrl}`).href;
+            const fullUrl = new URL(href, `http://localhost:4173${pageUrl}`).href;
 
-          if (!fullUrl.startsWith('http://localhost:4173')) continue;
+            if (!fullUrl.startsWith('http://localhost:4173')) continue;
 
-          const response = await page.request.get(fullUrl);
+            // Strip hash fragments before checking — the page just needs to exist
+            const urlWithoutHash = fullUrl.split('#')[0];
+            const response = await page.request.get(urlWithoutHash);
 
-          if (response.status() !== 200) {
-            brokenLinks.push({
-              sourcePage: pageUrl,
-              href,
-              status: response.status(),
-            });
+            if (response.status() !== 200) {
+              brokenLinks.push({
+                sourcePage: pageUrl,
+                href,
+                status: response.status(),
+              });
+            }
           }
         }
-      }
 
-      expect(
-        brokenLinks,
-        `Broken content links:\n${brokenLinks.map(l => `  ${l.sourcePage}: ${l.href} -> ${l.status}`).join('\n')}`
-      ).toHaveLength(0);
-    });
+        expect(
+          brokenLinks,
+          `Broken content links:\n${brokenLinks.map(l => `  ${l.sourcePage}: ${l.href} -> ${l.status}`).join('\n')}`
+        ).toHaveLength(0);
+      });
+    }
   });
 
   // Asset Availability - verify theme images load
