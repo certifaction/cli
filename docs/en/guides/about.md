@@ -3,6 +3,11 @@ title: What is Magenta Security Sign?
 description: Magenta Security Sign the solution to digitally sigh highly confidential documents
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { theme } = useTheme()
+</script>
+
 # What is <ProductName/>?
 
 <div class="tip custom-block" style="padding-top: 8px">
@@ -11,7 +16,7 @@ Just want to try it out? Skip to the [Quickstart](./getting-started-api).
 
 </div>
 
-[<ProductName/>](https://telesec.de) is the Privacy-first electronic signature with
+<a :href="theme.productUrl"><ProductName/></a> is the Privacy-first electronic signature with
 
 - end-to-end encryption of documents,
 - legally valid identity check,
@@ -30,7 +35,7 @@ password.
 
 ## Verifiable signatures for printed documents
 
-You can secure your printed documents with a [Digital Twin](https://telesec.de/digital-twin/).
+You can secure your printed documents with a Digital Twin.
 Digital Twins connect printed documents to their digital originals.
 In this way, you can download the securely stored digital copy to your device, verify its authenticity,
 and eliminate any document fraud risks.

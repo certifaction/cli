@@ -3,6 +3,11 @@ title: Cos'è Magenta Security Sign?
 description: Magenta Security Sign la soluzione per firmare digitalmente documenti altamente confidenziali
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { theme } = useTheme()
+</script>
+
 # Cos'è <ProductName/>?
 
 <div class="tip custom-block" style="padding-top: 8px">
@@ -11,7 +16,7 @@ Volete solo provarlo? Saltate alla [Guida rapida](./getting-started-api).
 
 </div>
 
-[<ProductName/>](https://telesec.de) è la firma elettronica incentrata sulla Privacy con
+<a :href="theme.productUrl"><ProductName/></a> è la firma elettronica incentrata sulla Privacy con
 
 - crittografia end-to-end dei documenti,
 - controllo dell'identità legalmente valido,
@@ -30,7 +35,7 @@ crittograficamente forte.
 
 ## Firme verificabili per documenti stampati
 
-È possibile proteggere i vostri documenti stampati con un [Gemello Digitale](https://telesec.de/digital-twin/).
+È possibile proteggere i vostri documenti stampati con un Gemello Digitale.
 I Gemelli Digitali collegano i documenti stampati ai loro originali digitali.
 In questo modo, è possibile scaricare la copia digitale archiviata in modo sicuro sul vostro dispositivo, verificarne l'autenticità,
 ed eliminare qualsiasi rischio di frode documentale.

@@ -5,7 +5,7 @@ description: Utilizzare il codice QR di crittografia E2E Magenta Security Sign p
 
 # Gemello Digitale <ProductName/>
 
-È possibile proteggere i documenti stampati con un [Gemello Digitale](https://telesec.de/digital-twin/).
+È possibile proteggere i documenti stampati con un Gemello Digitale.
 I Gemelli Digitali collegano i documenti stampati ai loro originali digitali.
 In questo modo, è possibile scaricare la copia digitale archiviata in modo sicuro sul proprio dispositivo, verificarne l'autenticità,
 ed eliminare qualsiasi rischio di frode documentale.

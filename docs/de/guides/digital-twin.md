@@ -5,7 +5,7 @@ description: Verwenden Sie die E2E-Verschlüsselung und QR-Codes von Magenta Sec
 
 # <ProductName/> Digital Twin
 
-Sie können Ihre gedruckten Dokumente mit einem [Digital Twin](https://telesec.de/digital-twin/) sichern.
+Sie können Ihre gedruckten Dokumente mit einem Digital Twin sichern.
 Digital Twins verbinden gedruckte Dokumente mit ihren digitalen Originalen.
 Auf diese Weise können Sie die sicher gespeicherte digitale Kopie auf Ihr Gerät herunterladen, ihre Authentizität überprüfen
 und alle Dokumentbetrugsrisiken eliminieren.

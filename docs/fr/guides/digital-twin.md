@@ -5,7 +5,7 @@ description: Utilisez le code QR de chiffrement E2E Magenta Security Sign pour p
 
 # Jumeau Numérique <ProductName/>
 
-Vous pouvez sécuriser vos documents imprimés avec un [Jumeau Numérique](https://telesec.de/digital-twin/).
+Vous pouvez sécuriser vos documents imprimés avec un Jumeau Numérique.
 Les Jumeaux Numériques connectent les documents imprimés à leurs originaux numériques.
 De cette façon, vous pouvez télécharger la copie numérique stockée de manière sécurisée sur votre appareil, vérifier son authenticité,
 et éliminer tout risque de fraude documentaire.

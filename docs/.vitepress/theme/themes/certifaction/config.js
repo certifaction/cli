@@ -9,6 +9,7 @@ export default {
   heroImage: '/themes/certifaction/cli_integration.png',
   assetBase: '/themes/certifaction/assets',
   commandName: 'certifaction',
+  productUrl: 'https://certifaction.com',
   cssClass: 'theme-certifaction',
   defaultLanguage: 'en',
   primaryColor: '#0669F2',

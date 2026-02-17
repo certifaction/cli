@@ -9,6 +9,7 @@ export default {
   heroImage: '/themes/mss/cli_integration.svg',
   assetBase: '/themes/mss/assets',
   commandName: 'mss',
+  productUrl: 'https://telesec.de',
   cssClass: 'theme-mss',
   defaultLanguage: 'de',
   primaryColor: '#e20074',

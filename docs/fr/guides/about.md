@@ -3,6 +3,11 @@ title: Qu'est-ce que Magenta Security Sign ?
 description: Magenta Security Sign la solution pour signer numériquement des documents hautement confidentiels
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { theme } = useTheme()
+</script>
+
 # Qu'est-ce que <ProductName/> ?
 
 <div class="tip custom-block" style="padding-top: 8px">
@@ -11,7 +16,7 @@ Vous voulez juste l'essayer ? Passez au [Démarrage Rapide](./getting-started-ap
 
 </div>
 
-[<ProductName/>](https://telesec.de) est la signature électronique axée sur la confidentialité avec
+<a :href="theme.productUrl"><ProductName/></a> est la signature électronique axée sur la confidentialité avec
 
 - chiffrement de bout en bout des documents,
 - vérification d'identité légalement valide,
@@ -30,7 +35,7 @@ mot de passe cryptographiquement fort.
 
 ## Signatures vérifiables pour documents imprimés
 
-Vous pouvez sécuriser vos documents imprimés avec un [Jumeau Numérique](https://telesec.de/digital-twin/).
+Vous pouvez sécuriser vos documents imprimés avec un Jumeau Numérique.
 Les Jumeaux Numériques connectent les documents imprimés à leurs originaux numériques.
 De cette façon, vous pouvez télécharger la copie numérique stockée de manière sécurisée sur votre appareil, vérifier son authenticité,
 et éliminer tout risque de fraude documentaire.

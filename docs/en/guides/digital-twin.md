@@ -5,7 +5,7 @@ description: Use Magenta Security Sign E2E encryption QR code to share and sign 
 
 # <ProductName/> Digital Twin
 
-You can secure your printed documents with a [Digital Twin](https://telesec.de/digital-twin/).
+You can secure your printed documents with a Digital Twin.
 Digital Twins connect printed documents to their digital originals.
 In this way, you can download the securely stored digital copy to your device, verify its authenticity,
 and eliminate any document fraud risks.
