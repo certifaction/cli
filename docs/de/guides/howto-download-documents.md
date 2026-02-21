@@ -1,6 +1,6 @@
 ---
 title: Dokumente herunterladen
-description: So laden Sie hochvertrauliche Dokumente herunter, die mit Certifaction digital signiert wurden
+description: So laden Sie hochvertrauliche Dokumente herunter, die mit Magenta Security Sign digital signiert wurden
 ---
 
 # Dokumente herunterladen

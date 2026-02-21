@@ -1,6 +1,6 @@
 ---
-title: Sécurité et Confidentialité Certifaction
-description: Les fonctionnalités de sécurité et de confidentialité de la signature numérique Certifaction protègent les documents hautement confidentiels
+title: Sécurité et Confidentialité Magenta Security Sign
+description: Les fonctionnalités de sécurité et de confidentialité de la signature numérique Magenta Security Sign protègent les documents hautement confidentiels
 ---
 
 # Sécurité et Confidentialité
@@ -15,23 +15,23 @@ Le chiffrement côté client est une méthode de chiffrement des données avant 
 
 En utilisant le chiffrement côté client, nous nous assurons que tous les documents téléchargés par nos clients sont chiffrés avant de quitter leur appareil. Cela réduit le risque de violations de données et d'accès non autorisé aux informations sensibles. De plus, puisque les clés de chiffrement sont générées et stockées côté client, l'organisation n'a aucun accès au contenu des documents chiffrés, fournissant une couche supplémentaire de confidentialité et de sécurité des données.
 
-En plus du chiffrement, nous avons également choisi de stocker nos documents sur des serveurs suisses certifiés ISO 27001. Cette certification est une norme largement reconnue pour la gestion de la sécurité de l'information, et elle nous fournit une vérification indépendante que nos serveurs répondent à des exigences de sécurité strictes. Ces exigences incluent des mesures de sécurité physique, des contrôles d'accès, la sécurité réseau, et d'autres mesures qui aident à protéger nos données contre les menaces.
+En plus du chiffrement, nous avons également choisi de stocker nos documents sur des serveurs allemands certifiés ISO 27001. Cette certification est une norme largement reconnue pour la gestion de la sécurité de l'information, et elle nous fournit une vérification indépendante que nos serveurs répondent à des exigences de sécurité strictes. Ces exigences incluent des mesures de sécurité physique, des contrôles d'accès, la sécurité réseau, et d'autres mesures qui aident à protéger nos données contre les menaces.
 
-> Bien qu'Azure soit notre fournisseur de cloud, les clients sont libres de déployer leur propre instance de stockage de documents.
+> Bien qu'Open Telekom Cloud (OTC) soit notre fournisseur de cloud, les clients sont libres de déployer leur propre instance de stockage de documents.
 
-## Résidence des données suisses
+## Résidence des données en Allemagne
 
-Nous nous engageons à protéger la confidentialité et la vie privée des données de nos clients. Dans le cadre de cet engagement, nous avons mis en place une politique stricte pour le stockage des documents qui exige que tous les documents soient stockés exclusivement sur des serveurs basés en Suisse. La résidence des données suisses est critique pour notre politique, car elle offre des mesures robustes de protection et de confidentialité des données.
+Nous nous engageons à protéger la confidentialité et la vie privée des données de nos clients. Dans le cadre de cet engagement, nous avons mis en place une politique stricte pour le stockage des documents qui exige que tous les documents soient stockés exclusivement sur des serveurs basés en Allemagne. La résidence des données en Allemagne est critique pour notre politique, car elle offre des mesures robustes de protection et de confidentialité des données.
 
-Stocker nos documents sur des serveurs basés en Suisse offre plusieurs avantages clés. Premièrement, la Suisse est connue pour ses lois et réglementations strictes de protection des données, qui fournissent des protections rigoureuses de confidentialité et de sécurité pour les données de nos clients. Deuxièmement, en stockant nos données dans la résidence de données suisse, nous pouvons nous assurer qu'elles sont soumises aux contrôles stricts et à la supervision des autorités suisses, renforçant davantage la sécurité et la confidentialité des données de nos clients.
+Stocker nos documents sur des serveurs basés en Allemagne offre plusieurs avantages clés. Premièrement, l'Allemagne est connue pour ses lois et réglementations strictes de protection des données, qui fournissent des protections rigoureuses de confidentialité et de sécurité pour les données de nos clients. Deuxièmement, en stockant nos données dans la résidence de données en Allemagne, nous pouvons nous assurer qu'elles sont soumises aux contrôles stricts et à la supervision des autorités allemandes, renforçant davantage la sécurité et la confidentialité des données de nos clients.
 
-Notre politique de stocker les documents uniquement sur des serveurs basés en Suisse garantit que les données de nos clients restent dans un lieu qui offre le plus haut niveau de protection. Nous prenons au sérieux notre responsabilité de protéger les données de nos clients et nous nous engageons à respecter toutes les lois et réglementations applicables régissant la protection et la confidentialité des données.
+Notre politique de stocker les documents uniquement sur des serveurs basés en Allemagne garantit que les données de nos clients restent dans un lieu qui offre le plus haut niveau de protection. Nous prenons au sérieux notre responsabilité de protéger les données de nos clients et nous nous engageons à respecter toutes les lois et réglementations applicables régissant la protection et la confidentialité des données.
 
 ## Serveurs haute disponibilité
 
 Nous employons des serveurs haute disponibilité au sein de notre plateforme de cloud computing et maintenons un plan complet de reprise après sinistre. Notre utilisation de serveurs haute disponibilité garantit que nos systèmes restent opérationnels et accessibles aux utilisateurs, même en cas de défaillances matérielles ou logicielles, tandis que notre plan de reprise après sinistre décrit les mesures que nous prendrons en cas de perturbation ou de panne majeure.
 
-> Bien qu'Azure soit notre fournisseur de cloud, les clients sont libres de déployer leur propre instance de stockage de documents.
+> Bien qu'Open Telekom Cloud (OTC) soit notre fournisseur de cloud, les clients sont libres de déployer leur propre instance de stockage de documents.
 
 ## Authentification à deux facteurs
 

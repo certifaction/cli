@@ -1,6 +1,6 @@
 ---
 title: Download Documents
-description: How to download highly confidential documents digitally signed with Certifaction
+description: How to download highly confidential documents digitally signed with Magenta Security Sign
 ---
 
 # Download Documents

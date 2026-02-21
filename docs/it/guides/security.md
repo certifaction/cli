@@ -1,6 +1,6 @@
 ---
-title: Sicurezza e Privacy Certifaction
-description: Le funzioni di sicurezza e privacy della firma digitale Certifaction proteggono documenti altamente confidenziali
+title: Sicurezza e Privacy Magenta Security Sign
+description: Le funzioni di sicurezza e privacy della firma digitale Magenta Security Sign proteggono documenti altamente confidenziali
 ---
 
 # Sicurezza e Privacy
@@ -15,23 +15,23 @@ La crittografia lato client è un metodo per crittografare i dati prima che veng
 
 Utilizzando la crittografia lato client, garantiamo che tutti i documenti caricati dai nostri clienti vengano crittografati prima di lasciare il loro dispositivo. Questo riduce il rischio di violazioni dei dati e accessi non autorizzati a informazioni sensibili. Inoltre, poiché le chiavi di crittografia vengono generate e archiviate sul lato client, l'organizzazione non ha accesso al contenuto dei documenti crittografati, fornendo un ulteriore livello di privacy e sicurezza dei dati.
 
-Oltre alla crittografia, abbiamo anche scelto di archiviare i nostri documenti su server svizzeri che sono certificati ISO 27001. Questa certificazione è uno standard ampiamente riconosciuto per la gestione della sicurezza delle informazioni, e ci fornisce una verifica indipendente che i nostri server soddisfano rigorosi requisiti di sicurezza. Questi requisiti includono misure di sicurezza fisica, controlli di accesso, sicurezza di rete e altre misure che aiutano a salvaguardare i nostri dati contro le minacce.
+Oltre alla crittografia, abbiamo anche scelto di archiviare i nostri documenti su server tedeschi che sono certificati ISO 27001. Questa certificazione è uno standard ampiamente riconosciuto per la gestione della sicurezza delle informazioni, e ci fornisce una verifica indipendente che i nostri server soddisfano rigorosi requisiti di sicurezza. Questi requisiti includono misure di sicurezza fisica, controlli di accesso, sicurezza di rete e altre misure che aiutano a salvaguardare i nostri dati contro le minacce.
 
-> Sebbene Azure sia il nostro provider cloud, i clienti sono liberi di distribuire la propria istanza di archivio documenti.
+> Sebbene Open Telekom Cloud (OTC) sia il nostro provider cloud, i clienti sono liberi di distribuire la propria istanza di archivio documenti.
 
-## Residenza dei dati svizzera
+## Residenza dei dati in Germania
 
-Siamo impegnati a proteggere la riservatezza e privacy dei dati dei nostri clienti. Come parte di questo impegno, abbiamo implementato una politica rigorosa per l'archiviazione dei documenti che richiede che tutti i documenti vengano archiviati esclusivamente su server basati in Svizzera. La residenza dei dati svizzera è critica per la nostra politica, in quanto offre robuste misure di protezione e privacy dei dati.
+Siamo impegnati a proteggere la riservatezza e privacy dei dati dei nostri clienti. Come parte di questo impegno, abbiamo implementato una politica rigorosa per l'archiviazione dei documenti che richiede che tutti i documenti vengano archiviati esclusivamente su server basati in Germania. La residenza dei dati in Germania è critica per la nostra politica, in quanto offre robuste misure di protezione e privacy dei dati.
 
-L'archiviazione dei nostri documenti su server basati in Svizzera fornisce diversi vantaggi chiave. Primo, la Svizzera è conosciuta per le sue forti leggi e regolamentazioni di protezione dei dati, che forniscono rigorose protezioni di privacy e sicurezza per i dati dei nostri clienti. Secondo, archiviando i nostri dati all'interno della residenza dei dati svizzera, possiamo garantire che sia soggetto ai rigorosi controlli e supervisione delle autorità svizzere, migliorando ulteriormente la sicurezza e privacy dei dati dei nostri clienti.
+L'archiviazione dei nostri documenti su server basati in Germania fornisce diversi vantaggi chiave. Primo, la Germania è conosciuta per le sue forti leggi e regolamentazioni di protezione dei dati, che forniscono rigorose protezioni di privacy e sicurezza per i dati dei nostri clienti. Secondo, archiviando i nostri dati all'interno della residenza dei dati in Germania, possiamo garantire che sia soggetto ai rigorosi controlli e supervisione delle autorità tedesche, migliorando ulteriormente la sicurezza e privacy dei dati dei nostri clienti.
 
-La nostra politica di archiviare documenti solo su server basati in Svizzera garantisce che i dati dei nostri clienti rimangano in una località che offre il più alto livello di protezione. Prendiamo seriamente la nostra responsabilità di salvaguardare i dati dei nostri clienti e siamo impegnati a rispettare tutte le leggi e regolamentazioni applicabili che governano la protezione e privacy dei dati.
+La nostra politica di archiviare documenti solo su server basati in Germania garantisce che i dati dei nostri clienti rimangano in una località che offre il più alto livello di protezione. Prendiamo seriamente la nostra responsabilità di salvaguardare i dati dei nostri clienti e siamo impegnati a rispettare tutte le leggi e regolamentazioni applicabili che governano la protezione e privacy dei dati.
 
 ## Server ad alta disponibilità
 
 Impieghiamo server ad alta disponibilità all'interno della nostra piattaforma di cloud computing e manteniamo un piano completo di disaster recovery. Il nostro uso di server ad alta disponibilità garantisce che i nostri sistemi rimangano operativi e accessibili agli utenti, anche in caso di guasti hardware o software, mentre il nostro piano di disaster recovery delinea i passi che intraprenderemo in caso di un'interruzione o guasto maggiore.
 
-> Sebbene Azure sia il nostro provider cloud, i clienti sono liberi di distribuire la propria istanza di archivio documenti.
+> Sebbene Open Telekom Cloud (OTC) sia il nostro provider cloud, i clienti sono liberi di distribuire la propria istanza di archivio documenti.
 
 ## Autenticazione a due fattori
 

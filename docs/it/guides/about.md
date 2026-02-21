@@ -1,9 +1,14 @@
 ---
-title: Cos'è Certifaction?
-description: Certifaction la soluzione per firmare digitalmente documenti altamente confidenziali
+title: Cos'è Magenta Security Sign?
+description: Magenta Security Sign la soluzione per firmare digitalmente documenti altamente confidenziali
 ---
 
-# Cos'è Certifaction?
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { theme } = useTheme()
+</script>
+
+# Cos'è <ProductName/>?
 
 <div class="tip custom-block" style="padding-top: 8px">
 
@@ -11,7 +16,7 @@ Volete solo provarlo? Saltate alla [Guida rapida](./getting-started-api).
 
 </div>
 
-[Certifaction](https://certifaction.com) è la firma elettronica incentrata sulla Privacy con
+<a :href="theme.productUrl"><ProductName/></a> è la firma elettronica incentrata sulla Privacy con
 
 - crittografia end-to-end dei documenti,
 - controllo dell'identità legalmente valido,
@@ -26,11 +31,11 @@ crittograficamente forte.
 
 ## Controllo dell'identità legalmente valido
 
-Certifaction supporta diversi livelli di firma dalla firma elettronica semplice (SES) o la firma elettronica avanzata (AES) alla firma elettronica qualificata (QES).
+<ProductName/> supporta diversi livelli di firma dalla firma elettronica semplice (SES) o la firma elettronica avanzata (AES) alla firma elettronica qualificata (QES).
 
 ## Firme verificabili per documenti stampati
 
-È possibile proteggere i vostri documenti stampati con un [Gemello Digitale](https://certifaction.com/digital-twin/).
+È possibile proteggere i vostri documenti stampati con un Gemello Digitale.
 I Gemelli Digitali collegano i documenti stampati ai loro originali digitali.
 In questo modo, è possibile scaricare la copia digitale archiviata in modo sicuro sul vostro dispositivo, verificarne l'autenticità,
 ed eliminare qualsiasi rischio di frode documentale.

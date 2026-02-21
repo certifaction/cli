@@ -3,19 +3,24 @@ title: Guida all'integrazione
 description: Una guida base di integrazione passo dopo passo
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # Guida all'integrazione
 
-1. Scaricate l'[ultimo Client Certifaction](https://github.com/certifaction/cli/releases)
+1. Scaricate l'[ultimo Client <ProductName/>](/downloads/latest/)
 
-2. Eseguite il Client Certifaction - Opzioni:
+2. Eseguite il Client <ProductName/> - Opzioni:
 
-   1. Avviate la modalità server tramite riga di comando: `./certifaction server`
+   1. Avviate la modalità server tramite riga di comando: <code>./{{ commandName }} server</code>
 
-   2. Avviate la modalità server tramite container docker: `docker run -p 8082:8082 certifaction/server:v.X.Y.Z`
+   2. Avviate la modalità server tramite container docker: <code>docker run -p 8082:8082 {{ commandName }}/server:v.X.Y.Z</code>
 
 3. Preparate i documenti:
 
-   1. Endpoint: `POST` [/prepare](https://developers.certifaction.com/references/api#post-/prepare)
+   1. Endpoint: `POST` [/prepare](/it/references/api#post-/prepare)
 
    2. Richiesta di esempio:
 
@@ -31,7 +36,7 @@ description: Una guida base di integrazione passo dopo passo
 
 4. Create una richiesta di firma:
 
-   1. Endpoint: `POST` [/request/create](https://developers.certifaction.com/references/api#post-/request/create)
+   1. Endpoint: `POST` [/request/create](/it/references/api#post-/request/create)
 
    2. Richiesta di esempio (per il tipo di firma `SES` senza firma selettiva):
 
@@ -61,7 +66,7 @@ description: Una guida base di integrazione passo dopo passo
 
 6. (Verificate lo stato della richiesta di firma:)
 
-   1. Endpoint: `GET` [/request/status](https://developers.certifaction.com/references/api#post-/request/status)
+   1. Endpoint: `GET` [/request/status](/it/references/api#post-/request/status)
 
    2. Richiesta di esempio:
 
@@ -74,7 +79,7 @@ description: Una guida base di integrazione passo dopo passo
 
 7. Scaricate il documento firmato:
 
-   1. Endpoint: `GET` [/download](https://developers.certifaction.com/references/api#get-/download)
+   1. Endpoint: `GET` [/download](/it/references/api#get-/download)
 
    2. Richiesta di esempio:
 

@@ -1,0 +1,55 @@
+<svg width="3150" height="1110" viewBox="0 0 3150 1110" xmlns="http://www.w3.org/2000/svg">
+  <!-- Terminal window background -->
+  <rect width="3150" height="1110" rx="30" fill="#1a1e2e"/>
+
+  <!-- Terminal header bar -->
+  <rect width="3150" height="210" rx="30" fill="#2d3548"/>
+  <rect y="210" width="3150" height="900" fill="#1a1e2e"/>
+
+  <!-- Window control buttons (macOS style) -->
+  <circle cx="95" cy="105" r="35" fill="#ff5f56"/>
+  <circle cx="225" cy="105" r="35" fill="#ffbd2e"/>
+  <circle cx="355" cy="105" r="35" fill="#27c93f"/>
+
+  <!-- Terminal title with icon -->
+  <g transform="translate(1100, 60)">
+    <!-- House/terminal icon -->
+    <path d="M25 75 L75 37.5 L125 75 L125 137.5 L87.5 137.5 L87.5 100 L62.5 100 L62.5 137.5 L25 137.5 Z" fill="#e0e6ed" opacity="0.9"/>
+
+    <!-- Title text -->
+    <text x="175" y="95" font-family="'SF Mono', 'Monaco', 'Courier New', monospace" font-size="65" fill="#e0e6ed" font-weight="500">
+      user - bash - 80 x 24
+    </text>
+  </g>
+
+  <!-- Command line content -->
+  <g transform="translate(225, 450)">
+    <!-- Prompt with magenta accent -->
+    <text font-family="'SF Mono', 'Monaco', 'Courier New', monospace" font-size="95" font-weight="600">
+      <tspan fill="#e20074">user</tspan>
+      <tspan fill="#c084fc">$</tspan>
+      <tspan fill="#f0f0f0"> mss sign </tspan>
+      <tspan fill="#60a5fa">--api-key</tspan>
+      <tspan fill="#f0f0f0"> </tspan>
+      <tspan fill="#94a3b8">&lt;api key&gt;</tspan>
+    </text>
+  </g>
+
+  <!-- Second line of command -->
+  <g transform="translate(225, 690)">
+    <text font-family="'SF Mono', 'Monaco', 'Courier New', monospace" font-size="95" font-weight="600">
+      <tspan fill="#60a5fa">--digital-twin</tspan>
+      <tspan fill="#f0f0f0"> </tspan>
+      <tspan fill="#60a5fa">-o</tspan>
+      <tspan fill="#f0f0f0"> </tspan>
+      <tspan fill="#fbbf24">output.pdf</tspan>
+      <tspan fill="#f0f0f0"> </tspan>
+      <tspan fill="#fbbf24">input.pdf</tspan>
+    </text>
+  </g>
+
+  <!-- Cursor -->
+  <rect x="2475" y="615" width="45" height="110" fill="#e20074" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0;0.8" dur="1.2s" repeatCount="indefinite"/>
+  </rect>
+</svg>

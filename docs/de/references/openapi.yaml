@@ -8,9 +8,9 @@ info:
     ## Einrichtungsanforderungen
 
     1. Authentifizierung ist erforderlich, um bestimmte Operationen durchzuführen. Bitte beziehen Sie sich auf den Abschnitt [Authentifizierung](https://developers.certifaction.com/de/references/authentication), um einen API-Schlüssel oder Token zu erhalten.
-    2. Starten Sie den lokalen Server in der CLI mit dem Befehl `certifaction server`
+    2. Starten Sie den lokalen Server in der CLI mit dem Befehl `mss server`
 
-    Schauen Sie sich [unseren Einrichtungsleitfaden](https://developers.certifaction.com/de/guides/getting-started-api#getting-started-with-the-local-api) an, um zu beginnen.
+    Schauen Sie sich [unseren Einrichtungsleitfaden](https://developers.certifaction.com/de/guides/getting-started-api) an, um zu beginnen.
 
   version: ""
 
@@ -32,8 +32,6 @@ tags:
     description: Auf Ihre Benutzerkontodaten zugreifen
   - name: Server
     description: Den Serverstatus prüfen
-  - name: Certification
-    description: Blockchain-Zertifizierung
 
 components:
   parameters:
@@ -46,7 +44,7 @@ components:
         default: true
     digital_twin:
       name: digital-twin
-      description: "Digital Twin (https://certifaction.com/digital-twin/) für das Dokument aktivieren."
+      description: "Digital Twin (https://telesec.de/digital-twin/) für das Dokument aktivieren."
       in: query
       schema:
         type: boolean
@@ -114,74 +112,6 @@ components:
         type: string
         enum:
           - xor-b58
-    placeholder:
-      name: placeholder
-      description: |
-        Aktivieren Sie den Platzhalter-Modus, um Signatur-Platzhalter im PDF-Dokument zu erkennen und zu verarbeiten.
-
-        Wenn aktiviert, wird der prepare-Endpunkt:
-        - Text-Platzhalter `##SIG{...}` im Dokument erkennen
-        - Ihre Positionen für die spätere Signaturplatzierung speichern
-        - Den Platzhaltertext aus dem Dokument entfernen
-
-        ## Text-Platzhalter-Format
-
-        Fügen Sie Text-Platzhalter direkt in Ihr PDF-Dokument ein, indem Sie dieses JSON-basierte Format verwenden:
-
-        ```
-        ##SIG{"id":"signer1","w":"9cm","x":"2cm","y":"1cm"}
-        ```
-
-        ### Feldbeschreibungen
-
-        - **id** (erforderlich): Der Feldname/Bezeichner für den Signatur-Platzhalter
-          - Hinweis: `role` kann anstelle von `id` für Rückwärtskompatibilität verwendet werden
-        - **w** (optional): Breite des Signaturfelds
-          - Unterstützte Einheiten: `cm`, `mm`, `in`, `pt`
-          - Wenn angegeben, wird die Höhe automatisch berechnet, um das Seitenverhältnis beizubehalten
-          - Beispiele: `"w":"9cm"`, `"w":"100pt"`, `"w":"2in"`
-        - **h** (optional): Höhe des Signaturfelds
-          - Unterstützte Einheiten: `cm`, `mm`, `in`, `pt`
-          - Wird nur verwendet, wenn die Breite (`w`) nicht angegeben ist
-          - Beispiele: `"h":"3cm"`
-        - **x** (optional): Horizontaler Versatz von der Textposition
-          - Unterstützte Einheiten: `cm`, `mm`, `in`, `pt`
-          - Positive Werte verschieben die Signatur nach rechts
-          - Beispiele: `"x":"2cm"`
-        - **y** (optional): Vertikaler Versatz von der Textposition
-          - Unterstützte Einheiten: `cm`, `mm`, `in`, `pt`
-          - Positive Werte verschieben die Signatur nach unten
-          - Beispiele: `"y":"1cm"`
-
-        ### Beispiele
-
-        ```
-        ##SIG{"id":"manager","w":"8cm"}
-        ##SIG{"id":"director","w":"100pt","x":"1cm","y":"0.5cm"}
-        ##SIG{"id":"witness","h":"2cm","x":"3cm"}
-        ```
-
-        ### Hinweise
-
-        - Wenn weder `w` noch `h` angegeben ist, verwendet die Signatur die standardmäßige Basisbreite
-        - Die Breite (`w`) hat Vorrang vor der Höhe (`h`), um das richtige Seitenverhältnis beizubehalten
-        - Positionsversätze (`x`, `y`) sind relativ zu der Stelle, an der der Text `##SIG{...}` im Dokument erscheint
-      in: query
-      schema:
-        type: boolean
-        default: false
-    placeholder_id:
-      name: placeholder-id
-      description: |
-        ID des Signatur-Platzhalterfelds, das für die Signaturplatzierung verwendet werden soll.
-        Wenn angegeben, wird die Signatur an der Position des Platzhalters mit dieser ID platziert.
-
-        Dieser Parameter verweist auf das `id`-Feld in einem `##SIG{...}`-Platzhalter (z.B. für `##SIG{"id":"manager"}` verwenden Sie `placeholder-id=manager`).
-
-        Bei Verwendung dieses Parameters werden positionsbezogene Flags (position-x, position-y, height, page) ignoriert.
-      in: query
-      schema:
-        type: string
 
   responses:
     bad_request:
@@ -232,14 +162,12 @@ components:
       enum:
         - register
         - sign
-        - certify
         - revoke
         - retract
     prepare_scope:
       type: string
       enum:
         - sign
-        - certify
         - attachment
 
     identity:
@@ -388,18 +316,6 @@ components:
         verified_by:
           $ref: "#/components/schemas/verified_by"
 
-    blockchain_entry:
-      properties:
-        type:
-          type: string
-        contract_address:
-          type: string
-        tx_hash:
-          type: string
-        date:
-          type: string
-          format: date-time
-
     verification_signature:
       properties:
         jurisdiction:
@@ -426,8 +342,6 @@ components:
         date:
           type: string
           format: date-time
-        on_blockchain:
-          $ref: "#/components/schemas/blockchain_entry"
 
     verification_file_info:
       properties:
@@ -449,9 +363,6 @@ components:
         authentic:
           type: boolean
           description: Ob die Datei authentisch ist
-        on_blockchain:
-          type: boolean
-          description: Ob die Datei auf der Blockchain ist
         encrypted:
           type: boolean
           description: Ob die Datei verschlüsselt ist
@@ -600,8 +511,7 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
-        - $ref: "#/components/parameters/placeholder"
-      summary: Eine Datei für die Signierung oder Zertifizierung vorbereiten
+      summary: Eine Datei für die Signierung vorbereiten
       requestBody:
         description: Die vorzubereitende Datei.
         required: true
@@ -619,7 +529,6 @@ paths:
         401:
           $ref: "#/components/responses/unauthorized"
       tags:
-        - Certification
         - Signing
 
   /sign:
@@ -693,7 +602,6 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - $ref: "#/components/parameters/placeholder_id"
       summary: Eine Datei signieren
       requestBody:
         description: Die zu signierende Datei.
@@ -713,152 +621,6 @@ paths:
           $ref: "#/components/responses/unauthorized"
       tags:
         - Signing
-
-  /revoke:
-    post:
-      operationId: revoke_document
-      summary: Ein Dokument widerrufen
-      requestBody:
-        description: Das zu widerrufende Dokument.
-        required: true
-        content:
-          application/pdf: { }
-      responses:
-        200:
-          description: Der Widerruf war erfolgreich.
-        400:
-          $ref: "#/components/responses/bad_request"
-        401:
-          $ref: "#/components/responses/unauthorized"
-      tags:
-        - Certification
-
-  /verify:
-    post:
-      operationId: verify_document
-      summary: Ein Dokument verifizieren
-      description: |
-        Verifiziert ein Dokument und gibt detaillierte Verifizierungsinformationen zurück, einschließlich
-        Blockchain-Registrierungsstatus, Ausstellerdetails, Signaturereignisse und Dokumentauthentizität.
-      requestBody:
-        description: Das zu verifizierende Dokument.
-        required: true
-        content:
-          application/pdf: { }
-      responses:
-        200:
-          description: Das Verifizierungsergebnis.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/verification_result"
-        400:
-          $ref: "#/components/responses/bad_request"
-        404:
-          description: Keine Registrierung mit dem angegebenen Dokument-Hash gefunden.
-        500:
-          $ref: "#/components/responses/internal_server_error"
-      security: [ ]
-      tags:
-        - Certification
-
-  /register:
-    post:
-      operationId: register_file
-      parameters:
-        - $ref: "#/components/parameters/digital_twin"
-        - $ref: "#/components/parameters/pdf-a"
-        - $ref: "#/components/parameters/accept_language"
-        - name: scope
-          in: query
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/scope"
-              - default: register
-        - $ref: "#/components/parameters/additional_page"
-        - $ref: "#/components/parameters/qr_llx"
-        - $ref: "#/components/parameters/qr_lly"
-        - $ref: "#/components/parameters/qr_height"
-        - $ref: "#/components/parameters/qr_page"
-        - $ref: "#/components/parameters/encryption_key"
-        - $ref: "#/components/parameters/password_encryption"
-        - name: hash
-          in: query
-          schema:
-            type: string
-        - name: note
-          in: query
-          schema:
-            type: string
-            maxLength: 255
-        - name: legal-weight
-          in: query
-          schema:
-            type: string
-            enum:
-              - AES
-              - QES
-              - SES
-        - name: jurisdiction
-          in: query
-          schema:
-            type: string
-            enum:
-              - eIDAS
-              - ZertES
-        - name: filename
-          in: query
-          schema:
-            type: string
-        - name: no-prepare
-          in: query
-          schema:
-            type: boolean
-        - name: position-x
-          description: |
-            Die x-Koordinate der Signatur von der unteren linken Seite der Seite.
-            Dies ist erforderlich, wenn `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: position-y
-          description: |
-            Die y-Koordinate der Signatur von der unteren linken Seite der Seite.
-            Dies ist erforderlich, wenn `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: height
-          description: Die Höhe der Signaturkarte. Dies ist erforderlich, wenn `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: page
-          description: Die Seite, auf der die Signatur platziert werden soll. Dies ist erforderlich, wenn `additional-page=false`.
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-        - $ref: "#/components/parameters/placeholder_id"
-      summary: Eine Datei registrieren
-      requestBody:
-        description: Die zu registrierende Datei.
-        required: true
-        content:
-          application/pdf: { }
-      responses:
-        200:
-          description: Der Inhalt der registrierten Datei. Es gibt keinen Antworttext, wenn `scope` `revoke` war.
-          content:
-            application/pdf:
-              schema:
-                type: string
-        400:
-          $ref: "#/components/responses/bad_request"
-        401:
-          $ref: "#/components/responses/unauthorized"
-      tags:
-        - Certification
 
   /request/create:
     post:
@@ -1002,14 +764,6 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - $ref: "#/components/parameters/placeholder_id"
-        - name: custom-password
-          description: |
-            Benutzerdefiniertes Passwort für Signaturanfrage. Aktiviert automatisch den Passwortschutz.
-            Falls weder dies noch `with-password` angegeben ist, wird kein Passwort verwendet.
-          in: query
-          schema:
-            type: string
       summary: Eine Signatur anfordern
       requestBody:
         description: Die zu signierenden Dateien
@@ -1205,7 +959,6 @@ paths:
           description: Die bereitgestellte Datei wurde nicht gefunden. Prüfen Sie, dass die Datei verarbeitet wurde und dass Sie sie in einer Signaturanfrage verwendet haben.
       tags:
         - Signing
-
   /request/status:
     get:
       operationId: request_status

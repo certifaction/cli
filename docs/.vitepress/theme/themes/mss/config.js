@@ -1,0 +1,17 @@
+export default {
+  key: 'mss',
+  productName: 'Magenta Security Sign',
+  productNameShort: 'MSS',
+  footer: 'Copyright © 2026 Deutsche Telekom Security GmbH. Alle Rechte vorbehalten.',
+  logo: { light: '/themes/mss/logo.svg', dark: '/themes/mss/logo_white.svg' },
+  favicon: '/themes/mss/favicon.png',
+  faviconType: 'image/png',
+  heroImage: '/themes/mss/cli_integration.svg',
+  assetBase: '/themes/mss/assets',
+  commandName: 'mss',
+  productUrl: 'https://telesec.de',
+  cssClass: 'theme-mss',
+  defaultLanguage: 'de',
+  primaryColor: '#e20074',
+  socialLinks: [],
+};

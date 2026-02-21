@@ -1,6 +1,6 @@
 ---
 title: Dokumentstatus prüfen
-description: So prüfen Sie den Status von Certifaction-Digitalsignaturen für hochvertrauliche Dokumente
+description: So prüfen Sie den Status von Magenta Security Sign-Digitalsignaturen für hochvertrauliche Dokumente
 ---
 
 # Dokumentstatus prüfen

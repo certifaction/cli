@@ -1,13 +1,21 @@
 {
     "type": "module",
-    "name": "@certifaction/developer-portal",
+    "name": "@certifaction/developers-website",
     "scripts": {
         "docs:dev": "vitepress dev docs",
         "docs:build": "vitepress build docs",
-        "docs:preview": "vitepress preview docs"
+        "docs:preview": "vitepress preview docs",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui",
+        "test:e2e:headed": "playwright test --headed",
+        "test:e2e:debug": "playwright test --debug",
+        "test:e2e:firefox": "BROWSERS=firefox playwright test",
+        "test:e2e:all-browsers": "BROWSERS=all playwright test"
     },
     "devDependencies": {
+        "@playwright/test": "^1.57.0",
         "rapidoc": "^9.3.8",
+        "svgo": "^4.0.0",
         "vitepress": "^1.6.4",
         "vue": "^3.5.21"
     },

@@ -1,6 +1,6 @@
 ---
-title: API locale Certifaction
-description: L'API del Client Certifaction utilizza l'elaborazione locale e la crittografia E2E per firmare digitalmente documenti altamente confidenziali.
+title: API locale Magenta Security Sign
+description: L'API del Client Magenta Security Sign utilizza l'elaborazione locale e la crittografia E2E per firmare digitalmente documenti altamente confidenziali.
 aside: false
 ---
 

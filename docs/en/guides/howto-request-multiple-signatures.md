@@ -1,6 +1,6 @@
 ---
 title: Request Multiple Signatures
-description: How to request several digital signatures of highly confidential documents using Certifaction
+description: How to request several digital signatures of highly confidential documents using Magenta Security Sign
 ---
 
 # Request Multiple Signatures

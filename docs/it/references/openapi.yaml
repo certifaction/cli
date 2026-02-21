@@ -8,9 +8,9 @@ info:
     ## Requisiti di configurazione
 
     1. L'autenticazione è richiesta per eseguire alcune operazioni. Si prega di fare riferimento alla sezione [Autenticazione](https://developers.certifaction.com/it/references/authentication) per ottenere una chiave API o un token.
-    2. Avviare il server locale sulla CLI utilizzando il comando `certifaction server`
+    2. Avviare il server locale sulla CLI utilizzando il comando `mss server`
 
-    Consulti la [nostra guida di configurazione](https://developers.certifaction.com/it/guides/getting-started-api#getting-started-with-the-local-api) per iniziare.
+    Consulti la [nostra guida di configurazione](https://developers.certifaction.com/it/guides/getting-started-api) per iniziare.
 
   version: ""
 
@@ -32,8 +32,6 @@ tags:
     description: Accedere ai dati del proprio account utente
   - name: Server
     description: Controllare lo stato del server
-  - name: Certification
-    description: Certificazione blockchain
 
 components:
   parameters:
@@ -46,7 +44,7 @@ components:
         default: true
     digital_twin:
       name: digital-twin
-      description: Abilitare [Digital Twin](https://certifaction.com/digital-twin/) per il documento.
+      description: Abilitare [Digital Twin](https://telesec.de/digital-twin/) per il documento.
       in: query
       schema:
         type: boolean
@@ -114,74 +112,6 @@ components:
         type: string
         enum:
           - xor-b58
-    placeholder:
-      name: placeholder
-      description: |
-        Abilita la modalità segnaposto per rilevare ed elaborare i segnaposto di firma nel documento PDF.
-
-        Quando abilitato, l'endpoint prepare:
-        - Rileverà i segnaposto di testo `##SIG{...}` nel documento
-        - Memorizzerà le loro posizioni per il posizionamento successivo della firma
-        - Rimuoverà il testo del segnaposto dal documento
-
-        ## Formato del Segnaposto di Testo
-
-        Aggiungi segnaposto di testo direttamente nel tuo documento PDF utilizzando questo formato basato su JSON:
-
-        ```
-        ##SIG{"id":"signer1","w":"9cm","x":"2cm","y":"1cm"}
-        ```
-
-        ### Descrizione dei Campi
-
-        - **id** (obbligatorio): Il nome/identificatore del campo per il segnaposto di firma
-          - Nota: `role` può essere utilizzato al posto di `id` per retrocompatibilità
-        - **w** (opzionale): Larghezza del riquadro della firma
-          - Unità supportate: `cm`, `mm`, `in`, `pt`
-          - Se specificato, l'altezza viene calcolata automaticamente per mantenere le proporzioni
-          - Esempi: `"w":"9cm"`, `"w":"100pt"`, `"w":"2in"`
-        - **h** (opzionale): Altezza del riquadro della firma
-          - Unità supportate: `cm`, `mm`, `in`, `pt`
-          - Utilizzato solo se la larghezza (`w`) non è specificata
-          - Esempi: `"h":"3cm"`
-        - **x** (opzionale): Offset orizzontale dalla posizione del testo
-          - Unità supportate: `cm`, `mm`, `in`, `pt`
-          - I valori positivi spostano la firma verso destra
-          - Esempi: `"x":"2cm"`
-        - **y** (opzionale): Offset verticale dalla posizione del testo
-          - Unità supportate: `cm`, `mm`, `in`, `pt`
-          - I valori positivi spostano la firma verso il basso
-          - Esempi: `"y":"1cm"`
-
-        ### Esempi
-
-        ```
-        ##SIG{"id":"manager","w":"8cm"}
-        ##SIG{"id":"director","w":"100pt","x":"1cm","y":"0.5cm"}
-        ##SIG{"id":"witness","h":"2cm","x":"3cm"}
-        ```
-
-        ### Note
-
-        - Se né `w` né `h` sono specificati, la firma utilizza la larghezza di base predefinita
-        - La larghezza (`w`) ha la precedenza sull'altezza (`h`) per mantenere le proporzioni corrette
-        - Gli offset di posizione (`x`, `y`) sono relativi al punto in cui appare il testo `##SIG{...}` nel documento
-      in: query
-      schema:
-        type: boolean
-        default: false
-    placeholder_id:
-      name: placeholder-id
-      description: |
-        ID del campo segnaposto di firma da utilizzare per il posizionamento della firma.
-        Se specificato, la firma sarà posizionata nella posizione del segnaposto con questo ID.
-
-        Questo parametro fa riferimento al campo `id` in un segnaposto `##SIG{...}` (ad esempio, per `##SIG{"id":"manager"}`, utilizzare `placeholder-id=manager`).
-
-        Quando si utilizza questo parametro, i flag relativi alla posizione (position-x, position-y, height, page) vengono ignorati.
-      in: query
-      schema:
-        type: string
 
   responses:
     bad_request:
@@ -232,14 +162,12 @@ components:
       enum:
         - register
         - sign
-        - certify
         - revoke
         - retract
     prepare_scope:
       type: string
       enum:
         - sign
-        - certify
         - attachment
 
     identity:
@@ -388,18 +316,6 @@ components:
         verified_by:
           $ref: "#/components/schemas/verified_by"
 
-    blockchain_entry:
-      properties:
-        type:
-          type: string
-        contract_address:
-          type: string
-        tx_hash:
-          type: string
-        date:
-          type: string
-          format: date-time
-
     verification_signature:
       properties:
         jurisdiction:
@@ -426,8 +342,6 @@ components:
         date:
           type: string
           format: date-time
-        on_blockchain:
-          $ref: "#/components/schemas/blockchain_entry"
 
     verification_file_info:
       properties:
@@ -449,9 +363,6 @@ components:
         authentic:
           type: boolean
           description: Se il file è autentico
-        on_blockchain:
-          type: boolean
-          description: Se il file è sulla blockchain
         encrypted:
           type: boolean
           description: Se il file è crittografato
@@ -600,8 +511,7 @@ paths:
         - $ref: "#/components/parameters/qr_page"
         - $ref: "#/components/parameters/encryption_key"
         - $ref: "#/components/parameters/password_encryption"
-        - $ref: "#/components/parameters/placeholder"
-      summary: Preparare un file per la firma o certificazione
+      summary: Preparare un file per la firma
       requestBody:
         description: Il file da preparare.
         required: true
@@ -619,7 +529,6 @@ paths:
         401:
           $ref: "#/components/responses/unauthorized"
       tags:
-        - Certification
         - Signing
 
   /sign:
@@ -693,7 +602,6 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - $ref: "#/components/parameters/placeholder_id"
       summary: Firmare un file
       requestBody:
         description: Il file da firmare.
@@ -713,152 +621,6 @@ paths:
           $ref: "#/components/responses/unauthorized"
       tags:
         - Signing
-
-  /revoke:
-    post:
-      operationId: revoke_document
-      summary: Revocare un documento
-      requestBody:
-        description: Il documento da revocare.
-        required: true
-        content:
-          application/pdf: { }
-      responses:
-        200:
-          description: La revoca è stata completata con successo.
-        400:
-          $ref: "#/components/responses/bad_request"
-        401:
-          $ref: "#/components/responses/unauthorized"
-      tags:
-        - Certification
-
-  /verify:
-    post:
-      operationId: verify_document
-      summary: Verificare un documento
-      description: |
-        Verifica un documento e restituisce informazioni dettagliate sulla verifica, incluso
-        lo stato di registrazione della blockchain, i dettagli dell'emittente, gli eventi di firma e l'autenticità del documento.
-      requestBody:
-        description: Il documento da verificare.
-        required: true
-        content:
-          application/pdf: { }
-      responses:
-        200:
-          description: Il risultato della verifica.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/verification_result"
-        400:
-          $ref: "#/components/responses/bad_request"
-        404:
-          description: Nessuna registrazione trovata con l'hash del documento fornito.
-        500:
-          $ref: "#/components/responses/internal_server_error"
-      security: [ ]
-      tags:
-        - Certification
-
-  /register:
-    post:
-      operationId: register_file
-      parameters:
-        - $ref: "#/components/parameters/digital_twin"
-        - $ref: "#/components/parameters/pdf-a"
-        - $ref: "#/components/parameters/accept_language"
-        - name: scope
-          in: query
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/scope"
-              - default: register
-        - $ref: "#/components/parameters/additional_page"
-        - $ref: "#/components/parameters/qr_llx"
-        - $ref: "#/components/parameters/qr_lly"
-        - $ref: "#/components/parameters/qr_height"
-        - $ref: "#/components/parameters/qr_page"
-        - $ref: "#/components/parameters/encryption_key"
-        - $ref: "#/components/parameters/password_encryption"
-        - name: hash
-          in: query
-          schema:
-            type: string
-        - name: note
-          in: query
-          schema:
-            type: string
-            maxLength: 255
-        - name: legal-weight
-          in: query
-          schema:
-            type: string
-            enum:
-              - AES
-              - QES
-              - SES
-        - name: jurisdiction
-          in: query
-          schema:
-            type: string
-            enum:
-              - eIDAS
-              - ZertES
-        - name: filename
-          in: query
-          schema:
-            type: string
-        - name: no-prepare
-          in: query
-          schema:
-            type: boolean
-        - name: position-x
-          description: |
-            La coordinata x della firma dal basso-sinistra della pagina.
-            Questo è richiesto quando `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: position-y
-          description: |
-            La coordinata y della firma dal basso-sinistra della pagina.
-            Questo è richiesto quando `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: height
-          description: L'altezza della scheda firma. Questo è richiesto quando `additional-page=false`.
-          in: query
-          schema:
-            type: number
-        - name: page
-          description: La pagina su cui posizionare la firma. Questo è richiesto quando `additional-page=false`.
-          in: query
-          schema:
-            type: integer
-            minimum: 1
-        - $ref: "#/components/parameters/placeholder_id"
-      summary: Registrare un file
-      requestBody:
-        description: Il file da registrare.
-        required: true
-        content:
-          application/pdf: { }
-      responses:
-        200:
-          description: Il contenuto del file registrato. Non c'è corpo di risposta se `scope` era `revoke`.
-          content:
-            application/pdf:
-              schema:
-                type: string
-        400:
-          $ref: "#/components/responses/bad_request"
-        401:
-          $ref: "#/components/responses/unauthorized"
-      tags:
-        - Certification
 
   /request/create:
     post:
@@ -1002,14 +764,6 @@ paths:
           schema:
             type: integer
             minimum: 1
-        - $ref: "#/components/parameters/placeholder_id"
-        - name: custom-password
-          description: |
-            Password personalizzata per la richiesta di firma. Abilita automaticamente la protezione con password.
-            Se né questo né `with-password` viene fornito, non viene utilizzata alcuna password.
-          in: query
-          schema:
-            type: string
       summary: Richiedere una firma
       requestBody:
         description: I file da firmare
@@ -1205,7 +959,6 @@ paths:
           description: Il file fornito non è stato trovato. Verifichi che il file sia stato elaborato e che lo abbia utilizzato in una richiesta di firma.
       tags:
         - Signing
-
   /request/status:
     get:
       operationId: request_status

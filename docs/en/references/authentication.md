@@ -1,6 +1,6 @@
 ---
 title: Authentication
-description: How to authenticate to Certifaction to digitally sign highly confidential documents.
+description: How to authenticate to Magenta Security Sign to digitally sign highly confidential documents.
 ---
 
 # Authentication
@@ -8,8 +8,13 @@ description: How to authenticate to Certifaction to digitally sign highly confid
 Document signature, revocation and getting user information require authentication.
 The authentication is done by passing an authentication token or an API key:
 
-- Access tokens can be issued by you or by an external OIDC provider. Either case, Certifaction will have to register the identity provider.
-- API keys are managed from the Certifaction web application. They can only be used for server side API integration.
+- Access tokens can be issued by you or by an external OIDC provider. Either case, <ProductName/> will have to register the identity provider.
+- API keys are managed from the <ProductName/> web application. They can only be used for server side API integration.
+
+<ThemeOnly themes="certifaction">
+
 - For HIN Sign authentication, please follow the instructions:
   - [German](https://cdn.hin.ch/oauth2/manual/DE/index.html)
   - [English](https://cdn.hin.ch/oauth2/manual/EN/index.html)
+
+</ThemeOnly>

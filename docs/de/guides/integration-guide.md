@@ -3,19 +3,24 @@ title: Integrationsleitfaden
 description: Eine grundlegende Schritt-für-Schritt-Anleitung zur Integration
 ---
 
+<script setup>
+import { useTheme } from '../../.vitepress/theme/useTheme.js'
+const { commandName } = useTheme()
+</script>
+
 # Integrationsleitfaden
 
-1. Laden Sie den [neuesten Certifaction-Client](https://github.com/certifaction/cli/releases) herunter
+1. Laden Sie den [neuesten <ProductName/>-Client](/downloads/latest/) herunter
 
-2. Führen Sie den Certifaction-Client aus - Optionen:
+2. Führen Sie den <ProductName/>-Client aus - Optionen:
 
-   1. Server-Modus über Kommandozeile starten: `./certifaction server`
+   1. Server-Modus über Kommandozeile starten: <code>./{{ commandName }} server</code>
 
-   2. Server-Modus über Docker-Container starten: `docker run -p 8082:8082 certifaction/server:v.X.Y.Z`
+   2. Server-Modus über Docker-Container starten: <code>docker run -p 8082:8082 {{ commandName }}/server:v.X.Y.Z</code>
 
 3. Dokumente vorbereiten:
 
-   1. Endpunkt: `POST` [/prepare](https://developers.certifaction.com/de/references/api#post-/prepare)
+   1. Endpunkt: `POST` [/prepare](/de/references/api#post-/prepare)
 
    2. Beispielanfrage:
 
@@ -31,7 +36,7 @@ description: Eine grundlegende Schritt-für-Schritt-Anleitung zur Integration
 
 4. Eine Signaturanfrage erstellen:
 
-   1. Endpunkt: `POST` [/request/create](https://developers.certifaction.com/de/references/api#post-/request/create)
+   1. Endpunkt: `POST` [/request/create](/de/references/api#post-/request/create)
 
    2. Beispielanfrage (für den Signaturtyp `SES` ohne selektives Signieren):
 
@@ -61,7 +66,7 @@ description: Eine grundlegende Schritt-für-Schritt-Anleitung zur Integration
 
 6. (Den Status der Signaturanfrage prüfen:)
 
-   1. Endpunkt: `GET` [/request/status](https://developers.certifaction.com/de/references/api#post-/request/status)
+   1. Endpunkt: `GET` [/request/status](/de/references/api#post-/request/status)
 
    2. Beispielanfrage:
 
@@ -74,7 +79,7 @@ description: Eine grundlegende Schritt-für-Schritt-Anleitung zur Integration
 
 7. Das signierte Dokument herunterladen:
 
-   1. Endpunkt: `GET` [/download](https://developers.certifaction.com/de/references/api#get-/download)
+   1. Endpunkt: `GET` [/download](/de/references/api#get-/download)
 
    2. Beispielanfrage:
 

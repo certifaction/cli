@@ -1,20 +1,20 @@
 ---
-title: How to install Certifaction Client
-description: How to install the Certifaction Client to digitally sign highly confidential documents
+title: How to install Magenta Security Sign Client
+description: How to install the Magenta Security Sign Client to digitally sign highly confidential documents
 ---
 
 # Installation
 
-Use the Certifaction Client to integrate with Certifaction.
+Use the <ProductName/> Client to integrate with <ProductName/>.
 Using the Client ensures that your documents are processed locally and are never sent
 in clear text.
 
 ## Requirements
 
-The Certifaction Client is distributed as an executable file compatible with recent Linux,
+The <ProductName/> Client is distributed as an executable file compatible with recent Linux,
 Windows and macOS operating systems and can be run in a Docker container.
 
-The Client requires access to the Certifaction API and an authentication token for most
+The Client requires access to the <ProductName/> API and an authentication token for most
 of its commands.
 
 When running the Client as a Local API, the executable will listen to HTTP ports
@@ -22,14 +22,11 @@ which must be accessible to client applications.
 
 ## How to install
 
-Download Certifaction Client from our [Public Repository](https://github.com/certifaction/cli/releases).
-
-Please create an [Issue](https://github.com/certifaction/cli/issues) if you do
-not find an executable for your platform.
+Download <ProductName/> Client from our [Downloads](/downloads/) page.
 
 ## Usage
 
-You can use the Certifaction Client as a Local API or as a CLI.
+You can use the <ProductName/> Client as a Local API or as a CLI.
 In both cases, you will be able to sign one or more documents and invite external
 signers.
 
@@ -46,7 +43,7 @@ HTTP to sign documents with the guarantee that documents do not leave
 the local environment. This is the best option for centralized document
 signatures where documents are signed during an automated document workflow.
 
-![HTTP server mode diagram](../../assets/http-server-mode-diagram.png)
+<ThemeImage src="http-server-mode-diagram.png" alt="HTTP server mode diagram" />
 
 ### Using the client as command line interface
 
@@ -56,13 +53,13 @@ Just want to try the CLI? Skip to the [CLI Quickstart](./getting-started-cli).
 
 </div>
 
-Use the Client as a command line interface (CLI) for desktop automation or to integrate Certifaction
+Use the Client as a command line interface (CLI) for desktop automation or to integrate <ProductName/>
 in a standalone application.
 
-Standalone applications can directly call the Certifaction executable to sign documents or request
+Standalone applications can directly call the <ProductName/> executable to sign documents or request
 signatures from other people.
 
 Documents can either be saved and loaded on the file system, or they can be passed to the
 command using the standard input and output.
 
-![Standalone application diagram](../../assets/standalone-application-diagram.png)
+<ThemeImage src="standalone-application-diagram.png" alt="Standalone application diagram" />

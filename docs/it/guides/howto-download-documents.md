@@ -1,6 +1,6 @@
 ---
 title: Scaricare Documenti
-description: Come scaricare documenti altamente confidenziali firmati digitalmente con Certifaction
+description: Come scaricare documenti altamente confidenziali firmati digitalmente con Magenta Security Sign
 ---
 
 # Scaricare Documenti

@@ -1,6 +1,6 @@
 ---
 title: Eine Signatur anfordern
-description: So fordern Sie die digitale Signatur eines hochvertraulichen Dokuments mit Certifaction an
+description: So fordern Sie die digitale Signatur eines hochvertraulichen Dokuments mit Magenta Security Sign an
 ---
 
 # Eine Signatur anfordern

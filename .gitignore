@@ -1,7 +1,12 @@
 docs/.vitepress/cache
+docs/.vitepress/dist
+docs/public/downloads/
 .DS_Store
 node_modules
 dist
 cache
 
 .claude
+playwright-report
+.playwright-mcp
+test-results

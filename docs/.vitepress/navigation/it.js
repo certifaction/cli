@@ -2,7 +2,7 @@ export const itNavigation = {
   nav: [
     {
       text: "Guida",
-      link: "/it/guides/what-is-certifaction",
+      link: "/it/guides/about",
       activeMatch: "/it/guides/",
     },
     {
@@ -11,8 +11,8 @@ export const itNavigation = {
       activeMatch: "/it/references/",
     },
     {
-      text: "Registro delle modifiche",
-      link: "https://github.com/certifaction/cli/releases",
+      text: "Scarica",
+      link: "/it/guides/downloads",
     },
   ],
 
@@ -23,8 +23,8 @@ export const itNavigation = {
         collapsed: false,
         items: [
           {
-            text: "Cos'è Certifaction?",
-            link: "/it/guides/what-is-certifaction",
+            text: "Informazioni",
+            link: "/it/guides/about",
           },
         ],
       },
@@ -32,6 +32,10 @@ export const itNavigation = {
         text: "Per iniziare",
         collapsed: false,
         items: [
+          {
+            text: "Scarica",
+            link: "/it/guides/downloads",
+          },
           {
             text: "Installazione",
             link: "/it/guides/installation",

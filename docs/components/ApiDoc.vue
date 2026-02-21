@@ -1,6 +1,7 @@
 <script setup>
-import { ref, watch, onMounted, nextTick } from 'vue'
+import { ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { useData } from 'vitepress'
+import { useTheme } from '../.vitepress/theme/useTheme.js'
 
 const props = defineProps({
     specUrl: {
@@ -11,8 +12,21 @@ const props = defineProps({
 
 const data = useData()
 const isDark = data.isDark
+const { theme } = useTheme()
 
 const rapiDocElement = ref(null)
+let linkObserver = null
+
+const CANONICAL_DOCS_DOMAIN = 'developers.certifaction.com'
+
+function rewriteLinks() {
+    const shadowRoot = rapiDocElement.value?.shadowRoot
+    if (!shadowRoot) return
+    const links = shadowRoot.querySelectorAll(`a[href*="${CANONICAL_DOCS_DOMAIN}"]`)
+    links.forEach(link => {
+        link.href = link.href.replace(`https://${CANONICAL_DOCS_DOMAIN}`, window.location.origin)
+    })
+}
 
 onMounted(async () => {
     await import('rapidoc')
@@ -21,20 +35,39 @@ onMounted(async () => {
     rapiDocElement.value.loadSpec(props.specUrl)
 
     setTheme(isDark.value ? 'dark' : 'light')
+
+    const shadowRoot = rapiDocElement.value?.shadowRoot
+    if (shadowRoot) {
+        linkObserver = new MutationObserver(() => rewriteLinks())
+        linkObserver.observe(shadowRoot, { childList: true, subtree: true })
+    }
+})
+
+onUnmounted(() => {
+    if (linkObserver) {
+        linkObserver.disconnect()
+        linkObserver = null
+    }
 })
 
 watch(isDark, (newValue) => {
     setTheme(newValue ? 'dark' : 'light')
 })
 
-function setTheme(theme) {
+watch(theme, () => {
+    setTheme(isDark.value ? 'dark' : 'light')
+})
+
+function setTheme(mode) {
     const rapiDocElementInstance = rapiDocElement.value
 
     if (!rapiDocElementInstance) {
         return
     }
 
-    if (theme === 'dark') {
+    const primaryColor = theme.value.primaryColor
+
+    if (mode === 'dark') {
         rapiDocElementInstance.setAttribute('theme', 'dark')
         rapiDocElementInstance.setAttribute('bg-color', '#1e1e20')
         rapiDocElementInstance.setAttribute('nav-bg-color', '#fafafa')
@@ -42,8 +75,8 @@ function setTheme(theme) {
         rapiDocElementInstance.setAttribute('nav-hover-bg-color', '#ffebea')
         rapiDocElementInstance.setAttribute('nav-hover-text-color', '#9b0700')
         rapiDocElementInstance.setAttribute('nav-accent-color', '#f87070')
-        rapiDocElementInstance.setAttribute('primary-color', '#0669F2')
-    } else if (theme === 'light') {
+        rapiDocElementInstance.setAttribute('primary-color', primaryColor)
+    } else if (mode === 'light') {
         rapiDocElementInstance.setAttribute('theme', 'light')
         rapiDocElementInstance.setAttribute('bg-color', '#ffffff')
         rapiDocElementInstance.setAttribute('nav-bg-color', '#fafafa')
@@ -51,7 +84,7 @@ function setTheme(theme) {
         rapiDocElementInstance.setAttribute('nav-hover-bg-color', '#ffebea')
         rapiDocElementInstance.setAttribute('nav-hover-text-color', '#9b0700')
         rapiDocElementInstance.setAttribute('nav-accent-color', '#f87070')
-        rapiDocElementInstance.setAttribute('primary-color', '#0669F2')
+        rapiDocElementInstance.setAttribute('primary-color', primaryColor)
     }
 }
 </script>

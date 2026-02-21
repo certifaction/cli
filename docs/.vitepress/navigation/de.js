@@ -2,7 +2,7 @@ export const deNavigation = {
   nav: [
     {
       text: "Anleitung",
-      link: "/de/guides/what-is-certifaction",
+      link: "/de/guides/about",
       activeMatch: "/de/guides/",
     },
     {
@@ -11,8 +11,8 @@ export const deNavigation = {
       activeMatch: "/de/references/",
     },
     {
-      text: "Änderungsprotokoll",
-      link: "https://github.com/certifaction/cli/releases",
+      text: "Herunterladen",
+      link: "/de/guides/downloads",
     },
   ],
 
@@ -23,8 +23,8 @@ export const deNavigation = {
         collapsed: false,
         items: [
           {
-            text: "Was ist Certifaction?",
-            link: "/de/guides/what-is-certifaction",
+            text: "Über",
+            link: "/de/guides/about",
           },
         ],
       },
@@ -32,6 +32,10 @@ export const deNavigation = {
         text: "Erste Schritte",
         collapsed: false,
         items: [
+          {
+            text: "Herunterladen",
+            link: "/de/guides/downloads",
+          },
           {
             text: "Installation",
             link: "/de/guides/installation",

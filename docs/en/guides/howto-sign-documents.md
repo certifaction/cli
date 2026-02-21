@@ -1,6 +1,6 @@
 ---
 title: Sign Documents
-description: How to digitally sign confidential documents with Certifaction
+description: How to digitally sign confidential documents with Magenta Security Sign
 ---
 
 # Sign Documents

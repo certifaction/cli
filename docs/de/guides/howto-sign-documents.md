@@ -1,6 +1,6 @@
 ---
 title: Dokumente signieren
-description: So signieren Sie vertrauliche Dokumente digital mit Certifaction
+description: So signieren Sie vertrauliche Dokumente digital mit Magenta Security Sign
 ---
 
 # Dokumente signieren

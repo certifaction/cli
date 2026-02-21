@@ -1,0 +1,170 @@
+/* MSS theme — magenta brand colors with TeleGroteskNext fonts */
+
+/* TeleGroteskNext Font Faces from telesec.de */
+@font-face {
+  font-family: 'TeleGroteskNext-Thin';
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-thin.woff2') format('woff2'),
+       url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-thin.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'TeleGroteskNext-Regular';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-regular.woff2') format('woff2'),
+       url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'TeleGroteskNext-Medium';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-medium.woff2') format('woff2'),
+       url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'TeleGroteskNext-Bold';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-bold.woff2') format('woff2'),
+       url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'TeleGroteskNext-Ultra';
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-ultra.woff2') format('woff2'),
+       url('https://telesec.de/_resources/themes/telesec/fonts/telegrotesknext-ultra.woff') format('woff');
+}
+
+/* Show footer on all pages including those with sidebar */
+.VPFooter.has-sidebar {
+  display: flex !important;
+}
+
+/* MSS color variables — scoped under .theme-mss */
+.theme-mss {
+  --vp-c-brand: #e20074;
+  --vp-c-brand-1: #e20074;
+  --vp-c-brand-dark: #d1006c;
+  --vp-button-brand-border: #d1006c;
+  --vp-button-brand-hover-bg: #d1006c;
+  --vp-button-brand-hover-border: #d1006c;
+  --vp-home-hero-name-color: #e20074;
+  --vp-button-brand-bg: #e20074;
+  --vp-code-link-color: #e20074;
+  --vp-code-link-hover-color: #d1006c;
+
+  /* Font Family */
+  --vp-font-family-base: 'TeleGroteskNext-Regular', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --vp-font-family-mono: 'Menlo', 'Monaco', 'Courier New', monospace;
+}
+
+/* Apply TeleGroteskNext to body when MSS theme is active */
+.theme-mss body {
+  font-family: var(--vp-font-family-base);
+}
+
+/* Apply TeleGroteskNext-Bold to headings when MSS theme is active */
+.theme-mss h1, .theme-mss h2, .theme-mss h3, .theme-mss h4, .theme-mss h5, .theme-mss h6,
+.theme-mss .VPHero .name,
+.theme-mss .VPFeature .title {
+  font-family: 'TeleGroteskNext-Bold', var(--vp-font-family-base);
+}
+
+/* Hero terminal image - responsive styles (shared across themes) */
+
+/* Mobile (< 640px): Hide terminal image */
+@media (max-width: 639px) {
+  .VPHero .image-container {
+    display: none !important;
+  }
+
+  .VPNavBar .VPNavBarTitle .logo {
+    display: none !important;
+  }
+
+  .VPHero {
+    margin-top: 0 !important;
+    padding-top: 80px !important;
+  }
+
+  .VPHero .main {
+    text-align: center !important;
+  }
+
+  .VPHero .actions {
+    justify-content: center !important;
+  }
+}
+
+/* Tablet (640px - 959px): Full width, centered above text */
+@media (min-width: 640px) and (max-width: 959px) {
+  .VPHero .image-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 auto 2rem auto !important;
+  }
+
+  .VPHero .image-container .image {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .VPHero .VPImage {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+
+/* Small desktop (960px - 1199px): Hide terminal */
+@media (min-width: 960px) and (max-width: 1199px) {
+  .VPHero .image-container {
+    display: none !important;
+  }
+}
+
+/* Large desktop (1200px+): Side-by-side layout */
+@media (min-width: 1200px) {
+  .VPHero .image-container {
+    max-width: 55% !important;
+    flex-shrink: 0 !important;
+  }
+
+  .VPHero .image-container .image {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .VPHero .VPImage {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+}
+
+/* Larger desktop (1280px+) */
+@media (min-width: 1280px) {
+  .VPHero .image-container {
+    max-width: 58% !important;
+  }
+}
+
+/* Extra large desktop (1600px+) */
+@media (min-width: 1600px) {
+  .VPHero .image-container {
+    max-width: 62% !important;
+  }
+}
