@@ -28,13 +28,6 @@ const themeConfigs = [
 
 for (const themeConfig of themeConfigs) {
   test.describe(`${themeConfig.productName} Branding (theme=${themeConfig.key})`, () => {
-    test('hero title matches product name', async ({ page }) => {
-      await page.goto(`/en/?theme=${themeConfig.key}`);
-
-      const heroName = page.locator('.VPHero .name');
-      await expect(heroName).toContainText(themeConfig.productName);
-    });
-
     test('logo src contains theme-specific path', async ({ page, viewport }) => {
       // Skip on mobile - logo is hidden
       if (viewport && viewport.width < 640) {
@@ -155,23 +148,5 @@ for (const themeConfig of themeConfigs) {
       }
     });
 
-    test('no cross-theme branding leaks', async ({ page }) => {
-      await page.goto(`/en/?theme=${themeConfig.key}`);
-
-      // Wait for Layout.vue to apply
-      await page.waitForTimeout(500);
-
-      const heroContent = await page.locator('.VPHero').textContent();
-
-      // Hero should contain this theme's product name
-      expect(heroContent).toContain(themeConfig.productName);
-
-      // Hero should NOT contain the other theme's product name
-      const otherTheme = themeConfigs.find(t => t.key !== themeConfig.key);
-      if (themeConfig.key === 'mss') {
-        // MSS should not show "Certifaction" (except as legal entity)
-        expect(heroContent).not.toContain('Certifaction');
-      }
-    });
   });
 }

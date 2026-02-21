@@ -1,46 +1,40 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const allProjects = [
+  { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+  { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+  { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+  { name: 'Mobile Chrome', use: { ...devices['Pixel 5'] } },
+  { name: 'Mobile Safari', use: { ...devices['iPhone 12'] } },
+];
+
+const defaultProjects = ['chromium', 'Mobile Chrome'];
+const requestedBrowsers = process.env.BROWSERS
+  ? process.env.BROWSERS.split(',').map(b => b.trim())
+  : defaultProjects;
+
+const projects = requestedBrowsers.includes('all')
+  ? allProjects
+  : allProjects.filter(p => requestedBrowsers.includes(p.name));
+
 export default defineConfig({
   testDir: './tests/e2e',
-  fullyParallel: false, // Run tests sequentially to avoid server overload
+  fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 1, // Retry once locally to handle flaky timeouts
-  workers: 1, // Single worker to reduce server load
+  retries: process.env.CI ? 2 : 1,
+  workers: 2,
   reporter: 'html',
-  timeout: 90000, // 90s test timeout for multi-page tests
+  timeout: 60000,
 
   use: {
-    baseURL: 'http://localhost:4173', // VitePress preview port
+    baseURL: 'http://localhost:4173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    navigationTimeout: 60000, // 60s navigation timeout
-    actionTimeout: 30000, // 30s action timeout
+    navigationTimeout: 30000,
+    actionTimeout: 15000,
   },
 
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-      retries: 2, // Firefox needs more retries due to slower page loads
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-    // Mobile viewports
-    {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] },
-    },
-    {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] },
-    },
-  ],
+  projects,
 
   webServer: {
     command: 'npm run docs:preview',

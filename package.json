@@ -8,7 +8,9 @@
         "test:e2e": "playwright test",
         "test:e2e:ui": "playwright test --ui",
         "test:e2e:headed": "playwright test --headed",
-        "test:e2e:debug": "playwright test --debug"
+        "test:e2e:debug": "playwright test --debug",
+        "test:e2e:firefox": "BROWSERS=firefox playwright test",
+        "test:e2e:all-browsers": "BROWSERS=all playwright test"
     },
     "devDependencies": {
         "@playwright/test": "^1.57.0",
