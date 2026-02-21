@@ -20,4 +20,4 @@ install-browsers:
 	npx playwright install chromium firefox webkit
 
 test:
-	npm run test:e2e
+	npx playwright test --fail-on-flaky-tests

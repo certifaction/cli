@@ -23,7 +23,8 @@ test.describe('API Documentation', () => {
 
   for (const themeConfig of themes) {
     test(`RapiDoc uses ${themeConfig.key} primary color`, async ({ page }) => {
-      await page.goto(`/en/references/api?theme=${themeConfig.key}`);
+      await page.goto(`/en/references/api?theme=${themeConfig.key}`, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeConfig.key}`));
 
       await page.waitForSelector('rapi-doc', { timeout: 10000 });
 

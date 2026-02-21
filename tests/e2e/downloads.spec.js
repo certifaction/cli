@@ -5,6 +5,18 @@ const themes = [
   { key: 'mss', commandName: 'mss' },
 ];
 
+/**
+ * Navigate to a themed page and wait for the theme to be fully applied.
+ * Uses domcontentloaded to avoid blocking on font loads (MSS TeleGroteskNext),
+ * then waits for the theme CSS class on <html> plus a short stabilization
+ * delay for Vue components to re-render.
+ */
+async function gotoThemed(page, url, themeKey) {
+  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeKey}`));
+  await page.waitForTimeout(300);
+}
+
 test.describe('CLI Downloads', () => {
   test('downloads page is accessible', async ({ page }) => {
     await page.goto('/en/guides/downloads');
@@ -25,10 +37,7 @@ test.describe('CLI Downloads', () => {
   for (const themeConfig of themes) {
     test.describe(`${themeConfig.key} theme`, () => {
       test('displayed file names use correct command name', async ({ page }) => {
-        await page.goto(`/en/guides/downloads?theme=${themeConfig.key}`);
-
-        // Wait for theme to apply via client-side hydration
-        await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeConfig.key}`), { timeout: 5000 });
+        await gotoThemed(page, `/en/guides/downloads?theme=${themeConfig.key}`, themeConfig.key);
 
         // Check that download links show the theme-appropriate command name
         const downloadLinks = page.locator('.downloads-page a[download]');
@@ -40,8 +49,7 @@ test.describe('CLI Downloads', () => {
       });
 
       test('download attribute contains theme-appropriate filename', async ({ page }) => {
-        await page.goto(`/en/guides/downloads?theme=${themeConfig.key}`);
-        await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeConfig.key}`), { timeout: 5000 });
+        await gotoThemed(page, `/en/guides/downloads?theme=${themeConfig.key}`, themeConfig.key);
 
         const downloadLinks = page.locator('.downloads-page a[download]');
         const count = await downloadLinks.count();
@@ -54,8 +62,7 @@ test.describe('CLI Downloads', () => {
       });
 
       test('actual href links point to shared /downloads/ path', async ({ page }) => {
-        await page.goto(`/en/guides/downloads?theme=${themeConfig.key}`);
-        await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeConfig.key}`), { timeout: 5000 });
+        await gotoThemed(page, `/en/guides/downloads?theme=${themeConfig.key}`, themeConfig.key);
 
         const downloadLinks = page.locator('.downloads-page a[download]');
         const count = await downloadLinks.count();
@@ -71,8 +78,7 @@ test.describe('CLI Downloads', () => {
       });
 
       test('download page shows correct command name in examples', async ({ page }) => {
-        await page.goto(`/en/guides/downloads?theme=${themeConfig.key}`);
-        await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeConfig.key}`), { timeout: 5000 });
+        await gotoThemed(page, `/en/guides/downloads?theme=${themeConfig.key}`, themeConfig.key);
 
         // Check that code examples on the page use the correct command name
         const codeBlocks = page.locator('pre code');

@@ -26,6 +26,18 @@ const themeConfigs = [
   },
 ];
 
+/**
+ * Navigate to a themed page and wait for the theme to be fully applied.
+ * Uses domcontentloaded to avoid blocking on font loads (MSS TeleGroteskNext),
+ * then waits for the theme CSS class on <html> plus a short stabilization
+ * delay for Vue components to re-render.
+ */
+async function gotoThemed(page, url, themeKey) {
+  await page.goto(url, { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('html')).toHaveClass(new RegExp(`theme-${themeKey}`));
+  await page.waitForTimeout(300);
+}
+
 for (const themeConfig of themeConfigs) {
   test.describe(`${themeConfig.productName} Branding (theme=${themeConfig.key})`, () => {
     test('logo src contains theme-specific path', async ({ page, viewport }) => {
@@ -35,10 +47,7 @@ for (const themeConfig of themeConfigs) {
         return;
       }
 
-      await page.goto(`/en/?theme=${themeConfig.key}`);
-
-      // Wait for Layout.vue to apply branding
-      await page.waitForTimeout(500);
+      await gotoThemed(page, `/en/?theme=${themeConfig.key}`, themeConfig.key);
 
       const logo = page.locator('.VPNavBarTitle img').first();
       const src = await logo.getAttribute('src');
@@ -46,7 +55,7 @@ for (const themeConfig of themeConfigs) {
     });
 
     test('brand color variables correct', async ({ page }) => {
-      await page.goto(`/en/guides/about?theme=${themeConfig.key}`);
+      await gotoThemed(page, `/en/guides/about?theme=${themeConfig.key}`, themeConfig.key);
 
       const root = page.locator('html');
       const brandColor = await root.evaluate((el) => {
@@ -60,17 +69,14 @@ for (const themeConfig of themeConfigs) {
     });
 
     test('footer copyright matches theme', async ({ page }) => {
-      await page.goto(`/en/?theme=${themeConfig.key}`);
-
-      // Wait for Layout.vue to update footer
-      await page.waitForTimeout(500);
+      await gotoThemed(page, `/en/?theme=${themeConfig.key}`, themeConfig.key);
 
       const footer = await page.textContent('footer');
       expect(footer).toContain(themeConfig.footer);
     });
 
     test('favicon link href matches theme', async ({ page }) => {
-      await page.goto(`/en/?theme=${themeConfig.key}`);
+      await gotoThemed(page, `/en/?theme=${themeConfig.key}`, themeConfig.key);
 
       const favicon = page.locator('link[rel="icon"]');
       const href = await favicon.getAttribute('href');
@@ -79,7 +85,7 @@ for (const themeConfig of themeConfigs) {
 
     if (themeConfig.hasCustomFont) {
       test('TeleGroteskNext font loaded and applied', async ({ page }) => {
-        await page.goto(`/en/?theme=${themeConfig.key}`);
+        await gotoThemed(page, `/en/?theme=${themeConfig.key}`, themeConfig.key);
 
         const body = page.locator('body');
         const fontFamily = await body.evaluate((el) =>
@@ -91,9 +97,7 @@ for (const themeConfig of themeConfigs) {
     }
 
     test('footer visible on guide pages with sidebar', async ({ page }) => {
-      await page.goto(`/en/guides/about?theme=${themeConfig.key}`);
-
-      await page.waitForTimeout(500);
+      await gotoThemed(page, `/en/guides/about?theme=${themeConfig.key}`, themeConfig.key);
 
       const footer = page.locator('.VPFooter');
       await expect(footer).toBeVisible();
@@ -106,7 +110,7 @@ for (const themeConfig of themeConfigs) {
       const context = await browser.newContext({ locale: 'en' });
       const page = await context.newPage();
 
-      await page.goto(`/?theme=${themeConfig.key}`);
+      await page.goto(`/?theme=${themeConfig.key}`, { waitUntil: 'domcontentloaded' });
 
       // Wait for redirect to a localized path
       await page.waitForURL('**/en/**', { timeout: 10000 });
@@ -123,7 +127,7 @@ for (const themeConfig of themeConfigs) {
       const context = await browser.newContext({ locale: 'ja' });
       const page = await context.newPage();
 
-      await page.goto(`/?theme=${themeConfig.key}`);
+      await page.goto(`/?theme=${themeConfig.key}`, { waitUntil: 'domcontentloaded' });
 
       // Wait for redirect to the expected default language
       await page.waitForURL(`**/${themeConfig.defaultLanguage}/**`, { timeout: 10000 });
@@ -134,7 +138,7 @@ for (const themeConfig of themeConfigs) {
     });
 
     test('HIN Sign content visibility per theme', async ({ page }) => {
-      await page.goto(`/en/references/authentication?theme=${themeConfig.key}`);
+      await gotoThemed(page, `/en/references/authentication?theme=${themeConfig.key}`, themeConfig.key);
 
       const content = page.locator('.vp-doc');
       await expect(content).toBeVisible();
