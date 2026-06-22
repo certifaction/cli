@@ -34,25 +34,30 @@ Verwendung:
   certifaction [command]
 
 Verfügbare Befehle:
-  certify       Ein Dokument zertifizieren
-  delete-access Certifaction-Zugriff auf die Datei entfernen
-  download      Dokument aus dem digitalen Archiv herunterladen und entschlüsseln
-  export        Daten exportieren
-  generate-keys Verschlüsselungsschlüssel & ein mögliches Passwort generieren
-  health        Die Gesundheit der Certifaction-API zurückgeben
-  help          Hilfe zu jedem Befehl
-  info          Die Metadaten der bereitgestellten Datei zurückgeben
-  ping          Die Certifaction-API anpingen
-  prepare       Ein Dokument zum Signieren vorbereiten
-  qes           QES (Qualifizierte E-Signatur)
-  register      Ein Dokument registrieren
-  request       Eine Dokumentsignatur anfordern
-  retract       Ein Dokument zurückziehen
-  revoke        Ein Dokument widerrufen
-  server        Im Server-Modus starten
-  sign          Ein Dokument signieren
-  user          Die authentifizierten Benutzerinformationen zurückgeben
-  verify        Ein Dokument verifizieren
+  certify               Ein Dokument zertifizieren
+  delete-access         Certifaction-Zugriff auf die Datei entfernen
+  download              Dokument aus dem digitalen Archiv herunterladen und entschlüsseln
+  export                Daten exportieren
+  generate-keys         Verschlüsselungsschlüssel & ein mögliches Passwort generieren
+  has-pades-signatures  Prüfen, ob PAdES-Signaturen in einem Dokument vorhanden sind
+  health                Die Gesundheit der Certifaction-API zurückgeben
+  help                  Hilfe zu jedem Befehl
+  info                  Die Metadaten der bereitgestellten Datei zurückgeben
+  login                 Bei einem Certifaction-Mandanten über den Browser anmelden
+  logout                Gespeicherte Anmeldedaten entfernen
+  ping                  Die Certifaction-API anpingen
+  prepare               Ein Dokument zum Signieren vorbereiten
+  qes                   QES (Qualifizierte E-Signatur)
+  register              Ein Dokument registrieren
+  request               Eine Dokumentsignatur anfordern
+  retract               Ein Dokument zurückziehen
+  revoke                Ein Dokument widerrufen
+  seal                  Ein Dokument versiegeln
+  server                Im Server-Modus starten
+  sign                  Ein Dokument signieren
+  signing-process       Signaturprozesse verwalten
+  user                  Die authentifizierten Benutzerinformationen zurückgeben
+  verify                Ein Dokument verifizieren
 
 Flags:
       --api string       Überschreibt die Standard-Certifaction-API-URL

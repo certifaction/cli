@@ -34,25 +34,30 @@ Usage:
   certifaction [command]
 
 Available Commands:
-  certify       Certify a document
-  delete-access Remove Certifaction access to the file
-  download      Download and decrypt document from digital archive
-  export        Export data
-  generate-keys Generate encryption keys & a possible password
-  health        Return the health of the Certifaction API
-  help          Help about any command
-  info          Return the metadata of provided file
-  ping          Ping the Certifaction API
-  prepare       Prepare a document for signing
-  qes           QES (Qualified E-Signature)
-  register      registers a document
-  request       Request a document signature
-  retract       retract a document
-  revoke        revoke a document
-  server        Start in server mode
-  sign          Sign a document
-  user          Return the authenticated user information
-  verify        Verify a document
+  certify               Certify a document
+  delete-access         Remove Certifaction access to the file
+  download              Download and decrypt document from digital archive
+  export                Export data
+  generate-keys         Generate encryption keys & a possible password
+  has-pades-signatures  Check if PAdES signatures exist in a document
+  health                Return the health of the Certifaction API
+  help                  Help about any command
+  info                  Return the metadata of provided file
+  login                 Log in to a Certifaction tenant via browser
+  logout                Remove saved login credentials
+  ping                  Ping the Certifaction API
+  prepare               Prepare a document for signing
+  qes                   QES (Qualified E-Signature)
+  register              registers a document
+  request               Request a document signature
+  retract               retract a document
+  revoke                revoke a document
+  seal                  Seal a document
+  server                Start in server mode
+  sign                  Sign a document
+  signing-process       Manage signing processes
+  user                  Return the authenticated user information
+  verify                Verify a document
 
 Flags:
       --api string       Overrides the default Certifaction API URL

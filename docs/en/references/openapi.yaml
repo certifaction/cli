@@ -30,6 +30,10 @@ tags:
     description: Download your documents or remove Certifaction's access to them
   - name: Account
     description: Access your user account data
+  - name: Signing Processes
+    description: Create and manage signing processes
+  - name: Organization
+    description: Manage organisation-level settings
   - name: Server
     description: Check the server's status
   - name: Certification
@@ -492,6 +496,269 @@ components:
           type: string
           deprecated: true
           description: "Deprecated: use events.issuer instead"
+
+    signer:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        language:
+          type: string
+        message:
+          type: string
+        sign_order:
+          type: integer
+        participation_role:
+          type: string
+          enum: ["signer", "approver", "observer"]
+        webhook_url:
+          type: string
+          format: url
+          description: URL to receive webhook notifications about this signer's signature request status changes.
+        envelope_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/envelope_item_input"
+
+    envelope_item_input:
+      type: object
+      properties:
+        link:
+          type: string
+          description: Digital archive link for the document.
+        file_id:
+          type: string
+          description: File ID (derived from link if not provided).
+        document_id:
+          type: string
+          description: Document ID (derived from link if not provided).
+        filename:
+          type: string
+        legal_weight:
+          $ref: "#/components/schemas/legal_weight"
+        jurisdiction:
+          type: string
+          enum: ["ZertES", "eIDAS"]
+        signature_position:
+          type: string
+          deprecated: true
+          description: "Deprecated: use `signature_positions` instead."
+        signature_positions:
+          type: array
+          description: Structured signature positions to place on this document.
+          items:
+            $ref: "#/components/schemas/signature_position_input"
+
+    envelope_item:
+      type: object
+      properties:
+        link:
+          type: string
+          description: Digital archive link for the document.
+        file_id:
+          type: string
+          description: File ID (derived from link if not provided).
+        document_id:
+          type: string
+          description: Document ID (derived from link if not provided).
+        filename:
+          type: string
+        legal_weight:
+          $ref: "#/components/schemas/legal_weight"
+        jurisdiction:
+          type: string
+          enum: ["ZertES", "eIDAS"]
+        signature_position:
+          type: string
+          deprecated: true
+          description: "Deprecated: use `signature_positions` instead."
+        signature_positions:
+          type: array
+          description: Signature positions for this document, in the API representation.
+          items:
+            $ref: "#/components/schemas/signature_position_output"
+        status:
+          type: string
+          description: Envelope item status (present in responses).
+          readOnly: true
+          enum: ["unsigned", "awaiting_approval", "awaiting_upload", "signed", "approved", "declined", "declined_confirmed", "cancelled", "attachment", "for_observation"]
+        signed_at:
+          type: string
+          format: date-time
+
+    signature_position_input:
+      type: object
+      description: |
+        A structured signature position. Coordinates are absolute PDF user space
+        units, or fractions of the page dimensions when `positioning` is "relative".
+        Signature positions are only supported for SES signatures.
+      properties:
+        pageNo:
+          type: integer
+          description: Page number for signature placement (1-based).
+        llx:
+          type: number
+          description: Lower-left X coordinate.
+        lly:
+          type: number
+          description: Lower-left Y coordinate.
+        height:
+          type: number
+          description: Height of the signature field.
+        rotate:
+          type: integer
+          description: Rotation angle in degrees (0, 90, 180, 270).
+        positioning:
+          type: string
+          enum: ["", "relative", "placeholder"]
+          description: '"relative" for relative positioning, empty for absolute.'
+        placeholder:
+          type: string
+          description: ID of a signature placeholder field in the document, used with `positioning=placeholder`.
+        legalWeight:
+          type: string
+          description: Legal weight - only SES supported.
+        jurisdiction:
+          type: string
+          enum: ["eIDAS", "ZertES"]
+          description: Legal jurisdiction.
+
+    signature_position_output:
+      type: object
+      description: A signature position as returned by the API.
+      properties:
+        position:
+          type: string
+          description: The position, encoded as a JSON string.
+        legal_weight:
+          type: string
+        jurisdiction:
+          type: string
+          enum: ["eIDAS", "ZertES"]
+        status:
+          type: string
+        sign_order:
+          type: integer
+
+    signature_request_response:
+      type: object
+      properties:
+        id:
+          type: string
+        signing_process_id:
+          type: string
+        legal_weight:
+          $ref: "#/components/schemas/legal_weight"
+        jurisdiction:
+          type: string
+          enum: ["ZertES", "eIDAS"]
+        cancelled:
+          type: boolean
+        signed:
+          type: boolean
+        signer:
+          $ref: "#/components/schemas/user"
+        requester:
+          $ref: "#/components/schemas/user"
+        envelope_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/envelope_item"
+        used_identification_at:
+          type: string
+          format: date-time
+        identification_method:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    signing_process:
+      properties:
+        process_id:
+          type: string
+        name:
+          type: string
+        owner_uid:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+        tag_ids:
+          type: array
+          items:
+            type: string
+        is_individual:
+          type: boolean
+        total:
+          type: integer
+          description: Total number of documents in the signing process.
+        signed:
+          type: integer
+          description: Number of documents that have been signed in the signing process.
+        cancelled:
+          type: integer
+          description: Number of documents that have been cancelled in the signing process.
+        signature_requests:
+          type: array
+          items:
+            $ref: "#/components/schemas/signature_request_response"
+
+    signing_process_list:
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/signing_process"
+        total_pages:
+          type: integer
+        total_elements:
+          type: integer
+        page:
+          type: integer
+
+    org_reminder:
+      type: object
+      description: |
+        Organisation-level signing-process reminder setting
+        (`organization.signingprocess.reminder`).
+
+        When `enforced` is true, the cadence and message override per-request
+        and per-template reminder values for every signing process in the
+        organisation, and the upstream API syncs existing templates that already
+        have reminders to match. When `enforced` is false the setting is
+        dormant and per-request / per-template values take effect.
+
+        `message` is tri-state: omit the field to preserve each template's
+        existing message during the bulk sync, send an explicit empty string to
+        deliberately blank every template's message, or send a non-empty string
+        to overwrite.
+      properties:
+        enforced:
+          type: boolean
+          description: Whether the org policy overrides per-request and per-template reminder values.
+        intervals:
+          type: integer
+          minimum: 1
+          maximum: 14
+          description: Reminder cadence in days.
+        max:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Maximum number of reminders to send.
+        message:
+          type: string
+          maxLength: 500
+          description: Reminder message body. Omit to preserve existing per-template messages; send `""` to blank them.
 
 paths:
   /delete-access:
@@ -1404,5 +1671,403 @@ paths:
                 $ref: "#/components/schemas/user"
         401:
           $ref: "#/components/responses/unauthorized"
+      tags:
+        - Account
+
+  /request/file/add:
+    post:
+      operationId: add_files
+      summary: Add new files to signature requests
+      description: |
+        Add documents to a signature request, provided the signing is incomplete. The signing URL is required for this.
+        You can add a single document by uploading the PDF, with the filename as a query parameter.
+        To add multiple documents, submit a JSON body with the file URLs and names.
+        If the document has not been prepared yet, it will be prepared automatically. Use `no-prepare` to disable this.
+        The legal weight and the jurisdiction will be the same as in the signature request.
+      parameters:
+        - name: filename
+          in: query
+          schema:
+            type: string
+          description: The name of the file. This is required when adding a single file as a PDF upload.
+        - name: password
+          in: query
+          schema:
+            type: string
+          description: The password for the signature request, if it was password-protected.
+        - name: request-url
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uri
+          description: |
+            The complete signing URL for the signature request, including the `#` fragment containing the encryption key.
+        - $ref: "#/components/parameters/digital_twin"
+        - $ref: "#/components/parameters/pdf-a"
+        - $ref: "#/components/parameters/additional_page"
+        - $ref: "#/components/parameters/accept_language"
+        - name: no-prepare
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Do not prepare the document if it is not already prepared and return an error instead.
+      requestBody:
+        description: New files to be added to the signature request.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    properties:
+                      name:
+                        type: string
+                      url:
+                        type: string
+                        format: url
+                    required:
+                      - name
+                      - url
+          application/pdf: { }
+      responses:
+        200:
+          description: The documents were added successfully.
+        400:
+          description: Check that the documents provided have been prepared and can be read, and that every required information was provided.
+      tags:
+        - Signing
+
+  /signing-process/create:
+    post:
+      operationId: create_signing_process
+      summary: Create a signing process
+      description: |
+        Creates a signing process, optionally with signature requests.
+        When `signers` is provided, signature requests are created within the new process.
+        Each signer's envelope items can carry `signature_positions` to place the
+        signatures on the documents (see the `envelope_item_input` schema).
+      requestBody:
+        required: true
+        description: JSON body with the signing process details.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                is_individual:
+                  type: boolean
+                  default: false
+                send_email:
+                  type: boolean
+                  default: false
+                signers:
+                  type: array
+                  description: Optional list of signers with envelope items.
+                  items:
+                    $ref: "#/components/schemas/signer"
+                signature_card_template:
+                  type: string
+                  description: Custom signature card template (JSON string).
+                reason:
+                  type: string
+                  description: Reason for the signature request.
+              required:
+                - name
+      responses:
+        201:
+          description: The signing process was created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signing_process"
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Signing Processes
+
+  /signing-process/list:
+    get:
+      operationId: list_signing_processes
+      summary: List signing processes
+      description: Lists all signing processes for the authenticated user.
+      parameters:
+        - name: page
+          description: Page number.
+          in: query
+          schema:
+            type: integer
+        - name: size
+          description: Number of items per page.
+          in: query
+          schema:
+            type: integer
+        - name: sort
+          description: Field to sort by (e.g. name, created_at, status).
+          in: query
+          schema:
+            type: string
+        - name: order
+          description: Sort direction (asc or desc).
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+      responses:
+        200:
+          description: A paginated list of signing processes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signing_process_list"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Signing Processes
+
+  /signing-process/{id}:
+    get:
+      operationId: get_signing_process
+      summary: Get a signing process by ID
+      description: Retrieves details of a specific signing process.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The signing process details.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signing_process"
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Signing Processes
+
+  /signing-process/{id}/cancel:
+    post:
+      operationId: cancel_signing_process
+      summary: Cancel a signing process
+      description: Cancels a signing process by its ID. An optional note can be provided to inform signers of the reason for cancellation.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+                  description: A message to the signers explaining why the process was cancelled.
+      responses:
+        200:
+          description: The signing process was cancelled.
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Signing Processes
+
+  /org/process-reminder:
+    get:
+      operationId: get_org_process_reminder
+      summary: Get the organisation-level signing-process reminder
+      description: |
+        Returns the parsed value of the `organization.signingprocess.reminder` setting
+        for the caller's organisation. Returns an empty object (`{}`) when the
+        setting is undefined (no row, empty value, or malformed JSON upstream).
+
+        The caller must belong to exactly one organisation; otherwise the request
+        is rejected with 400.
+      responses:
+        200:
+          description: The parsed setting value, or `{}` when undefined.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/org_reminder"
+        400:
+          description: The caller does not belong to a single resolvable organisation.
+        401:
+          $ref: "#/components/responses/unauthorized"
+        500:
+          description: The upstream API could not be reached.
+      tags:
+        - Organization
+
+    post:
+      operationId: set_org_process_reminder
+      summary: Set the organisation-level signing-process reminder
+      description: |
+        Upserts the `organization.signingprocess.reminder` setting on the caller's
+        organisation. The CLI marshals the query parameters into the JSON shape
+        the upstream `/setting/:entity_id` endpoint expects.
+
+        Only an organisation administrator may write this setting. Once
+        `enforced=true` (the default), the upstream API also bulk-updates every
+        existing template in the organisation that already has reminders, in the
+        same database transaction as the setting write.
+
+        Omitting `message` preserves each template's existing message during the
+        bulk sync (`COALESCE` upstream). Sending `message=` (empty string)
+        deliberately blanks every template's message.
+      parameters:
+        - name: interval
+          description: Reminder cadence in days (1-14).
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 14
+        - name: max
+          description: Maximum number of reminders (1-5).
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+        - name: message
+          description: |
+            Reminder message body (max 500 characters). Omit to preserve per-template
+            messages; send an empty value to blank them.
+          in: query
+          schema:
+            type: string
+            maxLength: 500
+        - name: enforced
+          description: |
+            Whether the org reminder overrides per-request and per-template values.
+            Defaults to `true`. Pass `false` to mark the setting dormant without
+            deleting it.
+          in: query
+          schema:
+            type: boolean
+            default: true
+      responses:
+        200:
+          description: The setting was upserted successfully.
+        400:
+          description: A query parameter could not be parsed or the caller does not belong to a single resolvable organisation.
+        401:
+          $ref: "#/components/responses/unauthorized"
+        403:
+          description: The caller is not an administrator of the target organisation.
+        500:
+          description: The upstream API could not be reached or the bulk template sync failed (in which case the setting write is rolled back upstream).
+      tags:
+        - Organization
+
+  /identity/create:
+    post:
+      operationId: create_identity
+      summary: Starts Identification process
+      requestBody:
+        description: The identity to create.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: The email address of the user.
+                first_name:
+                  type: string
+                  example: Max
+                  description: The first name of the user.
+                last_name:
+                  type: string
+                  example: Muster
+                  description: The last name of the user.
+                phone_number:
+                  type: string
+                  example: "+41794442211"
+                  description: The phone number of the user in E.164 format (e.g. +41794442211).
+                  pattern: '^\+[1-9]\d{1,14}$'
+                document_type:
+                  type: string
+                  description: The type of document to use for identification.
+                  enum:
+                    - passport
+                    - id_card
+                jurisdiction:
+                  type: string
+                  description: Jurisdiction where identity should be valid.
+                  enum:
+                    - ZertES
+                    - eIDAS
+      responses:
+        200:
+          content:
+            "application/json":
+              schema:
+                properties:
+                  id:
+                    type: string
+                    example: 2NxZlu7vlji
+                    description: The ID of the identity.
+                  identification_url:
+                    type: string
+                    example: https://identifcation.example.com/some_ident_id
+                    description: Url to perform identification.
+        400:
+          description: The request is not properly formed. For example, the content could not be read.
+        401:
+          description: You are not authorized to carry out the operation.
+      tags:
+        - Account
+
+  /identity/{id}/status:
+    get:
+      operationId: get_identity_status
+      summary: Get Identification status
+      parameters:
+        - name: id
+          in: path
+          example: 2NxZlu7vlji
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            "application/json":
+              schema:
+                properties:
+                  id:
+                    type: string
+                    example: 2NxZlu7vlji
+                    description: The ID of the identity.
+                  status:
+                    type: string
+                    enum:
+                      - pending
+                      - verified
+                      - failed
+        400:
+          description: The request is not properly formed. For example, the content could not be read.
+        401:
+          description: You are not authorized to carry out the operation.
       tags:
         - Account

@@ -34,25 +34,30 @@ Utilizzo:
   certifaction [comando]
 
 Comandi Disponibili:
-  certify       Certifica un documento
-  delete-access Rimuovi l'accesso Certifaction al file
-  download      Scarica e decrittografa il documento dall'archivio digitale
-  export        Esporta dati
-  generate-keys Genera chiavi di crittografia e una possibile password
-  health        Restituisce lo stato di salute dell'API Certifaction
-  help          Aiuto su qualsiasi comando
-  info          Restituisce i metadati del file fornito
-  ping          Ping dell'API Certifaction
-  prepare       Prepara un documento per la firma
-  qes           QES (Firma Elettronica Qualificata)
-  register      registra un documento
-  request       Richiedi una firma del documento
-  retract       ritira un documento
-  revoke        revoca un documento
-  server        Avvia in modalità server
-  sign          Firma un documento
-  user          Restituisce le informazioni dell'utente autenticato
-  verify        Verifica un documento
+  certify               Certifica un documento
+  delete-access         Rimuovi l'accesso Certifaction al file
+  download              Scarica e decrittografa il documento dall'archivio digitale
+  export                Esporta dati
+  generate-keys         Genera chiavi di crittografia e una possibile password
+  has-pades-signatures  Controlla se esistono firme PAdES in un documento
+  health                Restituisce lo stato di salute dell'API Certifaction
+  help                  Aiuto su qualsiasi comando
+  info                  Restituisce i metadati del file fornito
+  login                 Accedi a un tenant Certifaction tramite browser
+  logout                Rimuovi le credenziali di accesso salvate
+  ping                  Ping dell'API Certifaction
+  prepare               Prepara un documento per la firma
+  qes                   QES (Firma Elettronica Qualificata)
+  register              registra un documento
+  request               Richiedi una firma del documento
+  retract               ritira un documento
+  revoke                revoca un documento
+  seal                  Sigilla un documento
+  server                Avvia in modalità server
+  sign                  Firma un documento
+  signing-process       Gestisci i processi di firma
+  user                  Restituisce le informazioni dell'utente autenticato
+  verify                Verifica un documento
 
 Flag:
       --api string       Sostituisce l'URL API Certifaction predefinito

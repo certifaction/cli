@@ -34,25 +34,30 @@ Utilisation :
   certifaction [commande]
 
 Commandes Disponibles :
-  certify       Certifier un document
-  delete-access Supprimer l'accès Certifaction au fichier
-  download      Télécharger et déchiffrer un document depuis l'archive numérique
-  export        Exporter des données
-  generate-keys Générer des clés de chiffrement et un mot de passe possible
-  health        Retourner l'état de l'API Certifaction
-  help          Aide sur n'importe quelle commande
-  info          Retourner les métadonnées du fichier fourni
-  ping          Ping l'API Certifaction
-  prepare       Préparer un document pour la signature
-  qes           QES (Signature Électronique Qualifiée)
-  register      enregistrer un document
-  request       Demander une signature de document
-  retract       rétracter un document
-  revoke        révoquer un document
-  server        Démarrer en mode serveur
-  sign          Signer un document
-  user          Retourner les informations de l'utilisateur authentifié
-  verify        Vérifier un document
+  certify               Certifier un document
+  delete-access         Supprimer l'accès Certifaction au fichier
+  download              Télécharger et déchiffrer un document depuis l'archive numérique
+  export                Exporter des données
+  generate-keys         Générer des clés de chiffrement et un mot de passe possible
+  has-pades-signatures  Vérifier si des signatures PAdES existent dans un document
+  health                Retourner l'état de l'API Certifaction
+  help                  Aide sur n'importe quelle commande
+  info                  Retourner les métadonnées du fichier fourni
+  login                 Se connecter à un locataire Certifaction via le navigateur
+  logout                Supprimer les identifiants de connexion enregistrés
+  ping                  Ping l'API Certifaction
+  prepare               Préparer un document pour la signature
+  qes                   QES (Signature Électronique Qualifiée)
+  register              enregistrer un document
+  request               Demander une signature de document
+  retract               rétracter un document
+  revoke                révoquer un document
+  seal                  Sceller un document
+  server                Démarrer en mode serveur
+  sign                  Signer un document
+  signing-process       Gérer les processus de signature
+  user                  Retourner les informations de l'utilisateur authentifié
+  verify                Vérifier un document
 
 Drapeaux :
       --api string       Remplace l'URL par défaut de l'API Certifaction

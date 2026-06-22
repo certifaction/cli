@@ -30,6 +30,10 @@ tags:
     description: Scaricare i propri documenti o rimuovere l'accesso di Certifaction ad essi
   - name: Account
     description: Accedere ai dati del proprio account utente
+  - name: Signing Processes
+    description: Creare e gestire processi di firma
+  - name: Organization
+    description: Gestire le impostazioni a livello di organizzazione
   - name: Server
     description: Controllare lo stato del server
   - name: Certification
@@ -492,6 +496,269 @@ components:
           type: string
           deprecated: true
           description: "Obsoleto: utilizzare events.issuer invece"
+
+    signer:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        language:
+          type: string
+        message:
+          type: string
+        sign_order:
+          type: integer
+        participation_role:
+          type: string
+          enum: ["signer", "approver", "observer"]
+        webhook_url:
+          type: string
+          format: url
+          description: URL per ricevere notifiche webhook sulle modifiche dello stato della richiesta di firma di questo firmatario.
+        envelope_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/envelope_item_input"
+
+    envelope_item_input:
+      type: object
+      properties:
+        link:
+          type: string
+          description: Link dell'archivio digitale per il documento.
+        file_id:
+          type: string
+          description: ID del file (derivato dal link se non fornito).
+        document_id:
+          type: string
+          description: ID del documento (derivato dal link se non fornito).
+        filename:
+          type: string
+        legal_weight:
+          $ref: "#/components/schemas/legal_weight"
+        jurisdiction:
+          type: string
+          enum: ["ZertES", "eIDAS"]
+        signature_position:
+          type: string
+          deprecated: true
+          description: "Obsoleto: utilizzare `signature_positions` invece."
+        signature_positions:
+          type: array
+          description: Posizioni di firma strutturate da inserire su questo documento.
+          items:
+            $ref: "#/components/schemas/signature_position_input"
+
+    envelope_item:
+      type: object
+      properties:
+        link:
+          type: string
+          description: Link dell'archivio digitale per il documento.
+        file_id:
+          type: string
+          description: ID del file (derivato dal link se non fornito).
+        document_id:
+          type: string
+          description: ID del documento (derivato dal link se non fornito).
+        filename:
+          type: string
+        legal_weight:
+          $ref: "#/components/schemas/legal_weight"
+        jurisdiction:
+          type: string
+          enum: ["ZertES", "eIDAS"]
+        signature_position:
+          type: string
+          deprecated: true
+          description: "Obsoleto: utilizzare `signature_positions` invece."
+        signature_positions:
+          type: array
+          description: Posizioni di firma per questo documento, nella rappresentazione dell'API.
+          items:
+            $ref: "#/components/schemas/signature_position_output"
+        status:
+          type: string
+          description: Stato dell'elemento envelope (presente nelle risposte).
+          readOnly: true
+          enum: ["unsigned", "awaiting_approval", "awaiting_upload", "signed", "approved", "declined", "declined_confirmed", "cancelled", "attachment", "for_observation"]
+        signed_at:
+          type: string
+          format: date-time
+
+    signature_position_input:
+      type: object
+      description: |
+        Una posizione di firma strutturata. Le coordinate sono in unità assolute dello spazio
+        utente del PDF, o frazioni delle dimensioni della pagina quando `positioning` è "relative".
+        Le posizioni di firma sono supportate solo per le firme SES.
+      properties:
+        pageNo:
+          type: integer
+          description: Numero di pagina per il posizionamento della firma (a partire da 1).
+        llx:
+          type: number
+          description: Coordinata X dell'angolo inferiore sinistro.
+        lly:
+          type: number
+          description: Coordinata Y dell'angolo inferiore sinistro.
+        height:
+          type: number
+          description: Altezza del campo firma.
+        rotate:
+          type: integer
+          description: Angolo di rotazione in gradi (0, 90, 180, 270).
+        positioning:
+          type: string
+          enum: ["", "relative", "placeholder"]
+          description: '"relative" per il posizionamento relativo, vuoto per quello assoluto.'
+        placeholder:
+          type: string
+          description: ID di un campo segnaposto di firma nel documento, utilizzato con `positioning=placeholder`.
+        legalWeight:
+          type: string
+          description: Valore legale - supportato solo SES.
+        jurisdiction:
+          type: string
+          enum: ["eIDAS", "ZertES"]
+          description: Giurisdizione legale.
+
+    signature_position_output:
+      type: object
+      description: Una posizione di firma come restituita dall'API.
+      properties:
+        position:
+          type: string
+          description: La posizione, codificata come stringa JSON.
+        legal_weight:
+          type: string
+        jurisdiction:
+          type: string
+          enum: ["eIDAS", "ZertES"]
+        status:
+          type: string
+        sign_order:
+          type: integer
+
+    signature_request_response:
+      type: object
+      properties:
+        id:
+          type: string
+        signing_process_id:
+          type: string
+        legal_weight:
+          $ref: "#/components/schemas/legal_weight"
+        jurisdiction:
+          type: string
+          enum: ["ZertES", "eIDAS"]
+        cancelled:
+          type: boolean
+        signed:
+          type: boolean
+        signer:
+          $ref: "#/components/schemas/user"
+        requester:
+          $ref: "#/components/schemas/user"
+        envelope_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/envelope_item"
+        used_identification_at:
+          type: string
+          format: date-time
+        identification_method:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    signing_process:
+      properties:
+        process_id:
+          type: string
+        name:
+          type: string
+        owner_uid:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+        tag_ids:
+          type: array
+          items:
+            type: string
+        is_individual:
+          type: boolean
+        total:
+          type: integer
+          description: Numero totale di documenti nel processo di firma.
+        signed:
+          type: integer
+          description: Numero di documenti che sono stati firmati nel processo di firma.
+        cancelled:
+          type: integer
+          description: Numero di documenti che sono stati annullati nel processo di firma.
+        signature_requests:
+          type: array
+          items:
+            $ref: "#/components/schemas/signature_request_response"
+
+    signing_process_list:
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/signing_process"
+        total_pages:
+          type: integer
+        total_elements:
+          type: integer
+        page:
+          type: integer
+
+    org_reminder:
+      type: object
+      description: |
+        Impostazione del promemoria del processo di firma a livello di organizzazione
+        (`organization.signingprocess.reminder`).
+
+        Quando `enforced` è true, la cadenza e il messaggio sovrascrivono i valori di promemoria
+        per singola richiesta e per modello per ogni processo di firma nell'organizzazione, e
+        l'API upstream sincronizza i modelli esistenti che hanno già promemoria affinché
+        corrispondano. Quando `enforced` è false l'impostazione è inattiva e hanno effetto i
+        valori per singola richiesta / per modello.
+
+        `message` ha tre stati: omettere il campo per preservare il messaggio esistente di
+        ciascun modello durante la sincronizzazione di massa, inviare una stringa vuota
+        esplicita per azzerare deliberatamente il messaggio di ogni modello, o inviare una
+        stringa non vuota per sovrascrivere.
+      properties:
+        enforced:
+          type: boolean
+          description: Se la policy dell'organizzazione sovrascrive i valori di promemoria per singola richiesta e per modello.
+        intervals:
+          type: integer
+          minimum: 1
+          maximum: 14
+          description: Cadenza del promemoria in giorni.
+        max:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Numero massimo di promemoria da inviare.
+        message:
+          type: string
+          maxLength: 500
+          description: Corpo del messaggio di promemoria. Omettere per preservare i messaggi per modello esistenti; inviare `""` per azzerarli.
 
 paths:
   /delete-access:
@@ -1397,5 +1664,403 @@ paths:
                 $ref: "#/components/schemas/user"
         401:
           $ref: "#/components/responses/unauthorized"
+      tags:
+        - Account
+
+  /request/file/add:
+    post:
+      operationId: add_files
+      summary: Aggiungere nuovi file alle richieste di firma
+      description: |
+        Aggiunge documenti a una richiesta di firma, a condizione che la firma sia incompleta. A tale scopo è richiesto l'URL di firma.
+        È possibile aggiungere un singolo documento caricando il PDF, con il nome del file come parametro di query.
+        Per aggiungere più documenti, inviare un corpo JSON con gli URL e i nomi dei file.
+        Se il documento non è ancora stato preparato, verrà preparato automaticamente. Utilizzare `no-prepare` per disabilitare questo comportamento.
+        Il valore legale e la giurisdizione saranno gli stessi della richiesta di firma.
+      parameters:
+        - name: filename
+          in: query
+          schema:
+            type: string
+          description: Il nome del file. Questo è richiesto quando si aggiunge un singolo file come caricamento PDF.
+        - name: password
+          in: query
+          schema:
+            type: string
+          description: La password per la richiesta di firma, se era protetta da password.
+        - name: request-url
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uri
+          description: |
+            L'URL di firma completo per la richiesta di firma, incluso il frammento `#` contenente la chiave di crittografia.
+        - $ref: "#/components/parameters/digital_twin"
+        - $ref: "#/components/parameters/pdf-a"
+        - $ref: "#/components/parameters/additional_page"
+        - $ref: "#/components/parameters/accept_language"
+        - name: no-prepare
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: Non preparare il documento se non è già preparato e restituire invece un errore.
+      requestBody:
+        description: Nuovi file da aggiungere alla richiesta di firma.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                files:
+                  type: array
+                  items:
+                    properties:
+                      name:
+                        type: string
+                      url:
+                        type: string
+                        format: url
+                    required:
+                      - name
+                      - url
+          application/pdf: { }
+      responses:
+        200:
+          description: I documenti sono stati aggiunti con successo.
+        400:
+          description: Verifichi che i documenti forniti siano stati preparati e possano essere letti, e che ogni informazione richiesta sia stata fornita.
+      tags:
+        - Signing
+
+  /signing-process/create:
+    post:
+      operationId: create_signing_process
+      summary: Creare un processo di firma
+      description: |
+        Crea un processo di firma, opzionalmente con richieste di firma.
+        Quando viene fornito `signers`, vengono create richieste di firma all'interno del nuovo processo.
+        Gli elementi envelope di ciascun firmatario possono contenere `signature_positions` per posizionare
+        le firme sui documenti (vedere lo schema `envelope_item_input`).
+      requestBody:
+        required: true
+        description: Corpo JSON con i dettagli del processo di firma.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                is_individual:
+                  type: boolean
+                  default: false
+                send_email:
+                  type: boolean
+                  default: false
+                signers:
+                  type: array
+                  description: Elenco opzionale di firmatari con elementi envelope.
+                  items:
+                    $ref: "#/components/schemas/signer"
+                signature_card_template:
+                  type: string
+                  description: Modello di scheda firma personalizzato (stringa JSON).
+                reason:
+                  type: string
+                  description: Motivo della richiesta di firma.
+              required:
+                - name
+      responses:
+        201:
+          description: Il processo di firma è stato creato.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signing_process"
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Signing Processes
+
+  /signing-process/list:
+    get:
+      operationId: list_signing_processes
+      summary: Elencare i processi di firma
+      description: Elenca tutti i processi di firma per l'utente autenticato.
+      parameters:
+        - name: page
+          description: Numero di pagina.
+          in: query
+          schema:
+            type: integer
+        - name: size
+          description: Numero di elementi per pagina.
+          in: query
+          schema:
+            type: integer
+        - name: sort
+          description: Campo per cui ordinare (ad esempio name, created_at, status).
+          in: query
+          schema:
+            type: string
+        - name: order
+          description: Direzione di ordinamento (asc o desc).
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+      responses:
+        200:
+          description: Un elenco paginato di processi di firma.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signing_process_list"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Signing Processes
+
+  /signing-process/{id}:
+    get:
+      operationId: get_signing_process
+      summary: Ottenere un processo di firma tramite ID
+      description: Recupera i dettagli di un processo di firma specifico.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: I dettagli del processo di firma.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signing_process"
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Signing Processes
+
+  /signing-process/{id}/cancel:
+    post:
+      operationId: cancel_signing_process
+      summary: Annullare un processo di firma
+      description: Annulla un processo di firma tramite il suo ID. È possibile fornire una nota opzionale per informare i firmatari del motivo dell'annullamento.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+                  description: Un messaggio ai firmatari che spiega perché il processo è stato annullato.
+      responses:
+        200:
+          description: Il processo di firma è stato annullato.
+        400:
+          $ref: "#/components/responses/bad_request"
+        401:
+          $ref: "#/components/responses/unauthorized"
+      tags:
+        - Signing Processes
+
+  /org/process-reminder:
+    get:
+      operationId: get_org_process_reminder
+      summary: Ottenere il promemoria del processo di firma a livello di organizzazione
+      description: |
+        Restituisce il valore analizzato dell'impostazione `organization.signingprocess.reminder`
+        per l'organizzazione del chiamante. Restituisce un oggetto vuoto (`{}`) quando
+        l'impostazione non è definita (nessuna riga, valore vuoto o JSON malformato a monte).
+
+        Il chiamante deve appartenere a esattamente un'organizzazione; in caso contrario la richiesta
+        viene rifiutata con 400.
+      responses:
+        200:
+          description: Il valore analizzato dell'impostazione, o `{}` quando non definito.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/org_reminder"
+        400:
+          description: Il chiamante non appartiene a una singola organizzazione risolvibile.
+        401:
+          $ref: "#/components/responses/unauthorized"
+        500:
+          description: Impossibile raggiungere l'API a monte.
+      tags:
+        - Organization
+
+    post:
+      operationId: set_org_process_reminder
+      summary: Impostare il promemoria del processo di firma a livello di organizzazione
+      description: |
+        Crea o aggiorna l'impostazione `organization.signingprocess.reminder` sull'organizzazione
+        del chiamante. La CLI converte i parametri di query nella struttura JSON che
+        l'endpoint a monte `/setting/:entity_id` si aspetta.
+
+        Solo un amministratore dell'organizzazione può scrivere questa impostazione. Una volta che
+        `enforced=true` (il valore predefinito), l'API a monte aggiorna anche in blocco ogni
+        modello esistente nell'organizzazione che ha già promemoria, nella stessa transazione
+        di database della scrittura dell'impostazione.
+
+        Omettere `message` preserva il messaggio esistente di ciascun modello durante la
+        sincronizzazione di massa (`COALESCE` a monte). Inviare `message=` (stringa vuota)
+        azzera deliberatamente il messaggio di ogni modello.
+      parameters:
+        - name: interval
+          description: Cadenza del promemoria in giorni (1-14).
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 14
+        - name: max
+          description: Numero massimo di promemoria (1-5).
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 5
+        - name: message
+          description: |
+            Corpo del messaggio di promemoria (massimo 500 caratteri). Omettere per preservare
+            i messaggi per modello; inviare un valore vuoto per azzerarli.
+          in: query
+          schema:
+            type: string
+            maxLength: 500
+        - name: enforced
+          description: |
+            Se il promemoria dell'organizzazione sovrascrive i valori per singola richiesta e per modello.
+            Il valore predefinito è `true`. Passare `false` per contrassegnare l'impostazione come inattiva senza
+            eliminarla.
+          in: query
+          schema:
+            type: boolean
+            default: true
+      responses:
+        200:
+          description: L'impostazione è stata creata o aggiornata con successo.
+        400:
+          description: Impossibile analizzare un parametro di query oppure il chiamante non appartiene a una singola organizzazione risolvibile.
+        401:
+          $ref: "#/components/responses/unauthorized"
+        403:
+          description: Il chiamante non è un amministratore dell'organizzazione di destinazione.
+        500:
+          description: Impossibile raggiungere l'API a monte oppure la sincronizzazione di massa dei modelli è fallita (nel qual caso la scrittura dell'impostazione viene annullata a monte).
+      tags:
+        - Organization
+
+  /identity/create:
+    post:
+      operationId: create_identity
+      summary: Avvia il processo di identificazione
+      requestBody:
+        description: L'identità da creare.
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: L'indirizzo email dell'utente.
+                first_name:
+                  type: string
+                  example: Max
+                  description: Il nome dell'utente.
+                last_name:
+                  type: string
+                  example: Muster
+                  description: Il cognome dell'utente.
+                phone_number:
+                  type: string
+                  example: "+41794442211"
+                  description: Il numero di telefono dell'utente in formato E.164 (ad esempio +41794442211).
+                  pattern: '^\+[1-9]\d{1,14}$'
+                document_type:
+                  type: string
+                  description: Il tipo di documento da utilizzare per l'identificazione.
+                  enum:
+                    - passport
+                    - id_card
+                jurisdiction:
+                  type: string
+                  description: Giurisdizione in cui l'identità deve essere valida.
+                  enum:
+                    - ZertES
+                    - eIDAS
+      responses:
+        200:
+          content:
+            "application/json":
+              schema:
+                properties:
+                  id:
+                    type: string
+                    example: 2NxZlu7vlji
+                    description: L'ID dell'identità.
+                  identification_url:
+                    type: string
+                    example: https://identifcation.example.com/some_ident_id
+                    description: URL per eseguire l'identificazione.
+        400:
+          description: La richiesta non è formattata correttamente. Ad esempio, il contenuto non può essere letto.
+        401:
+          description: Non è autorizzato a eseguire l'operazione.
+      tags:
+        - Account
+
+  /identity/{id}/status:
+    get:
+      operationId: get_identity_status
+      summary: Ottenere lo stato dell'identificazione
+      parameters:
+        - name: id
+          in: path
+          example: 2NxZlu7vlji
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          content:
+            "application/json":
+              schema:
+                properties:
+                  id:
+                    type: string
+                    example: 2NxZlu7vlji
+                    description: L'ID dell'identità.
+                  status:
+                    type: string
+                    enum:
+                      - pending
+                      - verified
+                      - failed
+        400:
+          description: La richiesta non è formattata correttamente. Ad esempio, il contenuto non può essere letto.
+        401:
+          description: Non è autorizzato a eseguire l'operazione.
       tags:
         - Account
